@@ -1,4 +1,10 @@
 package view;
 
-public abstract class View {
+import view.sub_view.GameView;
+import view.sub_view.MenuView;
+
+public interface View {
+    void setGameView(GameView gameView);
+
+    void setMenuView(MenuView menuView);
 }
