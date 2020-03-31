@@ -1,7 +1,7 @@
 package view;
 
-import view.sub_view.GameView;
-import view.sub_view.MenuView;
+import view.sub_views.GameView;
+import view.sub_views.MenuView;
 import view.utils.GameText;
 
 public class TextualView implements View {

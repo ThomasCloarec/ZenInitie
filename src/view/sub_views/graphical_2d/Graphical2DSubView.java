@@ -1,4 +1,4 @@
-package view.sub_view.graphical_2d;
+package view.sub_views.graphical_2d;
 
 import javax.swing.*;
 import java.util.Observer;

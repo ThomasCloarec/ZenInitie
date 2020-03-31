@@ -1,7 +1,7 @@
-package view.sub_view.graphical_2d;
+package view.sub_views.graphical_2d;
 
 import controller.menu.MenuController;
-import view.sub_view.MenuView;
+import view.sub_views.MenuView;
 
 import java.util.Observable;
 

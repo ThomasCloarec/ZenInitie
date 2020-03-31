@@ -1,9 +1,9 @@
 package view;
 
-import view.sub_view.GameView;
-import view.sub_view.MenuView;
-import view.sub_view.graphical_2d.Graphical2DGameView;
-import view.sub_view.graphical_2d.Graphical2DMenuView;
+import view.sub_views.GameView;
+import view.sub_views.MenuView;
+import view.sub_views.graphical_2d.Graphical2DGameView;
+import view.sub_views.graphical_2d.Graphical2DMenuView;
 import view.utils.GameText;
 
 import javax.swing.*;

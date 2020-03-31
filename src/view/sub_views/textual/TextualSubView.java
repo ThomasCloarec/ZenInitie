@@ -1,4 +1,4 @@
-package view.sub_view.textual;
+package view.sub_views.textual;
 
 import java.util.Observer;
 

@@ -1,7 +1,7 @@
-package view.sub_view.textual;
+package view.sub_views.textual;
 
 import controller.game.GameController;
-import view.sub_view.GameView;
+import view.sub_views.GameView;
 
 import java.util.Observable;
 

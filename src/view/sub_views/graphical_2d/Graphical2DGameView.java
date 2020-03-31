@@ -1,7 +1,7 @@
-package view.sub_view.graphical_2d;
+package view.sub_views.graphical_2d;
 
 import controller.game.GameController;
-import view.sub_view.GameView;
+import view.sub_views.GameView;
 
 import java.util.Observable;
 

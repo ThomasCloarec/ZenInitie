@@ -1,8 +1,8 @@
-package view.sub_view.textual;
+package view.sub_views.textual;
 
 import controller.menu.MenuController;
 import model.menu.Menu;
-import view.sub_view.MenuView;
+import view.sub_views.MenuView;
 import view.utils.GameText;
 import view.utils.TextInput;
 
