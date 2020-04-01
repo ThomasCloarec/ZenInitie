@@ -18,22 +18,29 @@ public class TextualMenuView extends TextualSubView implements MenuView {
     @Override
     public void changeLanguage() {
         int input = TextInput.getAnswer("menu.settings.language.question1", 3);
-        if (input == 1) {
-            this.menuController.sendAction(MenuController.Action.SET_ENGLISH);
-        } else if (input == 2) {
-            this.menuController.sendAction(MenuController.Action.SET_FRENCH);
-        } else if (input == 3) {
-            this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+        switch (input) {
+            case 1:
+                this.menuController.sendAction(MenuController.Action.SET_ENGLISH);
+                break;
+            case 2:
+                this.menuController.sendAction(MenuController.Action.SET_FRENCH);
+                break;
+            case 3:
+                this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+                break;
         }
     }
 
     @Override
     public void changeSettings() {
         int input = TextInput.getAnswer("menu.settings.question1", 2);
-        if (input == 1) {
-            this.menuController.sendAction(MenuController.Action.CHANGE_LANGUAGE);
-        } else if (input == 2) {
-            this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+        switch (input) {
+            case 1:
+                this.menuController.sendAction(MenuController.Action.CHANGE_LANGUAGE);
+                break;
+            case 2:
+                this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+                break;
         }
     }
 
@@ -43,10 +50,48 @@ public class TextualMenuView extends TextualSubView implements MenuView {
     }
 
     @Override
-    public void playOffline() {
-        int input = TextInput.getAnswer("menu.offline.question1", 1);
+    public void loadGame() {
+        int input = TextInput.getAnswer("menu.offline.loadGame.question1", 1);
         if (input == 1) {
             this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+        }
+    }
+
+    @Override
+    public void newGame() {
+        int input = TextInput.getAnswer("menu.offline.newGame.question1", 5);
+        switch (input) {
+            case 1:
+                this.menuController.sendAction(MenuController.Action.PLAY_ONE_VS_ONE);
+                break;
+            case 2:
+                this.menuController.sendAction(MenuController.Action.PLAY_ONE_VS_AI);
+                break;
+            case 3:
+                this.menuController.sendAction(MenuController.Action.PLAY_TWO_VS_TWO);
+                break;
+            case 4:
+                this.menuController.sendAction(MenuController.Action.PLAY_TWO_VS_AI);
+                break;
+            case 5:
+                this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+                break;
+        }
+    }
+
+    @Override
+    public void playOffline() {
+        int input = TextInput.getAnswer("menu.offline.question1", 3);
+        switch (input) {
+            case 1:
+                this.menuController.sendAction(MenuController.Action.NEW_GAME);
+                break;
+            case 2:
+                this.menuController.sendAction(MenuController.Action.LOAD_GAME);
+                break;
+            case 3:
+                this.menuController.sendAction(MenuController.Action.BACK_PREVIOUS_PAGE);
+                break;
         }
     }
 
@@ -61,14 +106,19 @@ public class TextualMenuView extends TextualSubView implements MenuView {
     @Override
     public void start() {
         int input = TextInput.getAnswer("menu.question1", 4);
-        if (input == 1) {
-            this.menuController.sendAction(MenuController.Action.PLAY_ONLINE);
-        } else if (input == 2) {
-            this.menuController.sendAction(MenuController.Action.PLAY_OFFLINE);
-        } else if (input == 3) {
-            this.menuController.sendAction(MenuController.Action.CHANGE_SETTINGS);
-        } else if (input == 4) {
-            this.menuController.sendAction(MenuController.Action.EXIT);
+        switch (input) {
+            case 1:
+                this.menuController.sendAction(MenuController.Action.PLAY_ONLINE);
+                break;
+            case 2:
+                this.menuController.sendAction(MenuController.Action.PLAY_OFFLINE);
+                break;
+            case 3:
+                this.menuController.sendAction(MenuController.Action.CHANGE_SETTINGS);
+                break;
+            case 4:
+                this.menuController.sendAction(MenuController.Action.EXIT);
+                break;
         }
     }
 
@@ -77,16 +127,28 @@ public class TextualMenuView extends TextualSubView implements MenuView {
         Menu menu = (Menu) observable;
         if (object.equals(Menu.UpdateNotification.UPDATE_PAGE)) {
             Menu.Page actualPage = menu.getActualPage();
-            if (actualPage == Menu.Page.MENU) {
-                this.start();
-            } else if (actualPage == Menu.Page.MENU_PLAY_ONLINE) {
-                this.playOnline();
-            } else if (actualPage == Menu.Page.MENU_PLAY_OFFLINE) {
-                this.playOffline();
-            } else if (actualPage == Menu.Page.MENU_CHANGE_SETTINGS) {
-                this.changeSettings();
-            } else if (actualPage == Menu.Page.MENU_CHANGE_SETTINGS_CHANGE_LANGUAGE) {
-                this.changeLanguage();
+            switch (actualPage) {
+                case ROOT:
+                    this.start();
+                    break;
+                case PLAY_ONLINE:
+                    this.playOnline();
+                    break;
+                case PLAY_OFFLINE:
+                    this.playOffline();
+                    break;
+                case NEW_GAME:
+                    this.newGame();
+                    break;
+                case LOAD_GAME:
+                    this.loadGame();
+                    break;
+                case CHANGE_SETTINGS:
+                    this.changeSettings();
+                    break;
+                case CHANGE_LANGUAGE:
+                    this.changeLanguage();
+                    break;
             }
         } else if (object.equals(Menu.UpdateNotification.EXIT)) {
             this.exit();

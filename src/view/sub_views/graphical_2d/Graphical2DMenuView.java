@@ -25,6 +25,16 @@ public class Graphical2DMenuView extends Graphical2DSubView implements MenuView 
     }
 
     @Override
+    public void loadGame() {
+
+    }
+
+    @Override
+    public void newGame() {
+
+    }
+
+    @Override
     public void playOffline() {
     }
 

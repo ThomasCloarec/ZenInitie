@@ -11,7 +11,7 @@ public class Menu extends Observable {
     private boolean onlineMode;
 
     public Menu() {
-        this.pagesBreadcrumb.add(Page.MENU);
+        this.pagesBreadcrumb.add(Page.ROOT);
     }
 
     public void addActualPage(Page actualPage) {
@@ -46,11 +46,13 @@ public class Menu extends Observable {
     }
 
     public enum Page {
-        MENU,
-        MENU_PLAY_ONLINE,
-        MENU_PLAY_OFFLINE,
-        MENU_CHANGE_SETTINGS,
-        MENU_CHANGE_SETTINGS_CHANGE_LANGUAGE
+        ROOT,
+        PLAY_ONLINE,
+        LOAD_GAME,
+        NEW_GAME,
+        PLAY_OFFLINE,
+        CHANGE_SETTINGS,
+        CHANGE_LANGUAGE
     }
 
     public enum UpdateNotification {

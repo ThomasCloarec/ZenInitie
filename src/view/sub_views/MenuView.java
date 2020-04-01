@@ -9,6 +9,10 @@ public interface MenuView extends Observer {
 
     void exit();
 
+    void loadGame();
+
+    void newGame();
+
     void playOffline();
 
     void playOnline();

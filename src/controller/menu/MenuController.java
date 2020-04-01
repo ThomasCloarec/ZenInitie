@@ -16,17 +16,23 @@ public class MenuController {
         switch (action) {
             case PLAY_ONLINE:
                 this.menu.setOnlineMode(true);
-                this.menu.addActualPage(Menu.Page.MENU_PLAY_ONLINE);
+                this.menu.addActualPage(Menu.Page.PLAY_ONLINE);
                 break;
             case PLAY_OFFLINE:
                 this.menu.setOnlineMode(false);
-                this.menu.addActualPage(Menu.Page.MENU_PLAY_OFFLINE);
+                this.menu.addActualPage(Menu.Page.PLAY_OFFLINE);
+                break;
+            case NEW_GAME:
+                this.menu.addActualPage(Menu.Page.NEW_GAME);
+                break;
+            case LOAD_GAME:
+                this.menu.addActualPage(Menu.Page.LOAD_GAME);
                 break;
             case CHANGE_SETTINGS:
-                this.menu.addActualPage(Menu.Page.MENU_CHANGE_SETTINGS);
+                this.menu.addActualPage(Menu.Page.CHANGE_SETTINGS);
                 break;
             case CHANGE_LANGUAGE:
-                this.menu.addActualPage(Menu.Page.MENU_CHANGE_SETTINGS_CHANGE_LANGUAGE);
+                this.menu.addActualPage(Menu.Page.CHANGE_LANGUAGE);
                 break;
             case SET_ENGLISH:
                 GameText.setLocaleLanguage(Locale.ENGLISH);
@@ -51,10 +57,12 @@ public class MenuController {
         JOIN_GAME2,
         JOIN_GAME3,
         PLAY_OFFLINE,
+        LOAD_GAME,
+        NEW_GAME,
         PLAY_ONE_VS_ONE,
-        PLAY_DUO_VS_DUO,
+        PLAY_TWO_VS_TWO,
         PLAY_ONE_VS_AI,
-        PLAY_DUO_VS_AI,
+        PLAY_TWO_VS_AI,
         CHANGE_SETTINGS,
         CHANGE_LANGUAGE,
         SET_ENGLISH,
