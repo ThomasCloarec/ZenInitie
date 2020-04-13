@@ -27,10 +27,33 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
 
     @Override
     public void changeSettings() {
+        SwingUtilities.invokeLater(() -> {
+            this.removeAll();
+
+            this.add(Box.createVerticalGlue());
+            this.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.add(Box.createVerticalGlue());
+
+            JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"));
+            JButton button2 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"));
+
+            button1.addActionListener(actionEvent -> this.menuController.changeLanguage());
+            button2.addActionListener(actionEvent -> this.menuController.backPreviousPage());
+
+            this.add(button1);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button2);
+            this.add(Box.createVerticalGlue());
+
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void exit() {
+        System.exit(0);
     }
 
     @Override
@@ -40,38 +63,114 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
 
     @Override
     public void newGame() {
+        SwingUtilities.invokeLater(() -> {
+            this.removeAll();
 
+            this.add(Box.createVerticalGlue());
+            this.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.add(Box.createVerticalGlue());
+
+            JButton button1 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer1"));
+            JButton button2 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer2"));
+            JButton button3 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer3"));
+            JButton button4 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer4"));
+            JButton button5 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer5"));
+
+            button1.addActionListener(actionEvent -> this.menuController.playOneVsOne());
+            button2.addActionListener(actionEvent -> this.menuController.playOneVsAI());
+            button3.addActionListener(actionEvent -> this.menuController.playTwoVsTwo());
+            button4.addActionListener(actionEvent -> this.menuController.playTwoVSAI());
+            button5.addActionListener(actionEvent -> this.menuController.backPreviousPage());
+
+            this.add(button1);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button2);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button3);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button4);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button5);
+            this.add(Box.createVerticalGlue());
+
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void playOffline() {
+        SwingUtilities.invokeLater(() -> {
+            this.removeAll();
+
+            this.add(Box.createVerticalGlue());
+            this.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.add(Box.createVerticalGlue());
+
+            JButton button1 = new ButtonComponent(getTextFor("menu.offline.question1.answer1"));
+            JButton button2 = new ButtonComponent(getTextFor("menu.offline.question1.answer2"));
+            JButton button3 = new ButtonComponent(getTextFor("menu.offline.question1.answer3"));
+
+            button1.addActionListener(actionEvent -> this.menuController.newGame());
+            button2.addActionListener(actionEvent -> this.menuController.loadGame());
+            button3.addActionListener(actionEvent -> this.menuController.backPreviousPage());
+
+            this.add(button1);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button2);
+            this.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.add(button3);
+            this.add(Box.createVerticalGlue());
+
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void playOnline() {
+
     }
 
     @Override
     public void start() {
         SwingUtilities.invokeLater(() -> {
+            this.removeAll();
+
+            this.add(Box.createVerticalGlue());
+            this.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
             this.add(Box.createVerticalGlue());
 
-            this.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
-            this.add(Box.createRigidArea(new Dimension(0, 50)));
+            JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"));
+            JButton button2 = new ButtonComponent(getTextFor("menu.question1.answer2"));
+            JButton button3 = new ButtonComponent(getTextFor("menu.question1.answer3"));
+            JButton button4 = new ButtonComponent(getTextFor("menu.question1.answer4"));
 
-            this.add(new ButtonComponent(getTextFor("menu.question1.answer1")));
+            button1.addActionListener(actionEvent -> this.menuController.playOnline());
+            button2.addActionListener(actionEvent -> this.menuController.playOffline());
+            button3.addActionListener(actionEvent -> this.menuController.changeSettings());
+            button4.addActionListener(actionEvent -> this.menuController.exit());
+
+            this.add(button1);
             this.add(Box.createRigidArea(new Dimension(0, 25)));
 
-            this.add(new ButtonComponent(getTextFor("menu.question1.answer2")));
+            this.add(button2);
             this.add(Box.createRigidArea(new Dimension(0, 25)));
 
-            this.add(new ButtonComponent(getTextFor("menu.question1.answer3")));
+            this.add(button3);
             this.add(Box.createRigidArea(new Dimension(0, 25)));
 
-            this.add(new ButtonComponent(getTextFor("menu.question1.answer4")));
+            this.add(button4);
             this.add(Box.createVerticalGlue());
 
             this.revalidate();
+            this.repaint();
         });
     }
 }
