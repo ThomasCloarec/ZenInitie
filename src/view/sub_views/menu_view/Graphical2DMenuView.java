@@ -11,6 +11,8 @@ import java.awt.*;
 import static view.utils.text.AppText.getTextFor;
 
 public class Graphical2DMenuView extends JPanel implements MenuView {
+    private final JLabel blueDragon = new ImageComponent("blue_dragon.png", 430, 593).getAsLabel();
+    private final JLabel redDragon = new ImageComponent("red_dragon.png", 430, 593).getAsLabel();
     private JPanel contentPanel;
     private MenuController menuController;
 
@@ -25,11 +27,11 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.contentPanel.setLayout(new BoxLayout(this.contentPanel, BoxLayout.Y_AXIS));
 
             this.add(Box.createHorizontalGlue());
-            this.add(new ImageComponent("blue_dragon.png", 430, 593).getAsLabel());
+            this.add(this.blueDragon);
             this.add(Box.createHorizontalGlue());
             this.add(this.contentPanel);
             this.add(Box.createHorizontalGlue());
-            this.add(new ImageComponent("red_dragon.png", 430, 593).getAsLabel());
+            this.add(this.redDragon);
             this.add(Box.createHorizontalGlue());
         });
     }
@@ -116,6 +118,19 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
     }
 
     @Override
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+
+        if (this.getSize().width < 1400) {
+            this.blueDragon.setVisible(false);
+            this.redDragon.setVisible(false);
+        } else {
+            this.blueDragon.setVisible(true);
+            this.redDragon.setVisible(true);
+        }
+    }
+
+    @Override
     public void playOffline() {
         SwingUtilities.invokeLater(() -> {
             this.contentPanel.removeAll();
@@ -184,8 +199,6 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
 
             this.revalidate();
             this.repaint();
-
-            System.out.println("h");
         });
     }
 }

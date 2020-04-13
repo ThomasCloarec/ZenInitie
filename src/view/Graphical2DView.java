@@ -49,11 +49,4 @@ public class Graphical2DView extends JFrame implements View {
         SwingUtilities.invokeLater(() -> this.setContentPane(graphical2DMenuView));
         return graphical2DMenuView;
     }
-
-    @Override
-    public void paint(Graphics graphics) {
-        paintComponents(graphics);
-
-        System.out.println(this.getSize());
-    }
 }
