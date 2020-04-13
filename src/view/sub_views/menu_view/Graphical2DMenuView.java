@@ -1,6 +1,7 @@
 package view.sub_views.menu_view;
 
 import controller.menu.MenuController;
+import view.utils.Color;
 import view.utils.components.ButtonComponent;
 import view.utils.components.ImageComponent;
 
@@ -15,7 +16,7 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
     public Graphical2DMenuView(MenuController menuController) {
         SwingUtilities.invokeLater(() -> {
             this.menuController = menuController;
-            this.setBackground(new Color(44, 47, 51));
+            this.setBackground(Color.DISCORD_GREY);
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         });
     }
