@@ -4,7 +4,6 @@ import model.game.Game;
 import model.game.GameImpl;
 import model.menu.Menu;
 import view.Graphical2DView;
-import view.TextualView;
 import view.View;
 import view.ViewMode;
 
@@ -30,7 +29,7 @@ public class Main {
         if (args.length > 0 && args[0].toUpperCase().equals(ViewMode.GRAPHICAL_2D.name())) {
             Main.view = new Graphical2DView();
         } else {
-            Main.view = new TextualView();
+            Main.view = new Graphical2DView();
         }
 
         Main.newMenu();

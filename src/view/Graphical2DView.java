@@ -1,5 +1,6 @@
 package view;
 
+import com.bulenkov.darcula.DarculaLaf;
 import controller.game.GameController;
 import controller.menu.MenuController;
 import view.sub_views.game_view.GameView;
@@ -13,6 +14,12 @@ import javax.swing.*;
 public class Graphical2DView extends JFrame implements View {
     public Graphical2DView() {
         SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(new DarculaLaf());
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+
             this.setTitle(AppText.getTextFor("global.frame.title"));
             this.setSize(1080, 720);
             this.setLocationRelativeTo(null);
