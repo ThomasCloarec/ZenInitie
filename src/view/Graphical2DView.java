@@ -29,7 +29,7 @@ public class Graphical2DView extends JFrame implements View {
             }
 
             this.setTitle(AppText.getTextFor("global.frame.title"));
-            this.setSize(1080, 720);
+            this.setSize(1400, 700);
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setVisible(true);
@@ -48,5 +48,12 @@ public class Graphical2DView extends JFrame implements View {
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
         SwingUtilities.invokeLater(() -> this.setContentPane(graphical2DMenuView));
         return graphical2DMenuView;
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        paintComponents(graphics);
+
+        System.out.println(this.getSize());
     }
 }
