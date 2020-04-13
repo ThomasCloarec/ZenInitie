@@ -1,57 +1,60 @@
 import controller.game.GameController;
 import controller.menu.MenuController;
 import model.game.Game;
+import model.game.GameImpl;
 import model.menu.Menu;
-import view.GraphicalView;
+import view.Graphical2DView;
 import view.TextualView;
 import view.View;
 import view.ViewMode;
-import view.sub_views.GameView;
-import view.sub_views.MenuView;
-import view.sub_views.graphical_2d.Graphical2DGameView;
-import view.sub_views.graphical_2d.Graphical2DMenuView;
-import view.sub_views.textual.TextualGameView;
-import view.sub_views.textual.TextualMenuView;
 
+/**
+ * More information about the game in the README.md file.
+ *
+ * @author Thomas Cloarec
+ */
 public class Main {
-    private static ViewMode VIEW_MODE;
+    /**
+     * The view of the application (can either be textual or graphical).
+     */
     private static View view;
 
+    /**
+     * This main method launch the application either in textual mode or in graphical mode depending of it's parameters.
+     *
+     * @param args The first index of this array may contain the display mode used.
+     *             You can either launch with argument "TEXTUAL" or argument "GRAPHICAL_2D".
+     *             By default the display mode is "TEXTUAL."
+     */
     public static void main(String[] args) {
         if (args.length > 0 && args[0].toUpperCase().equals(ViewMode.GRAPHICAL_2D.name())) {
-            Main.VIEW_MODE = ViewMode.GRAPHICAL_2D;
-            Main.view = new GraphicalView();
+            Main.view = new Graphical2DView();
         } else {
-            Main.VIEW_MODE = ViewMode.TEXTUAL;
             Main.view = new TextualView();
         }
 
-        Main.showMenu();
+        Main.newMenu();
     }
 
-    private static void newGame() {
-        Game game = new Game();
+    /**
+     * Create a new game and launch it using the previously collected information from the menu.
+     * This method set up the MVC architectural pattern and the Observer behavioral pattern used during the game.
+     *
+     * @param menu The menu containing the necessary information to launch the game.
+     */
+    private static void newGame(Menu menu) {
+        Game game = new GameImpl(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
         GameController gameController = new GameController(game);
-        GameView gameView;
-        if (Main.VIEW_MODE == ViewMode.GRAPHICAL_2D) {
-            gameView = new Graphical2DGameView(gameController);
-        } else {
-            gameView = new TextualGameView(gameController);
-        }
-        game.addObserver(gameView);
-        Main.view.setGameView(gameView);
+        game.addObserver(Main.view.createGameView(gameController));
     }
 
-    private static void showMenu() {
+    /**
+     * Create a new game and launch it using the previously collected information from the menu.
+     * This method set up the MVC architectural pattern and the Observer behavioral pattern used during the game.
+     */
+    private static void newMenu() {
         Menu menu = new Menu();
-        MenuController menuController = new MenuController(menu);
-        MenuView menuView;
-        if (Main.VIEW_MODE == ViewMode.GRAPHICAL_2D) {
-            menuView = new Graphical2DMenuView(menuController);
-        } else {
-            menuView = new TextualMenuView(menuController);
-        }
-        menu.addObserver(menuView);
-        Main.view.setMenuView(menuView);
+        MenuController menuController = new MenuController(menu, Main::newGame);
+        menu.addObserver(Main.view.createMenuView(menuController));
     }
 }

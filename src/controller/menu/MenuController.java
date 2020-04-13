@@ -1,73 +1,80 @@
 package controller.menu;
 
 import model.menu.Menu;
-import view.utils.GameText;
+import view.utils.AppText;
+import view.utils.Language;
 
-import java.util.Locale;
+import java.util.function.Consumer;
 
 public class MenuController {
     private final Menu menu;
+    private final Consumer<Menu> newGame;
 
-    public MenuController(Menu menu) {
+    public MenuController(Menu menu, Consumer<Menu> newGame) {
         this.menu = menu;
+        this.newGame = newGame;
     }
 
-    public void sendAction(Action action) {
-        switch (action) {
-            case PLAY_ONLINE:
-                this.menu.setOnlineMode(true);
-                this.menu.addActualPage(Menu.Page.PLAY_ONLINE);
-                break;
-            case PLAY_OFFLINE:
-                this.menu.setOnlineMode(false);
-                this.menu.addActualPage(Menu.Page.PLAY_OFFLINE);
-                break;
-            case NEW_GAME:
-                this.menu.addActualPage(Menu.Page.NEW_GAME);
-                break;
-            case LOAD_GAME:
-                this.menu.addActualPage(Menu.Page.LOAD_GAME);
-                break;
-            case CHANGE_SETTINGS:
-                this.menu.addActualPage(Menu.Page.CHANGE_SETTINGS);
-                break;
-            case CHANGE_LANGUAGE:
-                this.menu.addActualPage(Menu.Page.CHANGE_LANGUAGE);
-                break;
-            case SET_ENGLISH:
-                GameText.setLocaleLanguage(Locale.ENGLISH);
-                this.menu.backPreviousPage();
-            case SET_FRENCH:
-                GameText.setLocaleLanguage(Locale.FRANCE);
-                this.menu.backPreviousPage();
-            case BACK_PREVIOUS_PAGE:
-                this.menu.backPreviousPage();
-                break;
-            case EXIT:
-                this.menu.exit();
-                break;
-        }
+    public void backPreviousPage() {
+        this.menu.backPreviousPage();
     }
 
-    public enum Action {
-        PLAY_ONLINE,
-        CREATE_GAME,
-        LAUNCH_GAME,
-        JOIN_GAME1,
-        JOIN_GAME2,
-        JOIN_GAME3,
-        PLAY_OFFLINE,
-        LOAD_GAME,
-        NEW_GAME,
-        PLAY_ONE_VS_ONE,
-        PLAY_TWO_VS_TWO,
-        PLAY_ONE_VS_AI,
-        PLAY_TWO_VS_AI,
-        CHANGE_SETTINGS,
-        CHANGE_LANGUAGE,
-        SET_ENGLISH,
-        SET_FRENCH,
-        BACK_PREVIOUS_PAGE,
-        EXIT
+    public void changeLanguage() {
+        this.menu.addActualPage(Menu.Page.CHANGE_LANGUAGE);
+    }
+
+    public void changeSettings() {
+        this.menu.addActualPage(Menu.Page.CHANGE_SETTINGS);
+    }
+
+    public void exit() {
+        this.menu.exit();
+    }
+
+    public void loadGame() {
+        this.menu.addActualPage(Menu.Page.LOAD_GAME);
+    }
+
+    public void newGame() {
+        this.menu.addActualPage(Menu.Page.NEW_GAME);
+    }
+
+    public void playOffline() {
+        this.menu.setOnlineMode(false);
+        this.menu.addActualPage(Menu.Page.PLAY_OFFLINE);
+    }
+
+    public void playOneVsAI() {
+        this.menu.setDuoMode(false);
+        this.menu.setAiMode(true);
+        this.newGame.accept(this.menu);
+    }
+
+    public void playOneVsOne() {
+        this.menu.setDuoMode(false);
+        this.menu.setAiMode(false);
+        this.newGame.accept(this.menu);
+    }
+
+    public void playOnline() {
+        this.menu.setOnlineMode(true);
+        this.menu.addActualPage(Menu.Page.PLAY_ONLINE);
+    }
+
+    public void playTwoVSAI() {
+        this.menu.setDuoMode(true);
+        this.menu.setAiMode(true);
+        this.newGame.accept(this.menu);
+    }
+
+    public void playTwoVsTwo() {
+        this.menu.setDuoMode(true);
+        this.menu.setAiMode(false);
+        this.newGame.accept(this.menu);
+    }
+
+    public void setLanguage(Language language) {
+        AppText.setAppLanguage(language);
+        this.menu.backPreviousPage();
     }
 }

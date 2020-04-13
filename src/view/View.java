@@ -1,10 +1,12 @@
 package view;
 
-import view.sub_views.GameView;
-import view.sub_views.MenuView;
+import controller.game.GameController;
+import controller.menu.MenuController;
+import view.sub_views.game_view.GameView;
+import view.sub_views.menu_view.MenuView;
 
 public interface View {
-    void setGameView(GameView gameView);
+    GameView createGameView(GameController gameController);
 
-    void setMenuView(MenuView menuView);
+    MenuView createMenuView(MenuController menuController);
 }

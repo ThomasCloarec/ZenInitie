@@ -2,9 +2,8 @@ package model.menu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-public class Menu extends Observable {
+public class Menu extends MenuObservable {
     private final List<Page> pagesBreadcrumb = new ArrayList<>();
     private boolean aiMode;
     private boolean duoMode;
@@ -16,33 +15,44 @@ public class Menu extends Observable {
 
     public void addActualPage(Page actualPage) {
         this.pagesBreadcrumb.add(actualPage);
-        this.setChanged();
-        this.notifyObservers(UpdateNotification.UPDATE_PAGE);
+        this.notifyUpdatePage(this);
     }
 
     public void backPreviousPage() {
-        if (this.pagesBreadcrumb.size() > 1) {
-            this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
-            this.setChanged();
-            this.notifyObservers(UpdateNotification.UPDATE_PAGE);
-        }
+        this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
+        this.notifyUpdatePage(this);
     }
 
     public void exit() {
-        this.setChanged();
-        this.notifyObservers(UpdateNotification.EXIT);
+        this.notifyExit();
+    }
+
+    public Page getActualPage() {
+        return this.pagesBreadcrumb.get(this.pagesBreadcrumb.size() - 1);
+    }
+
+    public boolean isAiMode() {
+        return this.aiMode;
+    }
+
+    public void setAiMode(boolean aiMode) {
+        this.aiMode = aiMode;
+    }
+
+    public boolean isDuoMode() {
+        return this.duoMode;
+    }
+
+    public void setDuoMode(boolean duoMode) {
+        this.duoMode = duoMode;
+    }
+
+    public boolean isOnlineMode() {
+        return this.onlineMode;
     }
 
     public void setOnlineMode(boolean onlineMode) {
         this.onlineMode = onlineMode;
-    }
-
-    public Page getActualPage() {
-        return this.getPagesBreadcrumb().get(this.getPagesBreadcrumb().size() - 1);
-    }
-
-    public List<Page> getPagesBreadcrumb() {
-        return this.pagesBreadcrumb;
     }
 
     public enum Page {
@@ -53,10 +63,5 @@ public class Menu extends Observable {
         PLAY_OFFLINE,
         CHANGE_SETTINGS,
         CHANGE_LANGUAGE
-    }
-
-    public enum UpdateNotification {
-        UPDATE_PAGE,
-        EXIT
     }
 }

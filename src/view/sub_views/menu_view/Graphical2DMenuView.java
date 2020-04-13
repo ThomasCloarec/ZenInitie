@@ -1,11 +1,10 @@
-package view.sub_views.graphical_2d;
+package view.sub_views.menu_view;
 
 import controller.menu.MenuController;
-import view.sub_views.MenuView;
 
-import java.util.Observable;
+import javax.swing.*;
 
-public class Graphical2DMenuView extends Graphical2DSubView implements MenuView {
+public class Graphical2DMenuView extends JPanel implements MenuView {
     private final MenuController menuController;
 
     public Graphical2DMenuView(MenuController menuController) {
@@ -44,9 +43,5 @@ public class Graphical2DMenuView extends Graphical2DSubView implements MenuView 
 
     @Override
     public void start() {
-    }
-
-    @Override
-    public void update(Observable observable, Object object) {
     }
 }

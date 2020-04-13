@@ -1,6 +1,6 @@
 package model.game;
 
-public enum PAWN {
+public enum Pawn {
     EMPTY,
     WHITE,
     BLACK,
