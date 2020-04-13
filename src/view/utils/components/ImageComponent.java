@@ -10,7 +10,7 @@ public class ImageComponent {
     /**
      * The prefix of the path for the image. It directly goes into the images directory
      */
-    private static final String pathPrefix = "../../resources/images/";
+    private static final String pathPrefix = "/view/resources/images/";
     /**
      * The image of the component
      */

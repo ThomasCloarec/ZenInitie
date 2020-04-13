@@ -23,7 +23,7 @@ public class Graphical2DView extends JFrame implements View {
             }
 
             try {
-                AppText.setCustomFont(Font.createFont(Font.TRUETYPE_FONT, Graphical2DView.class.getResourceAsStream("resources/fonts/go3v2.ttf")));
+                AppText.setCustomFont(Font.createFont(Font.TRUETYPE_FONT, Graphical2DView.class.getResourceAsStream("/view/resources/fonts/go3v2.ttf")));
             } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
             }
