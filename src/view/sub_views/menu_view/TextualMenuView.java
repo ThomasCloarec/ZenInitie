@@ -1,11 +1,11 @@
 package view.sub_views.menu_view;
 
 import controller.menu.MenuController;
-import view.utils.Language;
-import view.utils.TextInput;
+import view.utils.text.Language;
+import view.utils.text.TextInput;
 
-import static view.utils.AppText.getTextFor;
-import static view.utils.AppText.preInformation;
+import static view.utils.text.AppText.getTextFor;
+import static view.utils.text.AppText.preInformation;
 
 public class TextualMenuView implements MenuView {
     private final MenuController menuController;

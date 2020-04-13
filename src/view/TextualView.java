@@ -7,8 +7,8 @@ import view.sub_views.game_view.TextualGameView;
 import view.sub_views.menu_view.MenuView;
 import view.sub_views.menu_view.TextualMenuView;
 
-import static view.utils.AppText.getTextFor;
-import static view.utils.AppText.preInformation;
+import static view.utils.text.AppText.getTextFor;
+import static view.utils.text.AppText.preInformation;
 
 public class TextualView implements View {
     public TextualView() {

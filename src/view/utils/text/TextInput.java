@@ -1,11 +1,11 @@
-package view.utils;
+package view.utils.text;
 
 import model.game.Position;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static view.utils.AppText.*;
+import static view.utils.text.AppText.*;
 
 public class TextInput {
     private static final Scanner sc = new Scanner(System.in);

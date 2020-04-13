@@ -4,9 +4,9 @@ import controller.game.GameController;
 import model.game.Game;
 import model.game.Pawn;
 import model.game.Position;
-import view.utils.TextInput;
+import view.utils.text.TextInput;
 
-import static view.utils.AppText.*;
+import static view.utils.text.AppText.*;
 
 public class TextualGameView implements GameView {
     private final GameController gameController;

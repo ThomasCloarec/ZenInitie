@@ -1,4 +1,4 @@
-package view.utils;
+package view.utils.text;
 
 import java.util.Locale;
 

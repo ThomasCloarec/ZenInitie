@@ -1,4 +1,4 @@
-package view.utils;
+package view.utils.components;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,6 +7,10 @@ import java.awt.*;
  * A generic component to show images (in a label or a button)
  */
 public class ImageComponent {
+    /**
+     * The prefix of the path for the image. It directly goes into the images directory
+     */
+    private static final String pathPrefix = "../../resources/images/";
     /**
      * The image of the component
      */
@@ -24,7 +28,7 @@ public class ImageComponent {
      * @param height height of the image
      */
     public ImageComponent(String name, int width, int height) {
-        name = "../resources/images/" + name;
+        name = ImageComponent.pathPrefix + name;
         ImageIcon icon = new ImageIcon(ImageComponent.class.getResource(name));
         Image image = icon.getImage();
         this.miniature = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
@@ -37,7 +41,7 @@ public class ImageComponent {
      * @param name name of the image
      */
     public ImageComponent(String name) {
-        name = "../resources/images/" + name;
+        name = ImageComponent.pathPrefix + name;
         this.miniature = new ImageIcon(ImageComponent.class.getResource(name));
     }
 
@@ -64,6 +68,7 @@ public class ImageComponent {
         button.setIcon(this.miniature);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setSize(this.size, this.size);
+        button.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
         return button;
     }
@@ -76,6 +81,8 @@ public class ImageComponent {
     public JLabel getAsLabel() {
         JLabel label = new JLabel();
         label.setIcon(this.miniature);
+        label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+
         return label;
     }
 }

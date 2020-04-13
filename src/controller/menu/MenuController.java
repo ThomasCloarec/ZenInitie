@@ -1,8 +1,8 @@
 package controller.menu;
 
 import model.menu.Menu;
-import view.utils.AppText;
-import view.utils.Language;
+import view.utils.text.AppText;
+import view.utils.text.Language;
 
 import java.util.function.Consumer;
 

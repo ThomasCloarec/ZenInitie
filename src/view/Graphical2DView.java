@@ -7,9 +7,11 @@ import view.sub_views.game_view.GameView;
 import view.sub_views.game_view.Graphical2DGameView;
 import view.sub_views.menu_view.Graphical2DMenuView;
 import view.sub_views.menu_view.MenuView;
-import view.utils.AppText;
+import view.utils.text.AppText;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 public class Graphical2DView extends JFrame implements View {
     public Graphical2DView() {
@@ -17,6 +19,12 @@ public class Graphical2DView extends JFrame implements View {
             try {
                 UIManager.setLookAndFeel(new DarculaLaf());
             } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                AppText.setCustomFont(Font.createFont(Font.TRUETYPE_FONT, Graphical2DView.class.getResourceAsStream("resources/fonts/go3v2.ttf")));
+            } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
             }
 
