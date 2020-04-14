@@ -14,6 +14,11 @@ public class Position {
         this.column = (int) column - 65;
     }
 
+    public Position(int[] position) {
+        this.line = position[0];
+        this.column = position[1];
+    }
+
     @Override
     public String toString() {
         return "(" + (this.getFormattedLine()) + ", " + (this.getFormattedColumn()) + ")";

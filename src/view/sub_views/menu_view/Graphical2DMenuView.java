@@ -4,6 +4,7 @@ import controller.menu.MenuController;
 import view.utils.Color;
 import view.utils.components.ButtonComponent;
 import view.utils.components.ImageComponent;
+import view.utils.text.Language;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ import static view.utils.text.AppText.getTextFor;
 public class Graphical2DMenuView extends JPanel implements MenuView {
     private final JLabel blueDragon = new ImageComponent("blue_dragon.png", 430, 593).getAsLabel();
     private final JLabel redDragon = new ImageComponent("red_dragon.png", 430, 593).getAsLabel();
+    private final JLabel logoZen = new ImageComponent("logo_zen.png", 250).getAsLabel();
     private JPanel contentPanel;
     private MenuController menuController;
 
@@ -38,6 +40,33 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
 
     @Override
     public void changeLanguage() {
+        SwingUtilities.invokeLater(() -> {
+            this.contentPanel.removeAll();
+
+            this.contentPanel.add(Box.createVerticalGlue());
+            this.contentPanel.add(this.logoZen);
+            this.contentPanel.add(Box.createVerticalGlue());
+
+            JButton button1 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer1"));
+            JButton button2 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer2"));
+            JButton button3 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer3"));
+
+            button1.addActionListener(actionEvent -> this.menuController.setLanguage(Language.ENGLISH));
+            button2.addActionListener(actionEvent -> this.menuController.setLanguage(Language.FRENCH));
+            button3.addActionListener(actionEvent -> this.menuController.backPreviousPage());
+
+            this.contentPanel.add(button1);
+            this.contentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.contentPanel.add(button2);
+            this.contentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+
+            this.contentPanel.add(button3);
+            this.contentPanel.add(Box.createVerticalGlue());
+
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
@@ -46,7 +75,7 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.contentPanel.removeAll();
 
             this.contentPanel.add(Box.createVerticalGlue());
-            this.contentPanel.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.contentPanel.add(this.logoZen);
             this.contentPanel.add(Box.createVerticalGlue());
 
             JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"));
@@ -82,7 +111,7 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.contentPanel.removeAll();
 
             this.contentPanel.add(Box.createVerticalGlue());
-            this.contentPanel.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.contentPanel.add(this.logoZen);
             this.contentPanel.add(Box.createVerticalGlue());
 
             JButton button1 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer1"));
@@ -121,12 +150,18 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        if (this.getSize().width < 1400) {
+        if (this.getWidth() < 1400 || this.getHeight() < 650) {
             this.blueDragon.setVisible(false);
             this.redDragon.setVisible(false);
         } else {
             this.blueDragon.setVisible(true);
             this.redDragon.setVisible(true);
+        }
+
+        if (this.getHeight() < 650) {
+            this.logoZen.setVisible(false);
+        } else {
+            this.logoZen.setVisible(true);
         }
     }
 
@@ -136,7 +171,7 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.contentPanel.removeAll();
 
             this.contentPanel.add(Box.createVerticalGlue());
-            this.contentPanel.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.contentPanel.add(this.logoZen);
             this.contentPanel.add(Box.createVerticalGlue());
 
             JButton button1 = new ButtonComponent(getTextFor("menu.offline.question1.answer1"));
@@ -172,7 +207,7 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.contentPanel.removeAll();
 
             this.contentPanel.add(Box.createVerticalGlue());
-            this.contentPanel.add(new ImageComponent("logo_zen.png", 250).getAsLabel());
+            this.contentPanel.add(this.logoZen);
             this.contentPanel.add(Box.createVerticalGlue());
 
             JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"));

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import static model.utils.Util.getRandomBoolean;
 
 public abstract class Game extends Observable<GameView> {
+    protected final boolean aiMode;
     protected final ArrayList<Position> allowedMoves = new ArrayList<>();
     protected final Pawn[][] board = {
             {Pawn.WHITE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLACK, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLACK},
@@ -22,7 +23,16 @@ public abstract class Game extends Observable<GameView> {
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.WHITE, Pawn.EMPTY, Pawn.WHITE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLACK, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY}
     };
+    protected final boolean duoMode;
+    protected final boolean onlineMode;
+    protected Position selectedPawn;
     protected boolean whiteTeamTurn = getRandomBoolean();
+
+    public Game(boolean aiMode, boolean duoMode, boolean onlineMode) {
+        this.aiMode = aiMode;
+        this.duoMode = duoMode;
+        this.onlineMode = onlineMode;
+    }
 
     public abstract boolean isMoveAllowed(Position move);
 
@@ -30,7 +40,7 @@ public abstract class Game extends Observable<GameView> {
 
     public abstract void moveSelectedPawn(Position position);
 
-    public abstract void setSelectedPawn(Position position);
+    protected abstract void setAllowedMoves();
 
     @Override
     public void addObserver(GameView observer) {
@@ -54,7 +64,17 @@ public abstract class Game extends Observable<GameView> {
         return this.board;
     }
 
-    public Pawn getPawnTurn() {
+    public Pawn getPawnActualTurn() {
         return this.whiteTeamTurn ? Pawn.WHITE : Pawn.BLACK;
+    }
+
+    public Position getSelectedPawn() {
+        return this.selectedPawn;
+    }
+
+    public void setSelectedPawn(Position position) {
+        this.selectedPawn = position;
+        this.setAllowedMoves();
+        this.notifyPawnSelected();
     }
 }
