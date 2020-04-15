@@ -1,31 +1,32 @@
 package view.sub_views.menu_view;
 
 import controller.menu.MenuController;
-import view.utils.Color;
+import view.utils.AppColor;
 import view.utils.components.ButtonComponent;
-import view.utils.components.ImageComponent;
+import view.utils.components.ScaledImageComponent;
 import view.utils.text.Language;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 import static view.utils.text.AppText.getTextFor;
 
 public class Graphical2DMenuView extends JPanel implements MenuView {
-    private final JLabel blueDragon = new ImageComponent("blue_dragon.png", 430, 593).getAsLabel();
-    private final JLabel redDragon = new ImageComponent("red_dragon.png", 430, 593).getAsLabel();
-    private final JLabel logoZen = new ImageComponent("logo_zen.png", 250).getAsLabel();
+    private final JPanel blueDragon = new ScaledImageComponent("blue_dragon.png", 0.25, 0.7, this);
+    private final JPanel logoZen = new ScaledImageComponent("logo_zen.png", 0.3, this);
+    private final JPanel redDragon = new ScaledImageComponent("red_dragon.png", this.blueDragon, false);
     private JPanel contentPanel;
     private MenuController menuController;
 
     public Graphical2DMenuView(MenuController menuController) {
         SwingUtilities.invokeLater(() -> {
             this.menuController = menuController;
-            this.setBackground(Color.DISCORD_GREY);
+            this.setBackground(AppColor.DISCORD_GREY);
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
             this.contentPanel = new JPanel();
-            this.contentPanel.setBackground(Color.DISCORD_GREY);
+            this.contentPanel.setOpaque(false);
             this.contentPanel.setLayout(new BoxLayout(this.contentPanel, BoxLayout.Y_AXIS));
 
             this.add(Box.createHorizontalGlue());
@@ -150,19 +151,13 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        if (this.getWidth() < 1400 || this.getHeight() < 650) {
-            this.blueDragon.setVisible(false);
-            this.redDragon.setVisible(false);
-        } else {
-            this.blueDragon.setVisible(true);
-            this.redDragon.setVisible(true);
-        }
-
-        if (this.getHeight() < 650) {
-            this.logoZen.setVisible(false);
-        } else {
-            this.logoZen.setVisible(true);
-        }
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        Point2D center = new Point2D.Float(this.contentPanel.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2f, this.contentPanel.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2f);
+        float radius = Math.min(this.getWidth(), this.getHeight()) * 0.7f;
+        float[] dist = {0f, 1f};
+        Color[] colors = {AppColor.CUSTOM_LIGHT_GREY, AppColor.DISCORD_GREY};
+        graphics2D.setPaint(new RadialGradientPaint(center, radius, dist, colors));
+        graphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 
     @Override

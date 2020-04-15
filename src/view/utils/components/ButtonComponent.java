@@ -8,10 +8,25 @@ import java.awt.*;
 public class ButtonComponent extends JButton {
     public ButtonComponent(String string) {
         super(string);
-        this.setPreferredSize(new Dimension(350, 50));
-        this.setMinimumSize(new Dimension(350, 50));
-        this.setMaximumSize(new Dimension(350, 50));
         this.setAlignmentX(JButton.CENTER_ALIGNMENT);
-        this.setFont(AppText.getCustomFont());
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+
+        int frameWidth = this.getParent().getParent().getWidth();
+        int frameHeight = this.getParent().getParent().getHeight();
+
+        this.setFont(AppText.getCustomFont().deriveFont(Math.min(frameWidth * 0.6f, frameHeight) / 30f));
+
+        int buttonHeight = frameHeight / 13;
+        int buttonWidth = (int) (frameWidth / 3.8);
+
+        Dimension buttonDimension = new Dimension(buttonWidth, buttonHeight);
+
+        this.setPreferredSize(buttonDimension);
+        this.setMinimumSize(buttonDimension);
+        this.setMaximumSize(buttonDimension);
     }
 }

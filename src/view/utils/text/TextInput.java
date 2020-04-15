@@ -39,7 +39,11 @@ public class TextInput {
             } catch (InputMismatchException ignored) {
                 System.out.println(preInformation + getTextFor("global.utils.input.error.type.number"));
             } finally {
-                TextInput.sc.nextLine();
+                System.out.println("finally");
+                try {
+                    TextInput.sc.nextLine();
+                } catch (IndexOutOfBoundsException ignored) {
+                }
             }
         } while (answerNumber != 0 && (input < 1 || input > answerNumber));
 

@@ -1,12 +1,14 @@
 package view.utils.components;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
- * A generic component to show images (in a label or a button)
+ * A generic component to show images
  */
-public class ImageComponent {
+public class ImageComponent extends JPanel {
     /**
      * The prefix of the path for the image. It directly goes into the images directory
      */
@@ -14,11 +16,7 @@ public class ImageComponent {
     /**
      * The image of the component
      */
-    private final ImageIcon miniature;
-    /**
-     * The size of the component
-     */
-    private int size;
+    protected final Image image;
 
     /**
      * ImageComponent constructor with custom width and height
@@ -28,21 +26,25 @@ public class ImageComponent {
      * @param height height of the image
      */
     public ImageComponent(String name, int width, int height) {
-        name = ImageComponent.pathPrefix + name;
-        ImageIcon icon = new ImageIcon(ImageComponent.class.getResource(name));
-        Image image = icon.getImage();
-        this.miniature = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_SMOOTH));
-        this.size = Math.max(width, height);
+        this(name);
+        this.setCustomSize(width, height);
     }
 
     /**
-     * ImageComponent constructor in default size
+     * ImageComponent constructor with custom size (keep ratio component)
      *
-     * @param name name of the image
+     * @param name      name of the image
+     * @param size      size of the image
+     * @param keepRatio keep the ratio of the image or not
      */
-    public ImageComponent(String name) {
-        name = ImageComponent.pathPrefix + name;
-        this.miniature = new ImageIcon(ImageComponent.class.getResource(name));
+    public ImageComponent(String name, int size, boolean keepRatio) {
+        this(name);
+        if (keepRatio) {
+            double ratio = ((double) this.image.getHeight(this)) / ((double) this.image.getWidth(this));
+            this.setCustomSize(size, (int) (size * ratio));
+        } else {
+            this.setCustomSize(size, size);
+        }
     }
 
     /**
@@ -52,37 +54,42 @@ public class ImageComponent {
      * @param size size of the image
      */
     public ImageComponent(String name, int size) {
-        this(name, size, size);
+        this(name, size, true);
     }
 
     /**
-     * Get the imageComponent as a button
+     * ImageComponent constructor with original size
      *
-     * @return the button containing the image
+     * @param name name of the image
      */
-    public JButton getAsButton() {
-        JButton button = new JButton();
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false);
-        button.setIcon(this.miniature);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setSize(this.size, this.size);
-        button.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+    public ImageComponent(String name) {
+        Image image;
+        try {
+            image = ImageIO.read(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
 
-        return button;
+            this.setCustomSize(image.getWidth(this), image.getHeight(this));
+        } catch (IOException e) {
+            image = null;
+            e.printStackTrace();
+        }
+        this.image = image;
+
+        this.setOpaque(false);
     }
 
-    /**
-     * Get the imageComponent as a label
-     *
-     * @return the label containing the image
-     */
-    public JLabel getAsLabel() {
-        JLabel label = new JLabel();
-        label.setIcon(this.miniature);
-        label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+        graphics.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
+    }
 
-        return label;
+    protected void setCustomSize(int width, int height) {
+        this.setCustomSize(new Dimension(width, height));
+    }
+
+    protected void setCustomSize(Dimension dimension) {
+        this.setMinimumSize(dimension);
+        this.setPreferredSize(this.getMinimumSize());
+        this.setMaximumSize(this.getMinimumSize());
     }
 }
