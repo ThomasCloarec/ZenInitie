@@ -13,9 +13,9 @@ import java.awt.geom.Point2D;
 import static view.utils.text.AppText.getTextFor;
 
 public class Graphical2DMenuView extends JPanel implements MenuView {
-    private final JPanel blueDragon = new ScaledImageComponent("blue_dragon.png", 0.25, 0.7, this);
     private final JPanel logoZen = new ScaledImageComponent("logo_zen.png", 0.3, this);
-    private final JPanel redDragon = new ScaledImageComponent("red_dragon.png", this.blueDragon, false);
+    private final JPanel redDragon = new ScaledImageComponent("red_dragon.png", 0.25, 0.7, this);
+    private final JPanel blueDragon = new ScaledImageComponent("blue_dragon.png", this.redDragon, false);
     private JPanel contentPanel;
     private MenuController menuController;
 
@@ -152,12 +152,24 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
         super.paintComponent(graphics);
 
         Graphics2D graphics2D = (Graphics2D) graphics;
-        Point2D center = new Point2D.Float(this.contentPanel.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2f, this.contentPanel.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2f);
-        float radius = Math.min(this.getWidth(), this.getHeight()) * 0.7f;
+
         float[] dist = {0f, 1f};
+        Point2D center = new Point2D.Float(this.contentPanel.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2f, this.contentPanel.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2f);
+        float radius = this.getWidth() / 6f;
         Color[] colors = {AppColor.CUSTOM_LIGHT_GREY, AppColor.DISCORD_GREY};
         graphics2D.setPaint(new RadialGradientPaint(center, radius, dist, colors));
-        graphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
+        graphics2D.fillOval((int) (center.getX() - radius), (int) (center.getY() - radius), (int) radius * 2, (int) radius * 2);
+
+        radius = (float) Math.hypot(center.getX(), this.getHeight() / 2f - center.getY()) - radius;
+        center = new Point2D.Float(0, this.getHeight() / 2f);
+        colors = new Color[]{AppColor.CUSTOM_BLUE, AppColor.DISCORD_GREY};
+        graphics2D.setPaint(new RadialGradientPaint(center, radius, dist, colors));
+        graphics2D.fillOval((int) (center.getX() - radius), (int) (center.getY() - radius), (int) radius * 2, (int) radius * 2);
+
+        center = new Point2D.Float(this.getWidth(), this.getHeight() / 2f);
+        colors = new Color[]{AppColor.CUSTOM_RED, AppColor.DISCORD_GREY};
+        graphics2D.setPaint(new RadialGradientPaint(center, radius, dist, colors));
+        graphics2D.fillOval((int) (center.getX() - radius), (int) (center.getY() - radius), (int) radius * 2, (int) radius * 2);
     }
 
     @Override
