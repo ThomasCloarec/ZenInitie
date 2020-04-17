@@ -1,11 +1,12 @@
 package view.utils;
 
-public class AppColor extends java.awt.Color {
-    public static final java.awt.Color CUSTOM_BLUE = new java.awt.Color(0, 0, 170);
-    public static final java.awt.Color DISCORD_DARK_GREY = new java.awt.Color(35, 39, 42);
-    public static final java.awt.Color DISCORD_GREY = new java.awt.Color(45, 45, 45);
-    public static final java.awt.Color CUSTOM_LIGHT_GREY = new java.awt.Color(85, 85, 85);
-    public static final java.awt.Color CUSTOM_RED = new java.awt.Color(230, 0, 0);
+import java.awt.*;
+
+public class AppColor extends Color {
+    public static final Color CUSTOM_BLUE = new Color(23, 23, 220);
+    public static final Color CUSTOM_GREY = new Color(46, 46, 46);
+    public static final Color CUSTOM_LIGHT_GREY = new Color(76, 76, 76);
+    public static final Color CUSTOM_RED = new Color(250, 23, 23);
 
     public AppColor(int red, int green, int blue) {
         super(red, green, blue);

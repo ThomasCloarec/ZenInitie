@@ -39,7 +39,6 @@ public class TextInput {
             } catch (InputMismatchException ignored) {
                 System.out.println(preInformation + getTextFor("global.utils.input.error.type.number"));
             } finally {
-                System.out.println("finally");
                 try {
                     TextInput.sc.nextLine();
                 } catch (IndexOutOfBoundsException ignored) {

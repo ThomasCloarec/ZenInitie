@@ -62,12 +62,14 @@ public class ImageComponent extends JPanel {
      *
      * @param name name of the image
      */
-    public ImageComponent(String name) {
+    public ImageComponent(String name, boolean originalSize) {
         Image image;
         try {
             image = ImageIO.read(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
 
-            this.setCustomSize(image.getWidth(this), image.getHeight(this));
+            if (originalSize) {
+                this.setCustomSize(image.getWidth(this), image.getHeight(this));
+            }
         } catch (IOException e) {
             image = null;
             e.printStackTrace();
@@ -75,6 +77,10 @@ public class ImageComponent extends JPanel {
         this.image = image;
 
         this.setOpaque(false);
+    }
+
+    protected ImageComponent(String name) {
+        this(name, false);
     }
 
     @Override

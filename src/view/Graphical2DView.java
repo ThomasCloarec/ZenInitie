@@ -29,7 +29,8 @@ public class Graphical2DView extends JFrame implements View {
             }
 
             this.setTitle(AppText.getTextFor("global.frame.title"));
-            this.setSize(1400, 700);
+            this.setSize(1200, 600);
+            this.setMinimumSize(new Dimension(600, 300));
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setVisible(true);
