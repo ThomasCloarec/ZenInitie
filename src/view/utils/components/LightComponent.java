@@ -27,7 +27,7 @@ public class LightComponent {
 
     public void paintLight(Graphics2D graphics2D) {
         if (this.visibleCondition.getAsBoolean()) {
-            RadialGradientPaint light = new RadialGradientPaint(this.center.get(), this.radius.get(), new float[]{0f, 1f}, new Color[]{this.color, new AppColor(0, 0, 0, 0)});
+            RadialGradientPaint light = new RadialGradientPaint(this.center.get(), this.radius.get(), new float[]{0f, 1f}, new Color[]{this.color, AppColor.TRANSPARENT});
 
             graphics2D.setPaint(light);
             graphics2D.fillOval(
