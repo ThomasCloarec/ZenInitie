@@ -12,8 +12,8 @@ public class ButtonComponent extends JButton {
     }
 
     @Override
-    public void paint(Graphics graphics) {
-        super.paint(graphics);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 
         int frameWidth = this.getParent().getParent().getWidth();
         int frameHeight = this.getParent().getParent().getHeight();

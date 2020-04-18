@@ -103,7 +103,7 @@ public class TextualMenuView implements MenuView {
     }
 
     @Override
-    public void start() {
+    public void goHomepage() {
         int input = TextInput.getMenuAnswer("menu.question1");
         switch (input) {
             case 1:

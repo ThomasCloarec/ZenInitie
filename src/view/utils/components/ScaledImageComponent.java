@@ -107,7 +107,7 @@ public class ScaledImageComponent extends ImageComponent {
     }
 
     @Override
-    public void paint(Graphics graphics) {
+    public void paintComponent(Graphics graphics) {
         int imageWidth;
         int imageHeight;
         double ratio = 1;
@@ -129,6 +129,7 @@ public class ScaledImageComponent extends ImageComponent {
         }
 
         this.setCustomSize(imageWidth, imageHeight);
-        super.paint(graphics);
+
+        super.paintComponent(graphics);
     }
 }

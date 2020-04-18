@@ -89,8 +89,9 @@ public class ImageComponent extends JPanel {
     }
 
     @Override
-    public void paint(Graphics graphics) {
-        super.paint(graphics);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+
         if (this.visibleCondition.getAsBoolean()) {
             graphics.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
         }

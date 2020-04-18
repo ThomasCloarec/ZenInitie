@@ -1,24 +1,37 @@
-package view.sub_views.menu_view.view_sections;
+package view.sub_views.menu_view.view_sections.sub_panels;
 
 import controller.menu.MenuController;
+import view.utils.AppColor;
 import view.utils.components.ButtonComponent;
+import view.utils.components.LightComponent;
+import view.utils.components.ScaledImageComponent;
 import view.utils.text.Language;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 import static view.utils.text.AppText.getTextFor;
 
-public class ContentPanel extends JPanel {
+public class ContentPanel extends SubPanel {
     private final JPanel logoZen;
     private final MenuController menuController;
 
-    public ContentPanel(MenuController menuController, JPanel logoZen) {
-        this.logoZen = logoZen;
+    public ContentPanel(MenuController menuController) {
+        this.logoZen = new ScaledImageComponent("logo_zen.png", 0.8, 0.3, this);
         this.menuController = menuController;
+
+        Supplier<Point> center = () -> new Point(
+                this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
+                this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2);
+        Supplier<Float> radius = () -> this.getWidth() * 1.5f;
+        this.lights.add(new LightComponent(center, radius, AppColor.CUSTOM_LIGHT_GREY));
+
         this.setOpaque(false);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.goHomepage();
     }
 
     public void changeLanguage() {
@@ -96,7 +109,7 @@ public class ContentPanel extends JPanel {
         this.updateButtons(buttons);
     }
 
-    public void start() {
+    public void goHomepage() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
         JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"));
@@ -132,12 +145,5 @@ public class ContentPanel extends JPanel {
         }
 
         this.add(Box.createVerticalGlue());
-    }
-
-    public Point getLogoZenCenter() {
-        return new Point(
-                this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
-                this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2
-        );
     }
 }

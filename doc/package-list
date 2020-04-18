@@ -8,7 +8,7 @@ model.utils
 view
 view.sub_views.game_view
 view.sub_views.menu_view
-view.sub_views.menu_view.view_sections
+view.sub_views.menu_view.view_sections.sub_panels
 view.utils
 view.utils.components
 view.utils.text

@@ -17,13 +17,13 @@ public interface MenuView {
 
     void playOnline();
 
-    void start();
+    void goHomepage();
 
     default void updatePage(Menu menu) {
         Menu.Page actualPage = menu.getActualPage();
         switch (actualPage) {
             case ROOT:
-                this.start();
+                this.goHomepage();
                 break;
             case PLAY_ONLINE:
                 this.playOnline();
