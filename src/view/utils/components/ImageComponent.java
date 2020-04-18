@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.function.BooleanSupplier;
 
 /**
  * A generic component to show images
@@ -17,6 +18,10 @@ public class ImageComponent extends JPanel {
      * The image of the component
      */
     protected final Image image;
+    /**
+     * The condition that returns if the image has to be visible or not
+     */
+    protected BooleanSupplier visibleCondition = () -> true;
 
     /**
      * ImageComponent constructor with custom width and height
@@ -86,7 +91,9 @@ public class ImageComponent extends JPanel {
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        graphics.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
+        if (this.visibleCondition.getAsBoolean()) {
+            graphics.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
     }
 
     protected void setCustomSize(int width, int height) {
@@ -97,5 +104,9 @@ public class ImageComponent extends JPanel {
         this.setMinimumSize(dimension);
         this.setPreferredSize(this.getMinimumSize());
         this.setMaximumSize(this.getMinimumSize());
+    }
+
+    public void setVisibleCondition(BooleanSupplier visibleCondition) {
+        this.visibleCondition = visibleCondition;
     }
 }

@@ -6,8 +6,8 @@ public class ScaledImageComponent extends ImageComponent {
     private final boolean keepRatio;
     private final boolean minimumScaling;
     private final Component referenceComponent;
-    private double heightScalar;
-    private double widthScalar;
+    private final double heightScalar;
+    private final double widthScalar;
 
     /**
      * ScaledImageConstructor scaled by width and height relative to referenceComponent.
@@ -130,13 +130,5 @@ public class ScaledImageComponent extends ImageComponent {
 
         this.setCustomSize(imageWidth, imageHeight);
         super.paint(graphics);
-    }
-
-    public void setHeightScalar(double heightScalar) {
-        this.heightScalar = heightScalar;
-    }
-
-    public void setWidthScalar(double widthScalar) {
-        this.widthScalar = widthScalar;
     }
 }
