@@ -17,9 +17,6 @@ public class LeftPanel extends SubPanel {
         blueLight.setVisibleCondition(this.horizontalMode);
         this.lights.add(blueLight);
 
-        this.setOpaque(false);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         this.add(Box.createVerticalGlue());
         ImageComponent blueDragon = new ScaledImageComponent("blue_dragon.png", 0.75, 0.75, this);
         blueDragon.setVisibleCondition(this.horizontalMode);

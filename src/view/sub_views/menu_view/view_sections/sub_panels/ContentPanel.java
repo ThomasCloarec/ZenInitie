@@ -28,9 +28,6 @@ public class ContentPanel extends SubPanel {
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;
         this.lights.add(new LightComponent(center, radius, AppColor.CUSTOM_LIGHT_GREY));
 
-        this.setOpaque(false);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         this.goHomepage();
     }
 

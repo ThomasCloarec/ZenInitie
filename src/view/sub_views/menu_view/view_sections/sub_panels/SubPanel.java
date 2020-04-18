@@ -11,6 +11,11 @@ public abstract class SubPanel extends JPanel {
     protected final ArrayList<LightComponent> lights = new ArrayList<>();
     protected BooleanSupplier horizontalMode = () -> true;
 
+    public SubPanel() {
+        this.setOpaque(false);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    }
+
     public void paintLights(Graphics2D graphics2D) {
         for (LightComponent light : this.lights) {
             light.paintLight(graphics2D);

@@ -17,9 +17,6 @@ public class RightPanel extends SubPanel {
         redLight.setVisibleCondition(this.horizontalMode);
         this.lights.add(redLight);
 
-        this.setOpaque(false);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         this.add(Box.createVerticalGlue());
         ImageComponent redDragon = new ScaledImageComponent("red_dragon.png", 0.75, 0.75, this);
         redDragon.setVisibleCondition(this.horizontalMode);
