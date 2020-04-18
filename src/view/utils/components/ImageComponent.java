@@ -103,8 +103,9 @@ public class ImageComponent extends JPanel {
 
     protected void setCustomSize(Dimension dimension) {
         this.setMinimumSize(dimension);
-        this.setPreferredSize(this.getMinimumSize());
-        this.setMaximumSize(this.getMinimumSize());
+        this.setPreferredSize(dimension);
+        this.setMaximumSize(dimension);
+        this.setSize(dimension);
     }
 
     public void setVisibleCondition(BooleanSupplier visibleCondition) {

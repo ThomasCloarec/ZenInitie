@@ -15,7 +15,6 @@ public abstract class SubPanel extends JPanel {
         for (LightComponent light : this.lights) {
             light.paintLight(graphics2D);
         }
-        this.revalidate();
     }
 
     public void setHorizontalMode(BooleanSupplier horizontalMode) {
