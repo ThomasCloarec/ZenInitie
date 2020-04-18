@@ -91,9 +91,9 @@ public class ImageComponent extends JPanel {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        Graphics2D graphics2D = (Graphics2D) graphics;
+
         if (this.visibleCondition.getAsBoolean()) {
-            graphics2D.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
+            graphics.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }
 

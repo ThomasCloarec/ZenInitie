@@ -10,17 +10,18 @@ import view.utils.text.Language;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import static view.utils.text.AppText.getTextFor;
 
 public class ContentPanel extends SubPanel {
     private final JPanel logoZen;
-    private final MenuController menuController;
 
-    public ContentPanel(MenuController menuController) {
+    public ContentPanel(MenuController menuController, BooleanSupplier horizontalMode) {
+        super(menuController, horizontalMode);
+
         this.logoZen = new ScaledImageComponent("logo_zen.png", 0.8, 0.3, this);
-        this.menuController = menuController;
 
         Supplier<Point> center = () -> new Point(
                 this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
@@ -64,6 +65,27 @@ public class ContentPanel extends SubPanel {
         this.updateButtons(buttons);
     }
 
+    public void goHomepage() {
+        ArrayList<JButton> buttons = new ArrayList<>();
+
+        JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"));
+        JButton button2 = new ButtonComponent(getTextFor("menu.question1.answer2"));
+        JButton button3 = new ButtonComponent(getTextFor("menu.question1.answer3"));
+        JButton button4 = new ButtonComponent(getTextFor("menu.question1.answer4"));
+
+        button1.addActionListener(actionEvent -> this.menuController.playOnline());
+        button2.addActionListener(actionEvent -> this.menuController.playOffline());
+        button3.addActionListener(actionEvent -> this.menuController.changeSettings());
+        button4.addActionListener(actionEvent -> this.menuController.exit());
+
+        buttons.add(button1);
+        buttons.add(button2);
+        buttons.add(button3);
+        buttons.add(button4);
+
+        this.updateButtons(buttons);
+    }
+
     public void newGame() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
@@ -102,27 +124,6 @@ public class ContentPanel extends SubPanel {
         buttons.add(button1);
         buttons.add(button2);
         buttons.add(button3);
-
-        this.updateButtons(buttons);
-    }
-
-    public void goHomepage() {
-        ArrayList<JButton> buttons = new ArrayList<>();
-
-        JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"));
-        JButton button2 = new ButtonComponent(getTextFor("menu.question1.answer2"));
-        JButton button3 = new ButtonComponent(getTextFor("menu.question1.answer3"));
-        JButton button4 = new ButtonComponent(getTextFor("menu.question1.answer4"));
-
-        button1.addActionListener(actionEvent -> this.menuController.playOnline());
-        button2.addActionListener(actionEvent -> this.menuController.playOffline());
-        button3.addActionListener(actionEvent -> this.menuController.changeSettings());
-        button4.addActionListener(actionEvent -> this.menuController.exit());
-
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-        buttons.add(button4);
 
         this.updateButtons(buttons);
     }

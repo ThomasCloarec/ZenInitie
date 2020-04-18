@@ -22,14 +22,9 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
         SwingUtilities.invokeLater(() -> {
             BooleanSupplier isHorizontalMode = () -> this.getWidth() > this.getHeight();
 
-            this.rightPanel = new RightPanel();
-            this.rightPanel.setHorizontalMode(isHorizontalMode);
-
-            this.contentPanel = new ContentPanel(this.menuController);
-            this.contentPanel.setHorizontalMode(isHorizontalMode);
-
-            this.leftPanel = new LeftPanel();
-            this.leftPanel.setHorizontalMode(isHorizontalMode);
+            this.rightPanel = new RightPanel(this.menuController, isHorizontalMode);
+            this.contentPanel = new ContentPanel(this.menuController, isHorizontalMode);
+            this.leftPanel = new LeftPanel(this.menuController, isHorizontalMode);
 
             this.setBackground(AppColor.CUSTOM_GREY);
             this.setLayout(new GridLayout(1, 3));
@@ -50,6 +45,12 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.revalidate();
             this.repaint();
         });
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+        System.out.println("WI");
     }
 
     @Override
