@@ -1,4 +1,6 @@
-package view.utils.components;
+package view.sub_views;
+
+import view.utils.components.LightComponent;
 
 import javax.swing.*;
 import java.awt.*;

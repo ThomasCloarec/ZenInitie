@@ -12,9 +12,13 @@ import view.utils.text.AppText;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class Graphical2DView extends JFrame implements View {
+    private boolean fullscreenModeActivated;
+
     public Graphical2DView() {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -35,8 +39,37 @@ public class Graphical2DView extends JFrame implements View {
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setBackground(AppColor.CUSTOM_GREY);
+            this.setFocusable(true);
             this.setVisible(true);
+
+            this.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    super.keyPressed(keyEvent);
+                    if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE && Graphical2DView.this.fullscreenModeActivated) {
+                        Graphical2DView.this.toggleFullScreen();
+                    }
+                }
+            });
         });
+    }
+
+    public void toggleFullScreen() {
+        this.fullscreenModeActivated = !this.fullscreenModeActivated;
+        this.dispose();
+
+        this.setUndecorated(this.fullscreenModeActivated);
+
+        if (this.fullscreenModeActivated) {
+            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.setResizable(false);
+        } else {
+            this.setExtendedState(JFrame.NORMAL);
+            this.setSize(1200, 600);
+            this.setLocationRelativeTo(null);
+        }
+
+        this.setVisible(true);
     }
 
     @Override

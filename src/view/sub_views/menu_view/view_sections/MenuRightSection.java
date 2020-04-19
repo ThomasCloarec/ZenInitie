@@ -1,11 +1,11 @@
 package view.sub_views.menu_view.view_sections;
 
 import controller.menu.MenuController;
+import view.sub_views.Section;
 import view.utils.AppColor;
 import view.utils.components.ImageComponent;
 import view.utils.components.LightComponent;
 import view.utils.components.ScaledImageComponent;
-import view.utils.components.Section;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,16 +1,18 @@
 package view.sub_views.menu_view.view_sections;
 
 import controller.menu.MenuController;
+import view.Graphical2DView;
+import view.sub_views.Section;
 import view.utils.AppColor;
 import view.utils.components.ButtonComponent;
 import view.utils.components.LightComponent;
 import view.utils.components.ScaledImageComponent;
-import view.utils.components.Section;
 import view.utils.text.Language;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -44,7 +46,6 @@ public class MenuContentSection extends Section<MenuController> {
 
         button1.addActionListener(actionEvent -> this.controller.setLanguage(Language.ENGLISH));
         button2.addActionListener(actionEvent -> this.controller.setLanguage(Language.FRENCH));
-        button3.addActionListener(actionEvent -> this.controller.backPreviousPage());
 
         buttons.add(button1);
         buttons.add(button2);
@@ -58,12 +59,24 @@ public class MenuContentSection extends Section<MenuController> {
 
         JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(getTextFor("global.fullscreen"), this, this.horizontalMode);
+        JButton button4 = new ButtonComponent(getTextFor("menu.settings.question1.answer3"), this, this.horizontalMode);
+        JButton button5 = new ButtonComponent(getTextFor("menu.settings.question1.answer4"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.controller.changeLanguage());
-        button2.addActionListener(actionEvent -> this.controller.backPreviousPage());
+        button3.addActionListener(actionEvent -> {
+            ((Graphical2DView) SwingUtilities.getWindowAncestor(this)).toggleFullScreen();
+            // Hide button and it's glue
+            button3.setVisible(false);
+            this.getComponent(Arrays.asList(this.getComponents()).indexOf(button3) + 1).setVisible(false);
+            JOptionPane.showMessageDialog(this, getTextFor("global.fullscreen.activated"));
+        });
 
         buttons.add(button1);
         buttons.add(button2);
+        buttons.add(button3);
+        buttons.add(button4);
+        buttons.add(button5);
 
         this.updateButtons(buttons);
     }
@@ -79,7 +92,6 @@ public class MenuContentSection extends Section<MenuController> {
         button1.addActionListener(actionEvent -> this.controller.playOnline());
         button2.addActionListener(actionEvent -> this.controller.playOffline());
         button3.addActionListener(actionEvent -> this.controller.changeSettings());
-        button4.addActionListener(actionEvent -> this.controller.exit());
 
         buttons.add(button1);
         buttons.add(button2);
@@ -102,7 +114,6 @@ public class MenuContentSection extends Section<MenuController> {
         button2.addActionListener(actionEvent -> this.controller.playOneVsAI());
         button3.addActionListener(actionEvent -> this.controller.playTwoVsTwo());
         button4.addActionListener(actionEvent -> this.controller.playTwoVSAI());
-        button5.addActionListener(actionEvent -> this.controller.backPreviousPage());
 
         buttons.add(button1);
         buttons.add(button2);
@@ -122,7 +133,6 @@ public class MenuContentSection extends Section<MenuController> {
 
         button1.addActionListener(actionEvent -> this.controller.newGame());
         button2.addActionListener(actionEvent -> this.controller.loadGame());
-        button3.addActionListener(actionEvent -> this.controller.backPreviousPage());
 
         buttons.add(button1);
         buttons.add(button2);
@@ -142,5 +152,7 @@ public class MenuContentSection extends Section<MenuController> {
             this.add(button);
             this.add(Box.createVerticalGlue());
         }
+
+        buttonList.get(buttonList.size() - 1).addActionListener(actionEvent -> this.controller.backPreviousPage());
     }
 }

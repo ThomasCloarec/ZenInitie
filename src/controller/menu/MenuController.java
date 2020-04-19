@@ -27,10 +27,6 @@ public class MenuController {
         this.menu.addActualPage(Menu.Page.CHANGE_SETTINGS);
     }
 
-    public void exit() {
-        this.menu.exit();
-    }
-
     public void loadGame() {
         this.menu.addActualPage(Menu.Page.LOAD_GAME);
     }

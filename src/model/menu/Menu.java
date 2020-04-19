@@ -20,11 +20,12 @@ public class Menu extends MenuObservable {
 
     public void backPreviousPage() {
         this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
-        this.notifyUpdatePage(this);
-    }
 
-    public void exit() {
-        this.notifyExit();
+        if (!this.pagesBreadcrumb.isEmpty()) {
+            this.notifyUpdatePage(this);
+        } else {
+            this.notifyExit();
+        }
     }
 
     public Page getActualPage() {

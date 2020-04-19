@@ -2,10 +2,10 @@ package view.sub_views.game_view;
 
 import controller.game.GameController;
 import model.game.Game;
+import view.sub_views.CustomPanel;
 import view.sub_views.game_view.view_sections.GameContentSection;
 import view.sub_views.game_view.view_sections.GameLeftSection;
 import view.sub_views.game_view.view_sections.GameRightSection;
-import view.utils.components.CustomPanel;
 
 import javax.swing.*;
 

@@ -1,7 +1,7 @@
 package view.sub_views.game_view.view_sections;
 
 import controller.game.GameController;
-import view.utils.components.Section;
+import view.sub_views.Section;
 
 import java.util.function.BooleanSupplier;
 

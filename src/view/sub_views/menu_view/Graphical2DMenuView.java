@@ -1,10 +1,10 @@
 package view.sub_views.menu_view;
 
 import controller.menu.MenuController;
+import view.sub_views.CustomPanel;
 import view.sub_views.menu_view.view_sections.MenuContentSection;
 import view.sub_views.menu_view.view_sections.MenuLeftSection;
 import view.sub_views.menu_view.view_sections.MenuRightSection;
-import view.utils.components.CustomPanel;
 
 import javax.swing.*;
 

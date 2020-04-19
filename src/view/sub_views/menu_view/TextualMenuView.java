@@ -116,7 +116,7 @@ public class TextualMenuView implements MenuView {
                 this.menuController.changeSettings();
                 break;
             case 4:
-                this.menuController.exit();
+                this.menuController.backPreviousPage();
                 break;
         }
     }
