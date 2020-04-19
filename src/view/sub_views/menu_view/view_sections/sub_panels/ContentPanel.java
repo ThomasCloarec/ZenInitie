@@ -21,13 +21,15 @@ public class ContentPanel extends SubPanel {
     public ContentPanel(MenuController menuController, BooleanSupplier horizontalMode) {
         super(menuController, horizontalMode);
 
-        this.logoZen = new ScaledImageComponent("logo_zen.png", 0.8, 0.3, this);
+        this.logoZen = new ScaledImageComponent("logo_zen.png", 0.9, 0.3, this);
 
         Supplier<Point> center = () -> new Point(
                 this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
                 this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2);
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;
-        this.lights.add(new LightComponent(center, radius, AppColor.CUSTOM_LIGHT_GREY));
+        LightComponent logoLight = new LightComponent(center, radius, AppColor.CUSTOM_LIGHT_GREY);
+        logoLight.setVisibleCondition(horizontalMode);
+        this.lights.add(logoLight);
 
         this.goHomepage();
     }
@@ -35,9 +37,9 @@ public class ContentPanel extends SubPanel {
     public void changeLanguage() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
-        JButton button1 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer1"));
-        JButton button2 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer2"));
-        JButton button3 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer3"));
+        JButton button1 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer1"), this, this.horizontalMode);
+        JButton button2 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer2"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(getTextFor("menu.settings.language.question1.answer3"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.menuController.setLanguage(Language.ENGLISH));
         button2.addActionListener(actionEvent -> this.menuController.setLanguage(Language.FRENCH));
@@ -53,8 +55,8 @@ public class ContentPanel extends SubPanel {
     public void changeSettings() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
-        JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"));
-        JButton button2 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"));
+        JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"), this, this.horizontalMode);
+        JButton button2 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.menuController.changeLanguage());
         button2.addActionListener(actionEvent -> this.menuController.backPreviousPage());
@@ -68,10 +70,10 @@ public class ContentPanel extends SubPanel {
     public void goHomepage() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
-        JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"));
-        JButton button2 = new ButtonComponent(getTextFor("menu.question1.answer2"));
-        JButton button3 = new ButtonComponent(getTextFor("menu.question1.answer3"));
-        JButton button4 = new ButtonComponent(getTextFor("menu.question1.answer4"));
+        JButton button1 = new ButtonComponent(getTextFor("menu.question1.answer1"), this, this.horizontalMode);
+        JButton button2 = new ButtonComponent(getTextFor("menu.question1.answer2"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(getTextFor("menu.question1.answer3"), this, this.horizontalMode);
+        JButton button4 = new ButtonComponent(getTextFor("menu.question1.answer4"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.menuController.playOnline());
         button2.addActionListener(actionEvent -> this.menuController.playOffline());
@@ -89,11 +91,11 @@ public class ContentPanel extends SubPanel {
     public void newGame() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
-        JButton button1 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer1"));
-        JButton button2 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer2"));
-        JButton button3 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer3"));
-        JButton button4 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer4"));
-        JButton button5 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer5"));
+        JButton button1 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer1"), this, this.horizontalMode);
+        JButton button2 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer2"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer3"), this, this.horizontalMode);
+        JButton button4 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer4"), this, this.horizontalMode);
+        JButton button5 = new ButtonComponent(getTextFor("menu.offline.newGame.question1.answer5"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.menuController.playOneVsOne());
         button2.addActionListener(actionEvent -> this.menuController.playOneVsAI());
@@ -113,9 +115,9 @@ public class ContentPanel extends SubPanel {
     public void playOffline() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
-        JButton button1 = new ButtonComponent(getTextFor("menu.offline.question1.answer1"));
-        JButton button2 = new ButtonComponent(getTextFor("menu.offline.question1.answer2"));
-        JButton button3 = new ButtonComponent(getTextFor("menu.offline.question1.answer3"));
+        JButton button1 = new ButtonComponent(getTextFor("menu.offline.question1.answer1"), this, this.horizontalMode);
+        JButton button2 = new ButtonComponent(getTextFor("menu.offline.question1.answer2"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(getTextFor("menu.offline.question1.answer3"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.menuController.newGame());
         button2.addActionListener(actionEvent -> this.menuController.loadGame());
@@ -134,14 +136,10 @@ public class ContentPanel extends SubPanel {
         this.add(Box.createVerticalGlue());
         this.add(this.logoZen);
         this.add(Box.createVerticalGlue());
-
+        this.add(Box.createVerticalGlue());
         for (JButton button : buttonList) {
             this.add(button);
-            if (buttonList.indexOf(button) != buttonList.size() - 1) {
-                this.add(Box.createRigidArea(new Dimension(0, 25)));
-            }
+            this.add(Box.createVerticalGlue());
         }
-
-        this.add(Box.createVerticalGlue());
     }
 }

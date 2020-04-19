@@ -1,13 +1,24 @@
 package view.utils.components;
 
 import java.awt.*;
+import java.util.function.Supplier;
 
 public class ScaledImageComponent extends ImageComponent {
+    private final Supplier<Double> heightScalar;
     private final boolean keepRatio;
     private final boolean minimumScaling;
     private final Component referenceComponent;
-    private final double heightScalar;
-    private final double widthScalar;
+    private final Supplier<Double> widthScalar;
+
+    public ScaledImageComponent(String name, Supplier<Double> widthScalar, Supplier<Double> heightScalar, Component referenceComponent, boolean keepRatio) {
+        super(name);
+
+        this.referenceComponent = referenceComponent;
+        this.widthScalar = widthScalar;
+        this.heightScalar = heightScalar;
+        this.keepRatio = keepRatio;
+        this.minimumScaling = true;
+    }
 
     /**
      * ScaledImageConstructor scaled by width and height relative to referenceComponent.
@@ -24,13 +35,11 @@ public class ScaledImageComponent extends ImageComponent {
      * @param keepRatio          keep the ratio of the image or not
      */
     public ScaledImageComponent(String name, double widthScalar, double heightScalar, Component referenceComponent, boolean keepRatio) {
-        super(name);
+        this(name, () -> widthScalar, () -> heightScalar, referenceComponent, keepRatio);
+    }
 
-        this.referenceComponent = referenceComponent;
-        this.widthScalar = widthScalar;
-        this.heightScalar = heightScalar;
-        this.keepRatio = keepRatio;
-        this.minimumScaling = true;
+    public ScaledImageComponent(String name, Supplier<Double> widthScalar, Supplier<Double> heightScalar, Component referenceComponent) {
+        this(name, widthScalar, heightScalar, referenceComponent, true);
     }
 
     /**
@@ -50,6 +59,10 @@ public class ScaledImageComponent extends ImageComponent {
         this(name, widthScalar, heightScalar, referenceComponent, true);
     }
 
+    public ScaledImageComponent(String name, Supplier<Double> sizeScalar, Component referenceComponent, boolean keepRatio) {
+        this(name, sizeScalar, sizeScalar, referenceComponent, keepRatio);
+    }
+
     /**
      * ScaledImageConstructor scaled by size relative to referenceComponent (keep ratio component)
      *
@@ -59,13 +72,11 @@ public class ScaledImageComponent extends ImageComponent {
      * @param keepRatio          keep the ratio of the image or not
      */
     public ScaledImageComponent(String name, double sizeScalar, Component referenceComponent, boolean keepRatio) {
-        super(name);
+        this(name, sizeScalar, sizeScalar, referenceComponent, keepRatio);
+    }
 
-        this.referenceComponent = referenceComponent;
-        this.widthScalar = sizeScalar;
-        this.heightScalar = sizeScalar;
-        this.keepRatio = keepRatio;
-        this.minimumScaling = true;
+    public ScaledImageComponent(String name, Supplier<Double> sizeScalar, Component referenceComponent) {
+        this(name, sizeScalar, referenceComponent, true);
     }
 
     /**
@@ -90,8 +101,8 @@ public class ScaledImageComponent extends ImageComponent {
         super(name);
 
         this.referenceComponent = referenceComponent;
-        this.widthScalar = 1;
-        this.heightScalar = 1;
+        this.widthScalar = () -> 1d;
+        this.heightScalar = () -> 1d;
         this.keepRatio = keepRatio;
         this.minimumScaling = false;
     }
@@ -117,15 +128,15 @@ public class ScaledImageComponent extends ImageComponent {
 
         if (this.minimumScaling) {
             if (this.keepRatio) {
-                imageWidth = Math.min((int) (this.widthScalar * this.referenceComponent.getWidth()), (int) (this.heightScalar * this.referenceComponent.getHeight()));
-                imageHeight = Math.min((int) (this.widthScalar * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar * this.referenceComponent.getHeight()));
+                imageWidth = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth()), (int) (this.heightScalar.get() * this.referenceComponent.getHeight()));
+                imageHeight = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar.get() * this.referenceComponent.getHeight()));
             } else {
-                imageWidth = Math.min((int) (this.widthScalar * this.referenceComponent.getWidth()), (int) (this.widthScalar * this.referenceComponent.getHeight()));
-                imageHeight = Math.min((int) (this.heightScalar * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar * this.referenceComponent.getHeight() * ratio));
+                imageWidth = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth()), (int) (this.widthScalar.get() * this.referenceComponent.getHeight()));
+                imageHeight = Math.min((int) (this.heightScalar.get() * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar.get() * this.referenceComponent.getHeight() * ratio));
             }
         } else {
-            imageWidth = (int) (this.widthScalar * this.referenceComponent.getWidth());
-            imageHeight = (int) (this.heightScalar * this.referenceComponent.getHeight());
+            imageWidth = (int) (this.widthScalar.get() * this.referenceComponent.getWidth());
+            imageHeight = (int) (this.heightScalar.get() * this.referenceComponent.getHeight());
         }
 
         this.setCustomSize(imageWidth, imageHeight);
