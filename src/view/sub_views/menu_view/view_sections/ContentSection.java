@@ -1,4 +1,4 @@
-package view.sub_views.menu_view.view_sections.sub_panels;
+package view.sub_views.menu_view.view_sections;
 
 import controller.menu.MenuController;
 import view.utils.AppColor;
@@ -15,10 +15,10 @@ import java.util.function.Supplier;
 
 import static view.utils.text.AppText.getTextFor;
 
-public class ContentPanel extends SubPanel {
+public class ContentSection extends Section {
     private final JPanel logoZen;
 
-    public ContentPanel(MenuController menuController, BooleanSupplier horizontalMode) {
+    public ContentSection(MenuController menuController, BooleanSupplier horizontalMode) {
         super(menuController, horizontalMode);
 
         this.logoZen = new ScaledImageComponent("logo_zen.png", 0.9, 0.3, this);

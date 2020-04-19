@@ -1,4 +1,4 @@
-package view.sub_views.menu_view.view_sections.sub_panels;
+package view.sub_views.menu_view.view_sections;
 
 import controller.menu.MenuController;
 import view.utils.AppColor;
@@ -11,8 +11,8 @@ import java.awt.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class RightPanel extends SubPanel {
-    public RightPanel(MenuController menuController, BooleanSupplier horizontalMode) {
+public class RightSection extends Section {
+    public RightSection(MenuController menuController, BooleanSupplier horizontalMode) {
         super(menuController, horizontalMode);
 
         Supplier<Point> center = () -> new Point((int) (this.getWidth() * 3.2), this.getHeight() / 2);

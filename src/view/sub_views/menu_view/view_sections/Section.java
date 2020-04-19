@@ -1,4 +1,4 @@
-package view.sub_views.menu_view.view_sections.sub_panels;
+package view.sub_views.menu_view.view_sections;
 
 import controller.menu.MenuController;
 import view.utils.components.LightComponent;
@@ -8,12 +8,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 
-public abstract class SubPanel extends JPanel {
+public abstract class Section extends JPanel {
     protected final ArrayList<LightComponent> lights = new ArrayList<>();
     protected final BooleanSupplier horizontalMode;
     protected final MenuController menuController;
 
-    public SubPanel(MenuController menuController, BooleanSupplier horizontalMode) {
+    public Section(MenuController menuController, BooleanSupplier horizontalMode) {
         this.menuController = menuController;
         this.horizontalMode = horizontalMode;
 
