@@ -71,6 +71,7 @@ public class Graphical2DView extends JFrame implements View {
             this.setExtendedState(JFrame.NORMAL);
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
+            this.setResizable(true);
             this.setVisible(true);
         }
     }
