@@ -12,7 +12,6 @@ import view.utils.text.Language;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -55,19 +54,27 @@ public class MenuContentSection extends Section<MenuController> {
     }
 
     public void changeSettings() {
+        Graphical2DView frame = ((Graphical2DView) SwingUtilities.getWindowAncestor(this));
+
         ArrayList<JButton> buttons = new ArrayList<>();
 
         JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"), this, this.horizontalMode);
-        JButton button3 = new ButtonComponent(getTextFor("global.fullscreen"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(frame.isFullscreenModeActivated() ?
+                getTextFor("global.fullscreen.stop") :
+                getTextFor("global.fullscreen.start"),
+                this, this.horizontalMode);
         JButton button4 = new ButtonComponent(getTextFor("menu.settings.question1.answer3"), this, this.horizontalMode);
         JButton button5 = new ButtonComponent(getTextFor("menu.settings.question1.answer4"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.controller.changeLanguage());
         button3.addActionListener(actionEvent -> {
-            // Hide button and it's glue
-            button3.setVisible(false);
-            this.getComponent(Arrays.asList(this.getComponents()).indexOf(button3) + 1).setVisible(false);
+            if (frame.isFullscreenModeActivated()) {
+                button3.setText(getTextFor("global.fullscreen.start"));
+            } else {
+                button3.setText(getTextFor("global.fullscreen.stop"));
+            }
+
             ((Graphical2DView) SwingUtilities.getWindowAncestor(this)).toggleFullScreen();
         });
 

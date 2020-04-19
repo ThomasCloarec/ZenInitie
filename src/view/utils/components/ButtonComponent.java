@@ -11,6 +11,7 @@ import java.util.function.BooleanSupplier;
 public class ButtonComponent extends JButton {
     private final BooleanSupplier horizontalMode;
     private final JComponent referenceComponent;
+    private Font font;
 
     public ButtonComponent(String string, JComponent referenceComponent, BooleanSupplier horizontalMode) {
         super(string);
@@ -36,12 +37,18 @@ public class ButtonComponent extends JButton {
             int frameHeight = this.referenceComponent.getHeight();
 
             Dimension buttonDimension;
+            Font newFont;
             if (this.horizontalMode.getAsBoolean()) {
-                this.setFont(AppText.getCustomFont().deriveFont(Math.min(frameWidth * 0.07f, frameHeight * 0.04f)));
+                newFont = AppText.getCustomFont().deriveFont(Math.min(frameWidth * 0.07f, frameHeight * 0.04f));
                 buttonDimension = new Dimension((int) (frameWidth * 0.8f), (int) (frameHeight * 0.1f));
             } else {
-                this.setFont(AppText.getCustomFont().deriveFont(Math.min(frameWidth * 0.04f, frameHeight * 0.04f)));
+                newFont = AppText.getCustomFont().deriveFont(Math.min(frameWidth * 0.04f, frameHeight * 0.04f));
                 buttonDimension = new Dimension((int) (frameWidth * 0.6f), (int) (frameHeight * 0.1f));
+            }
+
+            if (!newFont.equals(this.font)) {
+                this.font = newFont;
+                this.setFont(this.font);
             }
 
             this.setPreferredSize(buttonDimension);

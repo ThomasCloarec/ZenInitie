@@ -66,7 +66,10 @@ public class Graphical2DView extends JFrame implements View {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.setResizable(false);
             this.setVisible(true);
-            JOptionPane.showMessageDialog(this, getTextFor("global.fullscreen.activated"));
+            JLabel label = new JLabel("<html><h2>" + getTextFor("global.fullscreen.activated.message") + "</h2></html>");
+            label.setFont(AppText.getCustomFont());
+            label.setHorizontalAlignment(JLabel.CENTER);
+            JOptionPane.showMessageDialog(null, label, getTextFor("global.fullscreen.activated.title"), JOptionPane.PLAIN_MESSAGE);
         } else {
             this.setExtendedState(JFrame.NORMAL);
             this.setSize(1200, 600);
@@ -88,5 +91,9 @@ public class Graphical2DView extends JFrame implements View {
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
         SwingUtilities.invokeLater(() -> this.setContentPane(graphical2DMenuView));
         return graphical2DMenuView;
+    }
+
+    public boolean isFullscreenModeActivated() {
+        return this.fullscreenModeActivated;
     }
 }
