@@ -16,6 +16,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import static view.utils.text.AppText.getTextFor;
+
 public class Graphical2DView extends JFrame implements View {
     private boolean fullscreenModeActivated;
 
@@ -33,7 +35,7 @@ public class Graphical2DView extends JFrame implements View {
                 e.printStackTrace();
             }
 
-            this.setTitle(AppText.getTextFor("global.frame.title"));
+            this.setTitle(getTextFor("global.frame.title"));
             this.setSize(1200, 600);
             this.setMinimumSize(new Dimension(700, 350));
             this.setLocationRelativeTo(null);
@@ -63,13 +65,14 @@ public class Graphical2DView extends JFrame implements View {
         if (this.fullscreenModeActivated) {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.setResizable(false);
+            this.setVisible(true);
+            JOptionPane.showMessageDialog(this, getTextFor("global.fullscreen.activated"));
         } else {
             this.setExtendedState(JFrame.NORMAL);
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
+            this.setVisible(true);
         }
-
-        this.setVisible(true);
     }
 
     @Override

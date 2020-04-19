@@ -65,11 +65,10 @@ public class MenuContentSection extends Section<MenuController> {
 
         button1.addActionListener(actionEvent -> this.controller.changeLanguage());
         button3.addActionListener(actionEvent -> {
-            ((Graphical2DView) SwingUtilities.getWindowAncestor(this)).toggleFullScreen();
             // Hide button and it's glue
             button3.setVisible(false);
             this.getComponent(Arrays.asList(this.getComponents()).indexOf(button3) + 1).setVisible(false);
-            JOptionPane.showMessageDialog(this, getTextFor("global.fullscreen.activated"));
+            ((Graphical2DView) SwingUtilities.getWindowAncestor(this)).toggleFullScreen();
         });
 
         buttons.add(button1);
