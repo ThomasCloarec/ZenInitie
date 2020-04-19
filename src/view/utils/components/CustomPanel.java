@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.function.BooleanSupplier;
 
-public class CustomPanel<T, L extends Section<T>, C extends Section<T>, R extends Section<T>> extends JPanel {
+public abstract class CustomPanel<T, L extends Section<T>, C extends Section<T>, R extends Section<T>> extends JPanel {
     protected final T controller;
     protected final BooleanSupplier isHorizontalMode = () -> this.getWidth() > this.getHeight();
     protected C contentSection;
