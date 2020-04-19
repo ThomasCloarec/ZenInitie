@@ -4,48 +4,19 @@ import controller.menu.MenuController;
 import view.sub_views.menu_view.view_sections.MenuContentSection;
 import view.sub_views.menu_view.view_sections.MenuLeftSection;
 import view.sub_views.menu_view.view_sections.MenuRightSection;
+import view.utils.components.CustomPanel;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.function.BooleanSupplier;
 
-public class Graphical2DMenuView extends JPanel implements MenuView {
-    private final BooleanSupplier isHorizontalMode = () -> this.getWidth() > this.getHeight();
-    private final MenuController menuController;
-    private MenuContentSection contentSection;
-    private MenuLeftSection leftSection;
-    private MenuRightSection rightSection;
-
-    public Graphical2DMenuView(MenuController menuController) {
-        this.menuController = menuController;
+public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSection, MenuContentSection, MenuRightSection> implements MenuView {
+    public Graphical2DMenuView(MenuController controller) {
+        super(controller);
 
         SwingUtilities.invokeLater(() -> {
-            this.setOpaque(false);
-
-            this.rightSection = new MenuRightSection(this.menuController, this.isHorizontalMode);
-            this.contentSection = new MenuContentSection(this.menuController, this.isHorizontalMode);
-            this.leftSection = new MenuLeftSection(this.menuController, this.isHorizontalMode);
-
-            this.switchHorizontalMode();
+            this.rightSection = new MenuRightSection(this.controller, this.isHorizontalMode);
+            this.contentSection = new MenuContentSection(this.controller, this.isHorizontalMode);
+            this.leftSection = new MenuLeftSection(this.controller, this.isHorizontalMode);
         });
-    }
-
-    private void switchHorizontalMode() {
-        this.removeAll();
-        this.setLayout(new GridLayout(1, 3));
-        this.add(this.leftSection);
-        this.add(this.contentSection);
-        this.add(this.rightSection);
-        this.revalidate();
-        this.repaint();
-    }
-
-    private void switchVerticalMode() {
-        this.removeAll();
-        this.setLayout(new GridLayout(1, 1));
-        this.add(this.contentSection);
-        this.revalidate();
-        this.repaint();
     }
 
     @Override
@@ -110,21 +81,5 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
             this.revalidate();
             this.repaint();
         });
-    }
-
-    @Override
-    public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
-        Graphics2D graphics2D = (Graphics2D) graphics;
-
-        this.leftSection.paintLights(graphics2D);
-        this.contentSection.paintLights(graphics2D);
-        this.rightSection.paintLights(graphics2D);
-
-        if (this.getComponentCount() == 1 && this.isHorizontalMode.getAsBoolean()) {
-            this.switchHorizontalMode();
-        } else if (this.getComponentCount() == 3 && !this.isHorizontalMode.getAsBoolean()) {
-            this.switchVerticalMode();
-        }
     }
 }

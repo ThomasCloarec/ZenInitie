@@ -19,8 +19,10 @@ public abstract class Section<T> extends JPanel {
     }
 
     public void paintLights(Graphics2D graphics2D) {
-        for (LightComponent light : this.lights) {
-            light.paintLight(graphics2D);
+        if (this.getWidth() != 0 && this.getHeight() != 0) {
+            for (LightComponent light : this.lights) {
+                light.paintLight(graphics2D);
+            }
         }
     }
 }

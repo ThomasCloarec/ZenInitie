@@ -5,26 +5,18 @@ import model.game.Game;
 import view.sub_views.game_view.view_sections.GameContentSection;
 import view.sub_views.game_view.view_sections.GameLeftSection;
 import view.sub_views.game_view.view_sections.GameRightSection;
+import view.utils.components.CustomPanel;
 
 import javax.swing.*;
-import java.util.function.BooleanSupplier;
 
-public class Graphical2DGameView extends JPanel implements GameView {
-    private final BooleanSupplier isHorizontalMode = () -> this.getWidth() > this.getHeight();
-    private final GameController gameController;
-    private GameContentSection contentSection;
-    private GameLeftSection leftSection;
-    private GameRightSection rightSection;
-
+public class Graphical2DGameView extends CustomPanel<GameController, GameLeftSection, GameContentSection, GameRightSection> implements GameView {
     public Graphical2DGameView(GameController gameController) {
-        this.gameController = gameController;
+        super(gameController);
 
         SwingUtilities.invokeLater(() -> {
-            this.setOpaque(false);
-
-            this.rightSection = new GameRightSection(this.gameController, this.isHorizontalMode);
-            this.contentSection = new GameContentSection(this.gameController, this.isHorizontalMode);
-            this.leftSection = new GameLeftSection(this.gameController, this.isHorizontalMode);
+            this.rightSection = new GameRightSection(this.controller, this.isHorizontalMode);
+            this.contentSection = new GameContentSection(this.controller, this.isHorizontalMode);
+            this.leftSection = new GameLeftSection(this.controller, this.isHorizontalMode);
         });
     }
 
@@ -34,7 +26,7 @@ public class Graphical2DGameView extends JPanel implements GameView {
     }
 
     @Override
-    public void pawnMoved(Game game) {
+    public void start(Game game) {
 
     }
 
@@ -44,7 +36,7 @@ public class Graphical2DGameView extends JPanel implements GameView {
     }
 
     @Override
-    public void start(Game game) {
+    public void pawnMoved(Game game) {
 
     }
 }
