@@ -5,14 +5,15 @@ import view.utils.AppColor;
 import view.utils.components.ImageComponent;
 import view.utils.components.LightComponent;
 import view.utils.components.ScaledImageComponent;
+import view.utils.components.Section;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class RightSection extends Section {
-    public RightSection(MenuController menuController, BooleanSupplier horizontalMode) {
+public class MenuRightSection extends Section<MenuController> {
+    public MenuRightSection(MenuController menuController, BooleanSupplier horizontalMode) {
         super(menuController, horizontalMode);
 
         Supplier<Point> center = () -> new Point((int) (this.getWidth() * 3.2), this.getHeight() / 2);

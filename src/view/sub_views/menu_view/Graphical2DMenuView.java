@@ -1,9 +1,9 @@
 package view.sub_views.menu_view;
 
 import controller.menu.MenuController;
-import view.sub_views.menu_view.view_sections.ContentSection;
-import view.sub_views.menu_view.view_sections.LeftSection;
-import view.sub_views.menu_view.view_sections.RightSection;
+import view.sub_views.menu_view.view_sections.MenuContentSection;
+import view.sub_views.menu_view.view_sections.MenuLeftSection;
+import view.sub_views.menu_view.view_sections.MenuRightSection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +12,9 @@ import java.util.function.BooleanSupplier;
 public class Graphical2DMenuView extends JPanel implements MenuView {
     private final BooleanSupplier isHorizontalMode = () -> this.getWidth() > this.getHeight();
     private final MenuController menuController;
-    private ContentSection contentSection;
-    private LeftSection leftSection;
-    private RightSection rightSection;
+    private MenuContentSection contentSection;
+    private MenuLeftSection leftSection;
+    private MenuRightSection rightSection;
 
     public Graphical2DMenuView(MenuController menuController) {
         this.menuController = menuController;
@@ -22,9 +22,9 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
         SwingUtilities.invokeLater(() -> {
             this.setOpaque(false);
 
-            this.rightSection = new RightSection(this.menuController, this.isHorizontalMode);
-            this.contentSection = new ContentSection(this.menuController, this.isHorizontalMode);
-            this.leftSection = new LeftSection(this.menuController, this.isHorizontalMode);
+            this.rightSection = new MenuRightSection(this.menuController, this.isHorizontalMode);
+            this.contentSection = new MenuContentSection(this.menuController, this.isHorizontalMode);
+            this.leftSection = new MenuLeftSection(this.menuController, this.isHorizontalMode);
 
             this.switchHorizontalMode();
         });
@@ -73,7 +73,9 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
 
     @Override
     public void loadGame() {
+        SwingUtilities.invokeLater(() -> {
 
+        });
     }
 
     @Override
@@ -96,7 +98,9 @@ public class Graphical2DMenuView extends JPanel implements MenuView {
 
     @Override
     public void playOnline() {
+        SwingUtilities.invokeLater(() -> {
 
+        });
     }
 
     @Override
