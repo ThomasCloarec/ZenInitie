@@ -4,6 +4,8 @@ import view.utils.text.AppText;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.function.BooleanSupplier;
 
 public class ButtonComponent extends JButton {
@@ -16,6 +18,14 @@ public class ButtonComponent extends JButton {
         this.horizontalMode = horizontalMode;
 
         this.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                super.mouseEntered(mouseEvent);
+                ButtonComponent.this.setCursor(new Cursor((Cursor.HAND_CURSOR)));
+            }
+        });
 
         this.updateButtons();
     }
