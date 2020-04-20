@@ -4,6 +4,7 @@ import model.game.Game;
 import model.game.GameImpl;
 import model.menu.Menu;
 import view.Graphical2DView;
+import view.TextualView;
 import view.View;
 import view.ViewMode;
 
@@ -23,11 +24,11 @@ public class Main {
      *
      * @param args The first index of this array may contain the display mode used.
      *             You can either launch with argument "TEXTUAL" or argument "GRAPHICAL_2D".
-     *             By default the display mode is "TEXTUAL."
+     *             By default the display mode is "GRAPHICAL_2D."
      */
     public static void main(String[] args) {
-        if (args.length > 0 && args[0].toUpperCase().equals(ViewMode.GRAPHICAL_2D.name())) {
-            Main.view = new Graphical2DView();
+        if (args.length > 0 && args[0].toUpperCase().equals(ViewMode.TEXTUAL.name())) {
+            Main.view = new TextualView();
         } else {
             Main.view = new Graphical2DView();
         }
@@ -48,8 +49,8 @@ public class Main {
     }
 
     /**
-     * Create a new game and launch it using the previously collected information from the menu.
-     * This method set up the MVC architectural pattern and the Observer behavioral pattern used during the game.
+     * Create a new menu and collect information for the future game.
+     * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
     private static void newMenu() {
         Menu menu = new Menu();
