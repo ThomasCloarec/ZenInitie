@@ -39,7 +39,7 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void exit() {
-        System.exit(0);
+        SwingUtilities.getWindowAncestor(this).dispose();
     }
 
     @Override
