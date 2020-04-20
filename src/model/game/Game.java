@@ -1,28 +1,40 @@
 package model.game;
 
 import model.Observable;
+import model.game.team.Player;
+import model.game.team.Team;
+import model.game.team.TeamColor;
 import view.sub_views.game_view.GameView;
 
 import java.util.ArrayList;
 
-import static model.utils.Util.getRandomBoolean;
-
 public class Game extends Observable<GameView> {
     protected final boolean aiMode;
-    protected final boolean duoMode;
     protected final boolean onlineMode;
     private final ArrayList<Position> allowedMoves = new ArrayList<>();
     private final Board board = new Board();
-    protected boolean whiteTeamTurn = getRandomBoolean();
-    private boolean firstPlayerInTeamTurn = true;
-    private ArrayList<String> playersBlack;
-    private ArrayList<String> playersWhite;
+    private final ArrayList<Team> teams = new ArrayList<>(2);
+    private int currentTeamIndex;
     private Position selectedPawn;
 
     public Game(boolean aiMode, boolean duoMode, boolean onlineMode) {
         this.aiMode = aiMode;
-        this.duoMode = duoMode;
         this.onlineMode = onlineMode;
+
+        this.teams.add(new Team(TeamColor.BLACK));
+        this.teams.add(new Team(TeamColor.WHITE));
+        if (duoMode) {
+            for (Team team : this.teams) {
+                team.addPlayer(new Player("Player 1"));
+                team.addPlayer(new Player("Player 2"));
+            }
+        } else {
+            for (Team team : this.teams) {
+                team.addPlayer(new Player("Player 1"));
+            }
+        }
+
+        this.currentTeamIndex = (int) (Math.random() * this.teams.size());
     }
 
     public boolean isMoveAllowed(Position move) {
@@ -41,27 +53,28 @@ public class Game extends Observable<GameView> {
 
     public boolean isPawnSelectable(Position position) {
         Pawn pawn = this.board.getArray()[position.getLine()][position.getColumn()];
-        return pawn == this.getPawnActualTurn() || (pawn == Pawn.ZEN);
+        return this.getCurrentTeam().controlPawn(pawn);
     }
 
     public void moveSelectedPawn(Position position) {
         this.board.getArray()[position.getLine()][position.getColumn()] = this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()];
         this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()] = Pawn.EMPTY;
 
-        this.whiteTeamTurn = (this.duoMode && this.firstPlayerInTeamTurn) == this.whiteTeamTurn; // logic, isn't it ?
-        this.firstPlayerInTeamTurn = this.duoMode ^ this.firstPlayerInTeamTurn; // ^ = xor (interesting no ?)
+        if (!this.getCurrentTeam().nextPlayerPlay()) {
+            this.currentTeamIndex = (this.currentTeamIndex + 1) % this.teams.size();
+        }
         this.notifyPawnMoved();
     }
 
-    protected void notifyPawnMoved() {
+    private void notifyPawnMoved() {
         this.observers.forEach(gameView -> gameView.pawnMoved(this));
     }
 
-    protected void notifyPawnSelected() {
+    private void notifyPawnSelected() {
         this.observers.forEach(gameView -> gameView.pawnSelected(this));
     }
 
-    protected void setAllowedMoves() {
+    private void setAllowedMoves() {
         this.allowedMoves.clear();
 
         for (Position position : this.generatePositionsFrom(this.selectedPawn)) {
@@ -95,7 +108,7 @@ public class Game extends Observable<GameView> {
     private boolean isMoveValid(Position position) {
         boolean validMove = true;
 
-        if (this.board.isPositionValid(position) && this.board.getArray()[position.getLine()][position.getColumn()] != this.getPawnActualTurn()) { // destination must be on the board and can't be my pawn
+        if (this.board.isPositionValid(position) && !this.getCurrentTeam().controlPawn(this.board.getArray()[position.getLine()][position.getColumn()])) { // destination must be on the board and can't be my pawn
             int deltaLine = position.getLine() - this.selectedPawn.getLine();
             int lineGradient = deltaLine == 0 ? 0 : Math.abs(deltaLine) / deltaLine; // line direction
 
@@ -105,7 +118,7 @@ public class Game extends Observable<GameView> {
             int line = this.selectedPawn.getLine() + lineGradient;
             int column = this.selectedPawn.getColumn() + columnGradient;
             while (this.board.isPositionValid(new Position(line, column)) && validMove && !(position.getLine() == line && position.getColumn() == column)) {
-                if (this.board.getArray()[line][column] == this.getPawnOpponentTurn()) { // can't go hover opponent's pawn
+                if (this.getCurrentTeam().enemyHasPawn(this.board.getArray()[line][column])) { // can't go hover opponent's pawn
                     validMove = false;
                 }
                 line += lineGradient;
@@ -124,6 +137,12 @@ public class Game extends Observable<GameView> {
         observer.start(this);
     }
 
+    public void setSelectedPawn(Position position) {
+        this.selectedPawn = position;
+        this.setAllowedMoves();
+        this.notifyPawnSelected();
+    }
+
     public ArrayList<Position> getAllowedMoves() {
         return this.allowedMoves;
     }
@@ -132,21 +151,11 @@ public class Game extends Observable<GameView> {
         return this.board.getArray();
     }
 
-    public Pawn getPawnActualTurn() {
-        return this.whiteTeamTurn ? Pawn.WHITE : Pawn.BLACK;
+    private Team getCurrentTeam() {
+        return this.getCurrentTeam();
     }
 
-    private Pawn getPawnOpponentTurn() {
-        return this.whiteTeamTurn ? Pawn.BLACK : Pawn.WHITE;
-    }
-
-    public Position getSelectedPawn() {
-        return this.selectedPawn;
-    }
-
-    public void setSelectedPawn(Position position) {
-        this.selectedPawn = position;
-        this.setAllowedMoves();
-        this.notifyPawnSelected();
+    public TeamColor getCurrentTeamColor() {
+        return this.getCurrentTeam().getTeamColor();
     }
 }
