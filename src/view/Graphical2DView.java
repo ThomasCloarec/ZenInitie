@@ -42,7 +42,6 @@ public class Graphical2DView extends JFrame implements View {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setBackground(AppColor.CUSTOM_GREY);
             this.setFocusable(true);
-            this.setVisible(true);
 
             this.addKeyListener(new KeyAdapter() {
                 @Override
@@ -64,32 +63,39 @@ public class Graphical2DView extends JFrame implements View {
 
         if (this.fullscreenModeActivated) {
             this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.setResizable(false);
             this.setVisible(true);
             JLabel label = new JLabel("<html><h2>" + getTextFor("global.fullscreen.activated.message") + "</h2></html>");
             label.setFont(AppText.getCustomFont());
             label.setHorizontalAlignment(JLabel.CENTER);
-            JOptionPane.showMessageDialog(null, label, getTextFor("global.fullscreen.activated.title"), JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, label, getTextFor("global.fullscreen.activated.title"), JOptionPane.PLAIN_MESSAGE);
+            this.setResizable(false);
         } else {
             this.setExtendedState(JFrame.NORMAL);
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
-            this.setResizable(true);
             this.setVisible(true);
+            this.setResizable(true);
         }
     }
 
     @Override
     public GameView createGameView(GameController gameController) {
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
-        SwingUtilities.invokeLater(() -> this.setContentPane(graphical2DGameView));
+        SwingUtilities.invokeLater(() -> {
+            this.setContentPane(graphical2DGameView);
+            this.setVisible(true);
+        });
         return graphical2DGameView;
     }
 
     @Override
     public MenuView createMenuView(MenuController menuController) {
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
-        SwingUtilities.invokeLater(() -> this.setContentPane(graphical2DMenuView));
+        SwingUtilities.invokeLater(() -> {
+            this.setContentPane(graphical2DMenuView);
+            this.setVisible(true);
+        });
+
         return graphical2DMenuView;
     }
 

@@ -11,6 +11,8 @@ import view.utils.text.Language;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -68,14 +70,17 @@ public class MenuContentSection extends Section<MenuController> {
         JButton button5 = new ButtonComponent(getTextFor("menu.settings.question1.answer4"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.controller.changeLanguage());
-        button3.addActionListener(actionEvent -> {
-            if (frame.isFullscreenModeActivated()) {
-                button3.setText(getTextFor("global.fullscreen.start"));
-            } else {
-                button3.setText(getTextFor("global.fullscreen.stop"));
+        button3.addActionListener(actionEvent -> frame.toggleFullScreen());
+        button3.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+                if (!frame.isFullscreenModeActivated()) {
+                    button3.setText(getTextFor("global.fullscreen.start"));
+                } else {
+                    button3.setText(getTextFor("global.fullscreen.stop"));
+                }
             }
-
-            ((Graphical2DView) SwingUtilities.getWindowAncestor(this)).toggleFullScreen();
         });
 
         buttons.add(button1);

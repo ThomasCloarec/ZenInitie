@@ -2,6 +2,8 @@ package view.sub_views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.function.BooleanSupplier;
 
 public abstract class CustomPanel<T, L extends Section<T>, C extends Section<T>, R extends Section<T>> extends JPanel {
@@ -15,6 +17,15 @@ public abstract class CustomPanel<T, L extends Section<T>, C extends Section<T>,
         this.controller = controller;
 
         SwingUtilities.invokeLater(() -> this.setOpaque(false));
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+
+                CustomPanel.this.revalidate();
+                CustomPanel.this.repaint();
+            }
+        });
     }
 
     protected void switchHorizontalMode() {
