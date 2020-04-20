@@ -7,13 +7,13 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class LightComponent {
-    final Supplier<Point> center;
-    final Color color;
-    final Supplier<Float> radius;
+    private final Supplier<Point> center;
+    private final Color color;
+    private final Supplier<Float> radius;
     /**
      * The condition that returns if the image has to be visible or not
      */
-    protected BooleanSupplier visibleCondition = () -> true;
+    private BooleanSupplier visibleCondition = () -> true;
 
     public LightComponent(Point center, float radius, Color color) {
         this(() -> center, () -> radius, color);

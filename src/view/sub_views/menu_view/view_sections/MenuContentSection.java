@@ -32,7 +32,6 @@ public class MenuContentSection extends Section<MenuController> {
                 this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2);
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;
         LightComponent logoLight = new LightComponent(center, radius, AppColor.CUSTOM_LIGHT_GREY);
-        logoLight.setVisibleCondition(horizontalMode);
         this.lights.add(logoLight);
 
         this.goHomepage();
