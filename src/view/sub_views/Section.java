@@ -7,12 +7,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 
-public abstract class Section<T> extends JPanel {
+public abstract class Section<ControllerT> extends JPanel {
     protected final ArrayList<LightComponent> lights = new ArrayList<>();
     protected final BooleanSupplier horizontalMode;
-    protected final T controller;
+    protected final ControllerT controller;
 
-    public Section(T controller, BooleanSupplier horizontalMode) {
+    public Section(ControllerT controller, BooleanSupplier horizontalMode) {
         this.controller = controller;
         this.horizontalMode = horizontalMode;
 
