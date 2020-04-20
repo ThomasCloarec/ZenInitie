@@ -1,7 +1,6 @@
 import controller.game.GameController;
 import controller.menu.MenuController;
 import model.game.Game;
-import model.game.GameImpl;
 import model.menu.Menu;
 import view.Graphical2DView;
 import view.TextualView;
@@ -43,7 +42,7 @@ public class Main {
      * @param menu The menu containing the necessary information to launch the game.
      */
     private static void newGame(Menu menu) {
-        Game game = new GameImpl(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
+        Game game = new Game(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
         GameController gameController = new GameController(game);
         game.addObserver(Main.view.createGameView(gameController));
     }
