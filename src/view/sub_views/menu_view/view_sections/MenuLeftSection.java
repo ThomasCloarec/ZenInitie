@@ -2,7 +2,7 @@ package view.sub_views.menu_view.view_sections;
 
 import controller.menu.MenuController;
 import view.sub_views.Section;
-import view.utils.AppColor;
+import view.utils.ExtendedColor;
 import view.utils.components.ImageComponent;
 import view.utils.components.LightComponent;
 import view.utils.components.ScaledImageComponent;
@@ -18,7 +18,7 @@ public class MenuLeftSection extends Section<MenuController> {
 
         Supplier<Point> center = () -> new Point((int) (this.getWidth() * -0.2), this.getHeight() / 2);
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;
-        LightComponent blueLight = new LightComponent(center, radius, AppColor.CUSTOM_BLUE);
+        LightComponent blueLight = new LightComponent(center, radius, ExtendedColor.CUSTOM_BLUE);
         blueLight.setVisibleCondition(this.horizontalMode);
         this.lights.add(blueLight);
 

@@ -1,6 +1,6 @@
 package view.utils.components;
 
-import view.utils.AppColor;
+import view.utils.ExtendedColor;
 
 import java.awt.*;
 import java.util.function.BooleanSupplier;
@@ -27,7 +27,7 @@ public class LightComponent {
 
     public void paintLight(Graphics2D graphics2D) {
         if (this.visibleCondition.getAsBoolean()) {
-            RadialGradientPaint light = new RadialGradientPaint(this.center.get(), this.radius.get(), new float[]{0f, 1f}, new Color[]{this.color, AppColor.TRANSPARENT});
+            RadialGradientPaint light = new RadialGradientPaint(this.center.get(), this.radius.get(), new float[]{0f, 1f}, new Color[]{this.color, ExtendedColor.TRANSPARENT});
 
             graphics2D.setPaint(light);
             graphics2D.fillOval(

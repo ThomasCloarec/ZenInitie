@@ -13,3 +13,10 @@ https://freedesignfile.com/151628-chinese-dragon-creative-vector-material/ (red 
 
 https://design.tutsplus.com/tutorials/how-to-create-banner-label-and-badge-templates-in-illustrator--cms-19971
 (banners)
+
+to clone the project with submodules (require git >2.13) use: :
+
+"*git clone --recurse-submodules -j8 https://github.com/ThomasCloarec/ZenInitie.git*"
+
+launch ant build : use 
+"*ant all*" in the base directory of the project

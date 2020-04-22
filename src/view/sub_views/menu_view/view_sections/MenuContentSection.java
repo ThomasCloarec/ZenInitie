@@ -3,7 +3,7 @@ package view.sub_views.menu_view.view_sections;
 import controller.menu.MenuController;
 import view.Graphical2DView;
 import view.sub_views.Section;
-import view.utils.AppColor;
+import view.utils.ExtendedColor;
 import view.utils.components.ButtonComponent;
 import view.utils.components.LightComponent;
 import view.utils.components.ScaledImageComponent;
@@ -31,7 +31,7 @@ public class MenuContentSection extends Section<MenuController> {
                 this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
                 this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2);
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;
-        LightComponent logoLight = new LightComponent(center, radius, AppColor.CUSTOM_LIGHT_GREY);
+        LightComponent logoLight = new LightComponent(center, radius, ExtendedColor.CUSTOM_LIGHT_GREY);
         this.lights.add(logoLight);
 
         this.goHomepage();

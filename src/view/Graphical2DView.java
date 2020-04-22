@@ -7,7 +7,7 @@ import view.sub_views.game_view.GameView;
 import view.sub_views.game_view.Graphical2DGameView;
 import view.sub_views.menu_view.Graphical2DMenuView;
 import view.sub_views.menu_view.MenuView;
-import view.utils.AppColor;
+import view.utils.ExtendedColor;
 import view.utils.text.AppText;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class Graphical2DView extends JFrame implements View {
             this.setMinimumSize(new Dimension(700, 350));
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setBackground(AppColor.CUSTOM_GREY);
+            this.setBackground(ExtendedColor.CUSTOM_GREY);
             this.setFocusable(true);
 
             this.addKeyListener(new KeyAdapter() {
