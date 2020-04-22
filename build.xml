@@ -193,10 +193,10 @@
     <!-- Generate javadoc -->
     <target name="javadoc" depends="init" description="generate documentation">
         <javadoc sourcepath="${module.zeninitie.basedir}/src" destdir="${zeninitiedocs.docs.dir}/docs">
-            <fileset dir="${module.zeninitie.basedir}/src/">
-                <include name="*.java"/>
-            </fileset>
             <classpath>
+                <fileset dir="${module.zeninitie.basedir}/src/">
+                    <include name="*.java"/>
+                </fileset>
                 <fileset dir="${module.zeninitie.basedir}/libs">
                     <include name="*.jar"/>
                 </fileset>
