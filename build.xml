@@ -167,7 +167,9 @@
         <property name="artifact.temp.output.zeninitie:jar" value="${artifacts.temp.dir}/ZenInitie_jar"/>
         <mkdir dir="${artifact.temp.output.zeninitie:jar}"/>
         <jar destfile="${temp.jar.path.ZenInitie.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-            <zipfileset file="${basedir}/out/META-INF/MANIFEST.MF" prefix="META-INF"/>
+            <manifest>
+                <attribute name="Main-Class" value="Main"/>
+            </manifest>
             <zipfileset dir="${zeninitie.output.dir}"/>
             <zipfileset src="${basedir}/libs/darcula-1.0.0.jar"/>
             <zipfileset src="${basedir}/libs/kryonet-2.22.0-RC1.jar"/>
@@ -191,10 +193,10 @@
     <!-- Generate javadoc -->
     <target name="javadoc" depends="init" description="generate documentation">
         <javadoc sourcepath="${module.zeninitie.basedir}/src" destdir="${zeninitiedocs.docs.dir}/docs">
+            <fileset dir="${module.zeninitie.basedir}/src/">
+                <include name="*.java"/>
+            </fileset>
             <classpath>
-                <fileset dir="${module.zeninitie.basedir}/src">
-                    <include name="**/*.java"/>
-                </fileset>
                 <fileset dir="${module.zeninitie.basedir}/libs">
                     <include name="*.jar"/>
                 </fileset>
