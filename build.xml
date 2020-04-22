@@ -188,8 +188,6 @@
         <delete dir="${artifacts.temp.dir}"/>
     </target>
 
-    <target name="all" depends="build.modules, build.all.artifacts, javadoc" description="build all"/>
-
     <!-- Generate javadoc -->
     <target name="javadoc" depends="init" description="generate documentation">
         <javadoc sourcepath="${module.zeninitie.basedir}/src" destdir="${zeninitiedocs.docs.dir}/docs">
@@ -203,4 +201,6 @@
             </classpath>
         </javadoc>
     </target>
+
+    <target name="all" depends="build.modules, build.all.artifacts, javadoc" description="build all"/>
 </project>
