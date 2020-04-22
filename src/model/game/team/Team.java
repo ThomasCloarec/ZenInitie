@@ -38,7 +38,15 @@ public class Team {
         return !this.hasPawn(pawn) && pawn != Pawn.ZEN && pawn != Pawn.EMPTY;
     }
 
-    public TeamColor getTeamColor() {
-        return this.teamColor;
+    public Player getCurrentPlayer() {
+        return this.players.get(this.currentPlayerIndex);
+    }
+
+    public String getCurrentPlayerName() {
+        return this.getCurrentPlayer().getName();
+    }
+
+    public String getName() {
+        return this.teamColor.name();
     }
 }

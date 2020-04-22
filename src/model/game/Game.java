@@ -151,11 +151,15 @@ public class Game extends Observable<GameView> {
         return this.board.getArray();
     }
 
-    private Team getCurrentTeam() {
-        return this.getCurrentTeam();
+    public String getCurrentPlayerName() {
+        return this.getCurrentTeam().getCurrentPlayerName();
     }
 
-    public TeamColor getCurrentTeamColor() {
-        return this.getCurrentTeam().getTeamColor();
+    public Team getCurrentTeam() {
+        return this.teams.get(this.currentTeamIndex);
+    }
+
+    public String getCurrentTeamName() {
+        return this.getCurrentTeam().getName();
     }
 }

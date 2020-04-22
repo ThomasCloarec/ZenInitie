@@ -1,5 +1,7 @@
 package model.menu;
 
+import view.sub_views.menu_view.MenuView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,12 @@ public class Menu extends MenuObservable {
         } else {
             this.notifyExit();
         }
+    }
+
+    @Override
+    public void addObserver(MenuView observer) {
+        super.addObserver(observer);
+        this.notifyUpdatePage(this);
     }
 
     public Page getActualPage() {

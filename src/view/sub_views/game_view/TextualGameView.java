@@ -62,25 +62,18 @@ public class TextualGameView implements GameView {
     }
 
     @Override
+    public void start(Game game) {
+        this.selectPawn(game);
+    }
+
+    @Override
     public void selectPawn(Game game) {
         TextualGameView.updateBoard(game.getBoard());
-        System.out.println(preInformation + "Player " + game.getCurrentTeamColor().name() + getTextFor("game.playerTurn"));
+        System.out.println(preInformation + "(" + game.getCurrentTeamName() + ") " + game.getCurrentPlayerName() + getTextFor("game.playerTurn"));
         Position position = TextInput.getSelectPositionAnswer();
         if (this.gameController.selectPawn(position) == GameController.ResponseError.SELECT_PAWN_ERROR) {
             System.out.println(preError + getTextFor("game.error.selectPawn"));
             this.selectPawn(game);
         }
-    }
-
-    @Override
-    public void start(Game game) {
-        System.out.println("_/\\____/\\\n" +
-                "|= ͡° ᆺ ͡°)=\n" +
-                "\\╭☞ \\╭☞ " + getTextFor("game.goodLuck") + "\n"
-        );
-        System.out.println();
-        System.out.println(getTextFor("game.ready"));
-        TextInput.waitingEnterScanner();
-        this.selectPawn(game);
     }
 }
