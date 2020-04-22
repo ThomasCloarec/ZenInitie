@@ -162,4 +162,8 @@ public class Game extends Observable<GameView> {
     public String getCurrentTeamName() {
         return this.getCurrentTeam().getName();
     }
+
+    public int getBoardSize() {
+        return this.getBoard().length;
+    }
 }

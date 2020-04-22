@@ -2,6 +2,7 @@ import controller.game.GameController;
 import controller.menu.MenuController;
 import model.game.Game;
 import model.menu.Menu;
+import view.Graphical2DView;
 import view.TextualView;
 import view.View;
 import view.ViewMode;
@@ -25,10 +26,16 @@ public class Main {
      *             By default the display mode is "GRAPHICAL_2D."
      */
     public static void main(String[] args) {
-        if (args.length > 0 && args[0].toUpperCase().equals(ViewMode.TEXTUAL.name())) {
-            Main.view = new TextualView();
+        if (args.length == 1) {
+            ViewMode viewMode = ViewMode.valueOf(args[0].toUpperCase());
+
+            if (viewMode == ViewMode.TEXTUAL) {
+                Main.view = new TextualView();
+            } else if (viewMode == ViewMode.GRAPHICAL_2D) {
+                Main.view = new Graphical2DView();
+            }
         } else {
-            Main.view = new TextualView();
+            Main.view = new Graphical2DView();
         }
 
         Main.newMenu();

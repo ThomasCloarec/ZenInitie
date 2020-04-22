@@ -1,9 +1,11 @@
 package view.utils.text;
 
+import model.game.Game;
 import model.game.Position;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 import static view.utils.text.AppText.*;
 
@@ -20,9 +22,10 @@ public class TextInput {
         return count;
     }
 
-    public static int getIntAnswer(String question) {
+    public static int getIntAnswer(String question, Predicate<Integer> condition) {
         int input = 0;
         int answerNumber = TextInput.getAnswersCount(question);
+
         do {
             try {
                 System.out.println(preQuestion + getTextFor(question));
@@ -33,8 +36,8 @@ public class TextInput {
                 System.out.print(preInput);
                 input = TextInput.sc.nextInt();
 
-                if (answerNumber != 0 && (input < 1 || input > answerNumber)) {
-                    System.out.println(preInformation + getTextFor("global.utils.input.error.range") + getTextFor("global.word.and") + answerNumber);
+                if (!condition.test(input)) {
+                    System.out.println(preInformation + condition);
                 }
             } catch (InputMismatchException ignored) {
                 System.out.println(preInformation + getTextFor("global.utils.input.error.type.number"));
@@ -44,12 +47,12 @@ public class TextInput {
                 } catch (IndexOutOfBoundsException ignored) {
                 }
             }
-        } while (answerNumber != 0 && (input < 1 || input > answerNumber));
+        } while (!condition.test(input));
 
         return input;
     }
 
-    public static char getCharAnswer(String question) {
+    public static char getCharAnswer(String question, NamedPredicate<Character> condition) {
         char input = 0;
 
         do {
@@ -58,37 +61,58 @@ public class TextInput {
                 System.out.print(preInput);
                 input = TextInput.sc.next().toUpperCase().charAt(0);
 
-                if (input < 'A' || input > 'K') {
-                    System.out.println(preInformation + getTextFor("global.utils.input.error.range") + "A " + getTextFor("global.word.and") + 'K');
+                if (!condition.test(input)) {
+                    System.out.println(preInformation + condition);
                 }
             } catch (InputMismatchException ignored) {
                 System.out.println(preInformation + getTextFor("global.utils.input.error.type.character"));
             } finally {
                 TextInput.sc.nextLine();
             }
-        } while (input < 'A' || input > 'K');
+        } while (!condition.test(input));
 
         return input;
     }
 
     public static int getMenuAnswer(String question) {
         System.out.println(preInformation + getTextFor(question.substring(0, question.lastIndexOf("."))));
-        return TextInput.getIntAnswer(question);
+        int answerNumber = TextInput.getAnswersCount(question);
+        return TextInput.getIntAnswer(
+                question,
+                new NamedPredicate<>(
+                        getTextFor("global.utils.input.error.range") + getTextFor("global.word.and") + answerNumber
+                        , input -> input >= 1 && input <= answerNumber));
     }
 
-    public static void waitingEnterScanner() {
-        TextInput.sc.nextLine();
-    }
+    public static Position getMovePositionAnswer(Game game) {
+        int line = TextInput.getIntAnswer(
+                "game.getMoveLine",
+                new NamedPredicate<>(
+                        getTextFor("global.utils.input.error.range") + getTextFor("global.word.and") + 11
+                        , input -> input >= 1 && input <= game.getBoardSize()));
 
-    public static Position getMoveAnswer() {
-        int line = TextInput.getIntAnswer("game.getMoveLine");
-        char column = TextInput.getCharAnswer("game.getMoveColumn");
+        char column = TextInput.getCharAnswer(
+                "game.getMoveColumn",
+                new NamedPredicate<>(
+                        getTextFor("global.utils.input.error.range") + "A " + getTextFor("global.word.and") + 'K',
+                        input -> input >= 'A' && input <= 64 + game.getBoardSize()));
+
         return new Position(line, column);
     }
 
-    public static Position getSelectPositionAnswer() {
-        int line = TextInput.getIntAnswer("game.getSelectLine");
-        char column = TextInput.getCharAnswer("game.getSelectColumn");
+    public static Position getSelectPositionAnswer(Game game) {
+        int line = TextInput.getIntAnswer(
+                "game.getSelectLine",
+                new NamedPredicate<>(
+                        getTextFor("global.utils.input.error.range") + getTextFor("global.word.and") + 11
+                        , input -> input >= 1 && input <= game.getBoardSize()));
+
+        char column = TextInput.getCharAnswer(
+                "game.getSelectColumn",
+                new NamedPredicate<>(
+                        getTextFor("global.utils.input.error.range") + "A " + getTextFor("global.word.and") + 'K',
+                        input -> input >= 'A' && input <= 64 + game.getBoardSize()));
+
         return new Position(line, column);
     }
 }
