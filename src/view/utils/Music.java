@@ -199,7 +199,7 @@ public class Music implements Runnable {
             res = (SourceDataLine) AudioSystem.getLine(info);
             res.open(audioFormat);
             FloatControl gainControl = (FloatControl) res.getControl(FloatControl.Type.VOLUME);
-            gainControl.setValue(gainControl.getMaximum());
+            gainControl.setValue(gainControl.getMaximum() * 0.5f);
         } catch (Exception e) {
             System.err.println("Could not get audio line!");
             e.printStackTrace();
