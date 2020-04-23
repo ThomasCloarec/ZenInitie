@@ -1,7 +1,6 @@
 package view.utils;
 
 import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
 
 public class Sound {
@@ -12,9 +11,10 @@ public class Sound {
 
     public Sound(String name) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(Sound.pathPrefix + name).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(Sound.class.getResource(Sound.pathPrefix + name));
+            DataLine.Info info = new DataLine.Info(Clip.class, audioIn.getFormat());
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(audioIn);
             clip.start();
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
             e.printStackTrace();

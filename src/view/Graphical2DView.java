@@ -8,6 +8,7 @@ import view.sub_views.game_view.Graphical2DGameView;
 import view.sub_views.menu_view.Graphical2DMenuView;
 import view.sub_views.menu_view.MenuView;
 import view.utils.ExtendedColor;
+import view.utils.Sound;
 import view.utils.components.PopUpComponent;
 import view.utils.text.AppText;
 
@@ -36,6 +37,7 @@ public class Graphical2DView extends JFrame implements View {
                 e.printStackTrace();
             }
 
+            new Sound("hugo.wav");
 
             this.setTitle(getTextFor("global.frame.title"));
             this.setSize(1200, 600);
