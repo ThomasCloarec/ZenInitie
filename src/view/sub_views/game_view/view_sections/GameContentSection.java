@@ -26,7 +26,7 @@ public class GameContentSection extends Section<GameController> {
                 public void mouseEntered(MouseEvent mouseEvent) {
                     super.mouseEntered(mouseEvent);
                     panel1.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
-                    panel1.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+                    panel1.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
 
                 @Override

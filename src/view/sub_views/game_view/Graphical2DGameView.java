@@ -8,7 +8,6 @@ import view.sub_views.game_view.view_sections.GameLeftSection;
 import view.sub_views.game_view.view_sections.GameRightSection;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Graphical2DGameView extends CustomPanel<GameController, GameLeftSection, GameContentSection, GameRightSection> implements GameView {
     public Graphical2DGameView(GameController gameController) {
@@ -19,12 +18,6 @@ public class Graphical2DGameView extends CustomPanel<GameController, GameLeftSec
             this.contentSection = new GameContentSection(this.controller, this.isHorizontalMode);
             this.leftSection = new GameLeftSection(this.controller, this.isHorizontalMode);
         });
-    }
-
-    @Override
-    public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
-        System.out.println("hey");
     }
 
     @Override

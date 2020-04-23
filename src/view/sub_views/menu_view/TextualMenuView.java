@@ -37,7 +37,7 @@ public class TextualMenuView implements MenuView {
             case 1:
                 this.menuController.changeLanguage();
                 break;
-            case 2:
+            case 4:
                 this.menuController.backPreviousPage();
                 break;
         }

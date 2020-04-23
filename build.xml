@@ -173,7 +173,9 @@
             <zipfileset dir="${zeninitie.output.dir}"/>
             <zipfileset src="${basedir}/libs/darcula.jar"/>
             <zipfileset src="${basedir}/libs/kryonet-2.22.0-RC1.jar"/>
-            <zipfileset src="${basedir}/libs/jl1.0.1.jar"/>
+            <zipfileset src="${basedir}/libs/jlayer-1.0.1-2.jar"/>
+            <zipfileset src="${basedir}/libs/tritonus-share-0.3.7-3.jar"/>
+            <zipfileset src="${basedir}/libs/mp3spi-1.9.5-2.jar"/>
         </jar>
         <copy file="${temp.jar.path.ZenInitie.jar}" tofile="${artifact.temp.output.zeninitie:jar}/ZenInitie.jar"/>
     </target>

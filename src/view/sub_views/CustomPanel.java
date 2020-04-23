@@ -2,8 +2,6 @@ package view.sub_views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -61,13 +59,6 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
         this.controller = controller;
 
         SwingUtilities.invokeLater(() -> this.setOpaque(false));
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                super.componentResized(componentEvent);
-                CustomPanel.this.repaint();
-            }
-        });
     }
 
     /**
@@ -79,8 +70,6 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
         this.add(this.leftSection);
         this.add(this.contentSection);
         this.add(this.rightSection);
-        this.revalidate();
-        this.repaint();
     }
 
     /**
@@ -90,8 +79,6 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
         this.removeAll();
         this.setLayout(new GridLayout(1, 1));
         this.add(this.contentSection);
-        this.revalidate();
-        this.repaint();
     }
 
     /**

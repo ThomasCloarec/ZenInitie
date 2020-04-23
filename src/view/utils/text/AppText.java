@@ -5,10 +5,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public final class AppText {
-    public static final String preAnswer = "\t • ";
-    public static final String preInformation = "\n ━ ";
-    public static final String preInput = " ⮕ ";
-    public static final String preQuestion = " ➤ ";
+    public static final String preAnswer = "\t · ";
+    public static final String preInformation = "\n - ";
+    public static final String preInput = " > ";
+    public static final String preQuestion = " * ";
     private static Font customFont = new Font("Open sans", Font.PLAIN, 20);
     private static ResourceBundle gameText = ResourceBundle.getBundle("view/resources/text_labels/GameLabels");
     private static ResourceBundle globalText = ResourceBundle.getBundle("view/resources/text_labels/GlobalLabels");

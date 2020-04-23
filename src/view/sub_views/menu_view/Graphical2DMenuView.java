@@ -23,8 +23,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     public void changeLanguage() {
         SwingUtilities.invokeLater(() -> {
             this.contentSection.changeLanguage();
-            this.revalidate();
-            this.repaint();
         });
     }
 
@@ -32,14 +30,13 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     public void changeSettings() {
         SwingUtilities.invokeLater(() -> {
             this.contentSection.changeSettings();
-            this.revalidate();
-            this.repaint();
         });
     }
 
     @Override
     public void exit() {
         SwingUtilities.getWindowAncestor(this).dispose();
+        System.exit(0);
     }
 
     @Override
@@ -53,8 +50,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     public void newGame() {
         SwingUtilities.invokeLater(() -> {
             this.contentSection.newGame();
-            this.revalidate();
-            this.repaint();
         });
     }
 
@@ -62,8 +57,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     public void playOffline() {
         SwingUtilities.invokeLater(() -> {
             this.contentSection.playOffline();
-            this.revalidate();
-            this.repaint();
         });
     }
 
@@ -78,8 +71,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     public void goHomepage() {
         SwingUtilities.invokeLater(() -> {
             this.contentSection.goHomepage();
-            this.revalidate();
-            this.repaint();
         });
     }
 }

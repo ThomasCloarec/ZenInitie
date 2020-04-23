@@ -17,36 +17,36 @@ public class TextualGameView implements GameView {
 
     public static void updateBoard(Pawn[][] board) {
         for (int i = 0; i < board.length + 4; i++) {
-            System.out.print("▬\t");
+            System.out.print("═\t");
         }
-        System.out.print("\n▌\t\t");
+        System.out.print("\n║\t\t");
         for (int characterColumn = 0; characterColumn < board[0].length; characterColumn++) {
             System.out.print((char) (65 + characterColumn) + "\t");
         }
-        System.out.println("\t▐");
+        System.out.println("\t║");
         for (int line = 0; line < board.length; line++) {
-            System.out.print("▌\t" + (board.length - line) + "\t");
+            System.out.print("║\t" + (board.length - line) + "\t");
             for (int column = 0; column < board[0].length; column++) {
                 if (board[line][column] == Pawn.BLACK) {
-                    System.out.print("○");
+                    System.out.print("o");
                 } else if (board[line][column] == Pawn.WHITE) {
-                    System.out.print("●");
+                    System.out.print("*");
                 } else if (board[line][column] == Pawn.ZEN) {
-                    System.out.print("✪");
+                    System.out.print("+");
                 } else {
                     System.out.print("·");
                 }
                 System.out.print("\t");
             }
-            System.out.println((board.length - line) + "\t▐");
+            System.out.println((board.length - line) + "\t║");
         }
-        System.out.print("▌\t\t");
+        System.out.print("║\t\t");
         for (int characterColumn = 0; characterColumn < board[0].length; characterColumn++) {
             System.out.print((char) (65 + characterColumn) + "\t");
         }
-        System.out.println("\t▐");
+        System.out.println("\t║");
         for (int i = 0; i < board.length + 4; i++) {
-            System.out.print("▬\t");
+            System.out.print("═\t");
         }
         System.out.println();
     }
