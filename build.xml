@@ -171,7 +171,7 @@
                 <attribute name="Main-Class" value="Main"/>
             </manifest>
             <zipfileset dir="${zeninitie.output.dir}"/>
-            <zipfileset src="${basedir}/libs/darcula-1.0.0.jar"/>
+            <zipfileset src="${basedir}/libs/darcula.jar"/>
             <zipfileset src="${basedir}/libs/kryonet-2.22.0-RC1.jar"/>
         </jar>
         <copy file="${temp.jar.path.ZenInitie.jar}" tofile="${artifact.temp.output.zeninitie:jar}/ZenInitie.jar"/>

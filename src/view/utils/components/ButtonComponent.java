@@ -1,5 +1,6 @@
 package view.utils.components;
 
+import view.utils.ExtendedColor;
 import view.utils.text.AppText;
 
 import javax.swing.*;
@@ -19,16 +20,27 @@ public class ButtonComponent extends JButton {
         this.horizontalMode = horizontalMode;
 
         this.setAlignmentX(JButton.CENTER_ALIGNMENT);
-
         this.addMouseListener(new MouseAdapter() {
+            final int blue = ButtonComponent.this.getBackground().getBlue();
+            final int green = ButtonComponent.this.getBackground().getGreen();
+            final int red = ButtonComponent.this.getBackground().getRed();
+
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
                 super.mouseEntered(mouseEvent);
                 ButtonComponent.this.setCursor(new Cursor((Cursor.HAND_CURSOR)));
+                ButtonComponent.this.setBackground(new ExtendedColor(this.red, this.green, this.blue).brighter(10));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+                super.mouseExited(mouseEvent);
+                ButtonComponent.this.setBackground(new ExtendedColor(this.red, this.green, this.blue));
             }
         });
 
         this.updateButtons();
+        this.setFocusable(false);
     }
 
     public void updateButtons() {

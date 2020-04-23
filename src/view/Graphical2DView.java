@@ -8,6 +8,7 @@ import view.sub_views.game_view.Graphical2DGameView;
 import view.sub_views.menu_view.Graphical2DMenuView;
 import view.sub_views.menu_view.MenuView;
 import view.utils.ExtendedColor;
+import view.utils.components.PopUpComponent;
 import view.utils.text.AppText;
 
 import javax.swing.*;
@@ -35,6 +36,7 @@ public class Graphical2DView extends JFrame implements View {
                 e.printStackTrace();
             }
 
+
             this.setTitle(getTextFor("global.frame.title"));
             this.setSize(1200, 600);
             this.setMinimumSize(new Dimension(700, 350));
@@ -57,19 +59,18 @@ public class Graphical2DView extends JFrame implements View {
 
     public void toggleFullScreen() {
         this.fullscreenModeActivated = !this.fullscreenModeActivated;
+        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
         if (this.fullscreenModeActivated) {
-            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
-            JLabel label = new JLabel("<html><h2>" + getTextFor("global.fullscreen.activated.message") + "</h2></html>");
-            label.setFont(AppText.getCustomFont());
-            label.setHorizontalAlignment(JLabel.CENTER);
-            JOptionPane.showMessageDialog(null, label, getTextFor("global.fullscreen.activated.title"), JOptionPane.PLAIN_MESSAGE);
+            if (!graphicsDevice.isFullScreenSupported()) {
+                throw new UnsupportedOperationException("Fullscreen mode is unsupported.");
+            }
+            graphicsDevice.setFullScreenWindow(this);
+            new PopUpComponent("<html><h1>" + getTextFor("global.fullscreen.activated.message") + "</h1></html>");
         } else {
-            this.dispose();
-            this.setExtendedState(JFrame.NORMAL);
+            graphicsDevice.setFullScreenWindow(null);
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
-            this.setVisible(true);
         }
     }
 

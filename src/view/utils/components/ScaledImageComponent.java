@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 public class ScaledImageComponent extends ImageComponent {
     private final Supplier<Double> heightScalar;
     private final boolean keepRatio;
-    private final boolean minimumScaling;
     private final Component referenceComponent;
     private final Supplier<Double> widthScalar;
 
@@ -17,7 +16,6 @@ public class ScaledImageComponent extends ImageComponent {
         this.widthScalar = widthScalar;
         this.heightScalar = heightScalar;
         this.keepRatio = keepRatio;
-        this.minimumScaling = true;
     }
 
     /**
@@ -104,7 +102,6 @@ public class ScaledImageComponent extends ImageComponent {
         this.widthScalar = () -> 1d;
         this.heightScalar = () -> 1d;
         this.keepRatio = keepRatio;
-        this.minimumScaling = false;
     }
 
     /**
@@ -126,14 +123,9 @@ public class ScaledImageComponent extends ImageComponent {
             ratio = ((double) this.image.getHeight(this)) / ((double) this.image.getWidth(this));
         }
 
-        if (this.minimumScaling) {
-            if (this.keepRatio) {
-                imageWidth = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth()), (int) (this.heightScalar.get() * this.referenceComponent.getHeight()));
-                imageHeight = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar.get() * this.referenceComponent.getHeight()));
-            } else {
-                imageWidth = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth()), (int) (this.widthScalar.get() * this.referenceComponent.getHeight()));
-                imageHeight = Math.min((int) (this.heightScalar.get() * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar.get() * this.referenceComponent.getHeight() * ratio));
-            }
+        if (this.keepRatio) {
+            imageWidth = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth()), (int) (this.heightScalar.get() * this.referenceComponent.getHeight()));
+            imageHeight = Math.min((int) (this.widthScalar.get() * this.referenceComponent.getWidth() * ratio), (int) (this.heightScalar.get() * this.referenceComponent.getHeight()));
         } else {
             imageWidth = (int) (this.widthScalar.get() * this.referenceComponent.getWidth());
             imageHeight = (int) (this.heightScalar.get() * this.referenceComponent.getHeight());
