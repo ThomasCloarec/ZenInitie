@@ -25,6 +25,7 @@ public class GameController {
     public ResponseError selectPawn(Position position) {
         ResponseError responseError = null;
 
+        System.out.println("Selected Pawn : " + this.game.getBoard()[position.getLine()][position.getColumn()]);
         if (this.game.isPawnSelectable(position)) {
             this.game.setSelectedPawn(position);
         } else {

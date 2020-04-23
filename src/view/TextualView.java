@@ -9,22 +9,21 @@ import view.sub_views.menu_view.TextualMenuView;
 
 import static view.utils.text.AppText.getTextFor;
 import static view.utils.text.AppText.preInformation;
-import static view.utils.text.TextOutput.println;
 
 public class TextualView implements View {
     public TextualView() {
-        println("███████╗███████╗███╗   ██╗    ██╗     ▄█╗██╗███╗   ██╗██╗████████╗██╗███████╗\n" +
+        System.out.println("███████╗███████╗███╗   ██╗    ██╗     ▄█╗██╗███╗   ██╗██╗████████╗██╗███████╗\n" +
                 "╚══███╔╝██╔════╝████╗  ██║    ██║     ╚═╝██║████╗  ██║██║╚══██╔══╝██║██╔════╝\n" +
                 "  ███╔╝ █████╗  ██╔██╗ ██║    ██║        ██║██╔██╗ ██║██║   ██║   ██║█████╗  \n" +
                 " ███╔╝  ██╔══╝  ██║╚██╗██║    ██║        ██║██║╚██╗██║██║   ██║   ██║██╔══╝  \n" +
                 "███████╗███████╗██║ ╚████║    ███████╗   ██║██║ ╚████║██║   ██║   ██║███████╗\n" +
                 "╚══════╝╚══════╝╚═╝  ╚═══╝    ╚══════╝   ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚══════╝\n");
 
-        println("████████████████████████████████████████\n" +
+        System.out.println("████████████████████████████████████████\n" +
                 "██      by Thomas Cloarec - 2020      ██\n" +
                 "██  First Year Undergraduate Project  ██\n" +
                 "████████████████████████████████████████\n");
-        println(preInformation + getTextFor("global.welcome"));
+        System.out.println(preInformation + getTextFor("global.welcome"));
     }
 
     @Override

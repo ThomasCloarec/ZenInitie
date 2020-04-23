@@ -8,8 +8,6 @@ import java.util.Scanner;
 import java.util.function.Predicate;
 
 import static view.utils.text.AppText.*;
-import static view.utils.text.TextOutput.print;
-import static view.utils.text.TextOutput.println;
 
 public class TextInput {
     private static final Scanner sc = new Scanner(System.in);
@@ -30,19 +28,19 @@ public class TextInput {
 
         do {
             try {
-                println(preQuestion + getTextFor(question));
+                System.out.println(preQuestion + getTextFor(question));
                 for (int i = 1; i <= answerNumber; i++) {
-                    println(preAnswer + getTextFor(question + ".answer" + i) + " (" + i + ")");
+                    System.out.println(preAnswer + getTextFor(question + ".answer" + i) + " (" + i + ")");
                 }
 
-                print(preInput);
+                System.out.print(preInput);
                 input = TextInput.sc.nextInt();
 
                 if (!condition.test(input)) {
-                    println(preInformation + condition);
+                    System.out.println(preInformation + condition);
                 }
             } catch (InputMismatchException ignored) {
-                println(preInformation + getTextFor("global.utils.input.error.type.number"));
+                System.out.println(preInformation + getTextFor("global.utils.input.error.type.number"));
             } finally {
                 try {
                     TextInput.sc.nextLine();
@@ -59,15 +57,15 @@ public class TextInput {
 
         do {
             try {
-                println(preQuestion + getTextFor(question));
-                print(preInput);
+                System.out.println(preQuestion + getTextFor(question));
+                System.out.print(preInput);
                 input = TextInput.sc.next().toUpperCase().charAt(0);
 
                 if (!condition.test(input)) {
-                    println(preInformation + condition);
+                    System.out.println(preInformation + condition);
                 }
             } catch (InputMismatchException ignored) {
-                println(preInformation + getTextFor("global.utils.input.error.type.character"));
+                System.out.println(preInformation + getTextFor("global.utils.input.error.type.character"));
             } finally {
                 TextInput.sc.nextLine();
             }
@@ -77,7 +75,7 @@ public class TextInput {
     }
 
     public static int getMenuAnswer(String question) {
-        println(preInformation + getTextFor(question.substring(0, question.lastIndexOf("."))));
+        System.out.println(preInformation + getTextFor(question.substring(0, question.lastIndexOf("."))));
         int answerNumber = TextInput.getAnswersCount(question);
         return TextInput.getIntAnswer(
                 question,
