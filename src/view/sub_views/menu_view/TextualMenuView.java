@@ -6,6 +6,7 @@ import view.utils.text.TextInput;
 
 import static view.utils.text.AppText.getTextFor;
 import static view.utils.text.AppText.preInformation;
+import static view.utils.text.TextOutput.println;
 
 public class TextualMenuView implements MenuView {
     private final MenuController menuController;
@@ -45,7 +46,7 @@ public class TextualMenuView implements MenuView {
 
     @Override
     public void exit() {
-        System.out.println(preInformation + getTextFor("exit"));
+        println(preInformation + getTextFor("exit"));
     }
 
     @Override

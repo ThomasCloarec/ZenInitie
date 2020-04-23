@@ -7,6 +7,8 @@ import model.game.Position;
 import view.utils.text.TextInput;
 
 import static view.utils.text.AppText.*;
+import static view.utils.text.TextOutput.print;
+import static view.utils.text.TextOutput.println;
 
 public class TextualGameView implements GameView {
     private final GameController gameController;
@@ -17,46 +19,46 @@ public class TextualGameView implements GameView {
 
     public static void updateBoard(Pawn[][] board) {
         for (int i = 0; i < board.length + 4; i++) {
-            System.out.print("▬\t");
+            print("▬\t");
         }
-        System.out.print("\n▌\t\t");
+        print("\n▌\t\t");
         for (int characterColumn = 0; characterColumn < board[0].length; characterColumn++) {
-            System.out.print((char) (65 + characterColumn) + "\t");
+            print((char) (65 + characterColumn) + "\t");
         }
-        System.out.println("\t▐");
+        println("\t▐");
         for (int line = 0; line < board.length; line++) {
-            System.out.print("▌\t" + (board.length - line) + "\t");
+            print("▌\t" + (board.length - line) + "\t");
             for (int column = 0; column < board[0].length; column++) {
                 if (board[line][column] == Pawn.BLACK) {
-                    System.out.print("○");
+                    print("○");
                 } else if (board[line][column] == Pawn.WHITE) {
-                    System.out.print("●");
+                    print("●");
                 } else if (board[line][column] == Pawn.ZEN) {
-                    System.out.print("✪");
+                    print("✪");
                 } else {
-                    System.out.print("·");
+                    print("·");
                 }
-                System.out.print("\t");
+                print("\t");
             }
-            System.out.println((board.length - line) + "\t▐");
+            println((board.length - line) + "\t▐");
         }
-        System.out.print("▌\t\t");
+        print("▌\t\t");
         for (int characterColumn = 0; characterColumn < board[0].length; characterColumn++) {
-            System.out.print((char) (65 + characterColumn) + "\t");
+            print((char) (65 + characterColumn) + "\t");
         }
-        System.out.println("\t▐");
+        println("\t▐");
         for (int i = 0; i < board.length + 4; i++) {
-            System.out.print("▬\t");
+            print("▬\t");
         }
-        System.out.println();
+        println();
     }
 
     @Override
     public void movePawn(Game game) {
-        System.out.println("Allowed moves : " + game.getAllowedMoves());
+        println("Allowed moves : " + game.getAllowedMoves());
         Position position = TextInput.getMovePositionAnswer(game);
         if (this.gameController.movePawn(position) == GameController.ResponseError.MOVE_PAWN_ERROR) {
-            System.out.println(preError + getTextFor("game.error.movePawn"));
+            println(preError + getTextFor("game.error.movePawn"));
             this.movePawn(game);
         }
     }
@@ -69,10 +71,10 @@ public class TextualGameView implements GameView {
     @Override
     public void selectPawn(Game game) {
         TextualGameView.updateBoard(game.getBoard());
-        System.out.println(preInformation + "(" + game.getCurrentTeamName() + ") " + game.getCurrentPlayerName() + getTextFor("game.playerTurn"));
+        println(preInformation + "(" + game.getCurrentTeamName() + ") " + game.getCurrentPlayerName() + getTextFor("game.playerTurn"));
         Position position = TextInput.getSelectPositionAnswer(game);
         if (this.gameController.selectPawn(position) == GameController.ResponseError.SELECT_PAWN_ERROR) {
-            System.out.println(preError + getTextFor("game.error.selectPawn"));
+            println(preError + getTextFor("game.error.selectPawn"));
             this.selectPawn(game);
         }
     }

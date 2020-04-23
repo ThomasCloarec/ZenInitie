@@ -24,7 +24,6 @@ public class Graphical2DGameView extends CustomPanel<GameController, GameLeftSec
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        System.out.println("hey");
     }
 
     @Override
