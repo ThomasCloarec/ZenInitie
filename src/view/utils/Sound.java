@@ -1,7 +1,9 @@
 package view.utils;
 
-import javax.sound.sampled.*;
-import java.io.IOException;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
+import java.io.BufferedInputStream;
 
 public class Sound {
     /**
@@ -10,14 +12,17 @@ public class Sound {
     private static final String pathPrefix = "/view/resources/sounds/";
 
     public Sound(String name) {
-        try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(Sound.class.getResource(Sound.pathPrefix + name));
-            DataLine.Info info = new DataLine.Info(Clip.class, audioIn.getFormat());
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.open(audioIn);
-            clip.start();
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> {
+            try {
+                BufferedInputStream bis = new BufferedInputStream(Sound.class.getResourceAsStream(Sound.pathPrefix + name));
+                Player player = new Player(bis);
+                player.play();
+                if (player.isComplete()) {
+                    player.close();
+                }
+            } catch (JavaLayerException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

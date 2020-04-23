@@ -37,7 +37,7 @@ public class Graphical2DView extends JFrame implements View {
                 e.printStackTrace();
             }
 
-            new Sound("hugo.wav");
+            new Sound("hugo.mp3");
 
             this.setTitle(getTextFor("global.frame.title"));
             this.setSize(1200, 600);
