@@ -59,11 +59,10 @@ public class Main {
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
     private static void newMenu() {
-        Music music = new Music();
-        music.loadFile("hugo.mp3");
+        Music music = new Music("hugo.mp3");
+        music.setVolume(0.9f);
         music.play();
         music.loop();
-
         Menu menu = new Menu();
         MenuController menuController = new MenuController(menu, Main::newGame);
         menu.addObserver(Main.view.createMenuView(menuController));
