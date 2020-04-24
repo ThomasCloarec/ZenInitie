@@ -100,9 +100,9 @@ public class Music implements Runnable {
             SourceDataLine line = this.getLine(targetFormat);
             if (line != null) {
                 line.start();
+                FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                 int nBytesRead = 0;
                 while (nBytesRead != -1 && this.running && !this.restart) {
-                    FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                     gainControl.setValue(gainControl.getMaximum() * this.volume);
 
                     nBytesRead = din.read(data, 0, data.length);
