@@ -20,17 +20,18 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     }
 
     @Override
+    public void goCredits() {
+        SwingUtilities.invokeLater(() -> this.contentSection.goCredits());
+    }
+
+    @Override
     public void changeLanguage() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.changeLanguage();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.changeLanguage());
     }
 
     @Override
     public void changeSettings() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.changeSettings();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.changeSettings());
     }
 
     @Override
@@ -48,16 +49,12 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void newGame() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.newGame();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.newGame());
     }
 
     @Override
     public void playOffline() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.playOffline();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.playOffline());
     }
 
     @Override
@@ -69,8 +66,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void goHomepage() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.goHomepage();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.goHomepage());
     }
 }

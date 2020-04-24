@@ -19,6 +19,10 @@ public class MenuController {
         this.menu.backPreviousPage();
     }
 
+    public void goCredits() {
+        this.menu.addActualPage(Menu.Page.GO_CREDITS);
+    }
+
     public void changeLanguage() {
         this.menu.addActualPage(Menu.Page.CHANGE_LANGUAGE);
     }

@@ -54,10 +54,12 @@ public class Graphical2DView extends JFrame implements View {
                 }
             });
 
-            new Timer(10, e -> {
-                this.revalidate();
-                this.repaint();
-            }).start();
+            SwingUtilities.invokeLater(() -> {
+                new Timer(30, e -> {
+                    this.revalidate();
+                    this.repaint();
+                }).start();
+            });
         });
     }
 
@@ -65,17 +67,24 @@ public class Graphical2DView extends JFrame implements View {
         this.fullscreenModeActivated = !this.fullscreenModeActivated;
         GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
+        this.dispose();
+        this.setVisible(false);
         if (this.fullscreenModeActivated) {
             if (!graphicsDevice.isFullScreenSupported()) {
                 throw new UnsupportedOperationException("Fullscreen mode is unsupported.");
             }
+            this.setUndecorated(true);
+            this.setVisible(true);
             graphicsDevice.setFullScreenWindow(this);
             new PopUpComponent("<html><h1>" + getTextFor("global.fullscreen.activated.message") + "</h1></html>");
         } else {
             graphicsDevice.setFullScreenWindow(null);
+            this.setUndecorated(false);
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
         }
+
+        this.setVisible(true);
     }
 
     @Override

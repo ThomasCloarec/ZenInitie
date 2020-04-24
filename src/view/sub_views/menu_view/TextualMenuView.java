@@ -15,6 +15,11 @@ public class TextualMenuView implements MenuView {
     }
 
     @Override
+    public void goCredits() {
+
+    }
+
+    @Override
     public void changeLanguage() {
         int input = TextInput.getMenuAnswer("menu.settings.language.question1");
         switch (input) {

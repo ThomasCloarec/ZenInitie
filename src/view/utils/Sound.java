@@ -2,19 +2,19 @@ package view.utils;
 
 import javax.sound.sampled.*;
 
-public class Music implements Runnable {
+public class Sound implements Runnable {
     private static final String pathPrefix = "/view/resources/sounds/";
     private final int byteChunkSize = 1024;//number of bytes to read at one time
-    private final byte[] muteData;
     private final String filePath;
+    private final byte[] muteData;
     private boolean running, mute, pause, loop, restart;
     private float volume;
 
     /**
      * Declares default variable values.
      */
-    public Music(String name) {
-        this.filePath = Music.pathPrefix + name;
+    public Sound(String name) {
+        this.filePath = Sound.pathPrefix + name;
         this.running = false;
         this.mute = false;
         this.pause = false;
@@ -100,10 +100,22 @@ public class Music implements Runnable {
             SourceDataLine line = this.getLine(targetFormat);
             if (line != null) {
                 line.start();
-                FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+
+                FloatControl gainControl = null;
+                if (line.isControlSupported(FloatControl.Type.VOLUME)) {
+                    gainControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+                } else if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                }
                 int nBytesRead = 0;
                 while (nBytesRead != -1 && this.running && !this.restart) {
-                    gainControl.setValue(gainControl.getMaximum() * this.volume);
+                    if (gainControl != null) {
+                        if (gainControl.getType().equals(FloatControl.Type.VOLUME)) {
+                            gainControl.setValue((gainControl.getMaximum() - gainControl.getMinimum()) * this.volume + gainControl.getMinimum());
+                        } else if (gainControl.getType().equals(FloatControl.Type.MASTER_GAIN)) {
+                            gainControl.setValue((float) (Math.log(this.volume) / Math.log(10.0) * 20.0));
+                        }
+                    }
 
                     nBytesRead = din.read(data, 0, data.length);
                     if (nBytesRead != -1) {
@@ -182,7 +194,7 @@ public class Music implements Runnable {
         try {
             do {
                 this.restart = false;
-                AudioInputStream in = AudioSystem.getAudioInputStream(Music.class.getResourceAsStream(this.filePath));
+                AudioInputStream in = AudioSystem.getAudioInputStream(Sound.class.getResourceAsStream(this.filePath));
                 AudioInputStream din;
                 AudioFormat baseFormat = in.getFormat();
                 AudioFormat decodedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
@@ -205,6 +217,19 @@ public class Music implements Runnable {
 
     public float getVolume() {
         return this.volume;
+    }
+
+    public void setVolume(float volume) {
+        this.volume = volume;
+    }
+
+    /**
+     * Returns if a file is loaded or not.
+     *
+     * @return File status of null or a file.
+     */
+    public boolean isLoaded() {
+        return this.filePath != null;
     }
 
     /**
@@ -241,18 +266,5 @@ public class Music implements Runnable {
      */
     public boolean isPlaying() {
         return this.running;
-    }
-
-    public void setVolume(float volume) {
-        this.volume = volume;
-    }
-
-    /**
-     * Returns if a file is loaded or not.
-     *
-     * @return File status of null or a file.
-     */
-    public boolean isLoaded() {
-        return this.filePath != null;
     }
 }

@@ -71,6 +71,7 @@ public class Menu extends MenuObservable {
         NEW_GAME,
         PLAY_OFFLINE,
         CHANGE_SETTINGS,
-        CHANGE_LANGUAGE
+        CHANGE_LANGUAGE,
+        GO_CREDITS
     }
 }

@@ -3,6 +3,8 @@ package view.sub_views.menu_view;
 import model.menu.Menu;
 
 public interface MenuView {
+    void goCredits();
+
     void changeLanguage();
 
     void changeSettings();
@@ -42,6 +44,9 @@ public interface MenuView {
                 break;
             case CHANGE_LANGUAGE:
                 this.changeLanguage();
+                break;
+            case GO_CREDITS:
+                this.goCredits();
                 break;
         }
     }

@@ -6,7 +6,7 @@ import view.Graphical2DView;
 import view.TextualView;
 import view.View;
 import view.ViewMode;
-import view.utils.Music;
+import view.utils.Sound;
 
 /**
  * More information about the game in the README.md file.
@@ -59,10 +59,10 @@ public class Main {
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
     private static void newMenu() {
-        Music music = new Music("hugo.mp3");
-        music.setVolume(0.9f);
-        music.play();
-        music.loop();
+        Sound sound = new Sound("hugo.mp3");
+        sound.setVolume(0.5f);
+        sound.play();
+        sound.loop();
         Menu menu = new Menu();
         MenuController menuController = new MenuController(menu, Main::newGame);
         menu.addObserver(Main.view.createMenuView(menuController));

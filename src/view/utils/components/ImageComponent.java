@@ -1,9 +1,7 @@
 package view.utils.components;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -69,15 +67,10 @@ public class ImageComponent extends JPanel {
      */
     public ImageComponent(String name, boolean originalSize) {
         Image image;
-        try {
-            image = ImageIO.read(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
+        image = new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage();
 
-            if (originalSize) {
-                this.setCustomSize(image.getWidth(this), image.getHeight(this));
-            }
-        } catch (IOException e) {
-            image = null;
-            e.printStackTrace();
+        if (originalSize) {
+            this.setCustomSize(image.getWidth(this), image.getHeight(this));
         }
         this.image = image;
 

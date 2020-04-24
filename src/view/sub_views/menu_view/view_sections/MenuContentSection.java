@@ -37,6 +37,22 @@ public class MenuContentSection extends Section<MenuController> {
         this.goHomepage();
     }
 
+    public void goCredits() {
+        this.removeAll();
+
+        JTextArea textArea = new JTextArea();
+        textArea.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        textArea.setEditable(false);
+        textArea.setMargin(new Insets(12, 12, 12, 12));
+        textArea.setText("Hugo Brient : Music, sounds and animations\nValentin : Logo animation");
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.add(scrollPane);
+    }
+
     public void changeLanguage() {
         ArrayList<JButton> buttons = new ArrayList<>();
 
@@ -81,6 +97,7 @@ public class MenuContentSection extends Section<MenuController> {
                 }
             }
         });
+        button4.addActionListener(actionEvent -> this.controller.goCredits());
 
         buttons.add(button1);
         buttons.add(button2);
