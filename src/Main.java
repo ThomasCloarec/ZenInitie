@@ -59,7 +59,7 @@ public class Main {
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
     private static void newMenu() {
-        Sound sound = new Sound("hugo.mp3");
+        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
         sound.setVolume(0.5f);
         sound.play();
         sound.loop();

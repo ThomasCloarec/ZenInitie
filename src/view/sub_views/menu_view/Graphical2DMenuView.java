@@ -21,17 +21,29 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void goCredits() {
-        SwingUtilities.invokeLater(() -> this.contentSection.goCredits());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.goCredits();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void changeLanguage() {
-        SwingUtilities.invokeLater(() -> this.contentSection.changeLanguage());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.changeLanguage();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void changeSettings() {
-        SwingUtilities.invokeLater(() -> this.contentSection.changeSettings());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.changeSettings();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
@@ -49,12 +61,20 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void newGame() {
-        SwingUtilities.invokeLater(() -> this.contentSection.newGame());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.newGame();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void playOffline() {
-        SwingUtilities.invokeLater(() -> this.contentSection.playOffline());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.playOffline();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
@@ -66,6 +86,10 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void goHomepage() {
-        SwingUtilities.invokeLater(() -> this.contentSection.goHomepage());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.goHomepage();
+            this.revalidate();
+            this.repaint();
+        });
     }
 }

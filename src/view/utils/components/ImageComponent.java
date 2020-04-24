@@ -2,12 +2,14 @@ package view.utils.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
 /**
  * A generic component to show images
  */
 public class ImageComponent extends JPanel {
+    private static final HashMap<String, Image> images = new HashMap<>();
     /**
      * The prefix of the path for the image. It directly goes into the images directory
      */
@@ -15,7 +17,7 @@ public class ImageComponent extends JPanel {
     /**
      * The image of the component
      */
-    protected final Image image;
+    protected Image image;
     /**
      * The condition that returns if the image has to be visible or not
      */
@@ -51,6 +53,24 @@ public class ImageComponent extends JPanel {
     }
 
     /**
+     * ImageComponent constructor with original size
+     *
+     * @param name name of the image
+     */
+    public ImageComponent(String name, boolean originalSize) {
+        if (originalSize) {
+            this.setCustomSize(this.image.getWidth(this), this.image.getHeight(this));
+        }
+
+        this.setImage(name);
+        this.setOpaque(false);
+    }
+
+    public static void loadImage(String name) {
+        ImageComponent.images.put(name, new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage());
+    }
+
+    /**
      * ImageComponent constructor with custom size (squared component)
      *
      * @param name name of the image
@@ -60,21 +80,11 @@ public class ImageComponent extends JPanel {
         this(name, size, true);
     }
 
-    /**
-     * ImageComponent constructor with original size
-     *
-     * @param name name of the image
-     */
-    public ImageComponent(String name, boolean originalSize) {
-        Image image;
-        image = new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage();
-
-        if (originalSize) {
-            this.setCustomSize(image.getWidth(this), image.getHeight(this));
+    public void setImage(String name) {
+        if (!ImageComponent.images.containsKey(name)) {
+            ImageComponent.loadImage(name);
         }
-        this.image = image;
-
-        this.setOpaque(false);
+        this.image = ImageComponent.images.get(name);
     }
 
     protected ImageComponent(String name) {

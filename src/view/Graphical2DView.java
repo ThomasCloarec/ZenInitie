@@ -8,6 +8,7 @@ import view.sub_views.game_view.Graphical2DGameView;
 import view.sub_views.menu_view.Graphical2DMenuView;
 import view.sub_views.menu_view.MenuView;
 import view.utils.ExtendedColor;
+import view.utils.components.ImageComponent;
 import view.utils.components.PopUpComponent;
 import view.utils.text.AppText;
 
@@ -24,6 +25,8 @@ public class Graphical2DView extends JFrame implements View {
 
     public Graphical2DView() {
         SwingUtilities.invokeLater(() -> {
+            ImageComponent.loadImage("logo_zen.gif");
+
             try {
                 UIManager.setLookAndFeel(new DarculaLaf());
             } catch (UnsupportedLookAndFeelException e) {
@@ -53,13 +56,6 @@ public class Graphical2DView extends JFrame implements View {
                     }
                 }
             });
-
-            SwingUtilities.invokeLater(() -> {
-                new Timer(30, e -> {
-                    this.revalidate();
-                    this.repaint();
-                }).start();
-            });
         });
     }
 
@@ -82,9 +78,8 @@ public class Graphical2DView extends JFrame implements View {
             this.setUndecorated(false);
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
+            this.setVisible(true);
         }
-
-        this.setVisible(true);
     }
 
     @Override
@@ -92,6 +87,8 @@ public class Graphical2DView extends JFrame implements View {
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
         SwingUtilities.invokeLater(() -> {
             this.setContentPane(graphical2DGameView);
+            this.getContentPane().revalidate();
+            this.getContentPane().repaint();
             this.setVisible(true);
         });
         return graphical2DGameView;
@@ -102,6 +99,8 @@ public class Graphical2DView extends JFrame implements View {
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
         SwingUtilities.invokeLater(() -> {
             this.setContentPane(graphical2DMenuView);
+            this.getContentPane().revalidate();
+            this.getContentPane().repaint();
             this.setVisible(true);
         });
 

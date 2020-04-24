@@ -5,6 +5,7 @@ import view.Graphical2DView;
 import view.sub_views.Section;
 import view.utils.ExtendedColor;
 import view.utils.components.ButtonComponent;
+import view.utils.components.ImageComponent;
 import view.utils.components.LightComponent;
 import view.utils.components.ScaledImageComponent;
 import view.utils.text.Language;
@@ -20,7 +21,7 @@ import java.util.function.Supplier;
 import static view.utils.text.AppText.getTextFor;
 
 public class MenuContentSection extends Section<MenuController> {
-    private final JPanel logoZen;
+    private final ImageComponent logoZen;
 
     public MenuContentSection(MenuController menuController, BooleanSupplier horizontalMode) {
         super(menuController, horizontalMode);
