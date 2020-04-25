@@ -4,10 +4,8 @@ import controller.menu.MenuController;
 import view.Graphical2DView;
 import view.sub_views.Section;
 import view.utils.ExtendedColor;
-import view.utils.components.ButtonComponent;
-import view.utils.components.ImageComponent;
-import view.utils.components.LightComponent;
-import view.utils.components.ScaledImageComponent;
+import view.utils.components.TextComponent;
+import view.utils.components.*;
 import view.utils.text.Language;
 
 import javax.swing.*;
@@ -41,17 +39,32 @@ public class MenuContentSection extends Section<MenuController> {
     public void goCredits() {
         this.removeAll();
 
-        JTextArea textArea = new JTextArea();
-        textArea.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        textArea.setEditable(false);
-        textArea.setMargin(new Insets(12, 12, 12, 12));
-        textArea.setText("Hugo Brient : Music, sounds and animations\nValentin : Logo animation");
+        JButton back = new ButtonComponent(getTextFor("menu.credits.answer1"), this, this.horizontalMode);
+        back.addActionListener(actionEvent -> this.controller.backPreviousPage());
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+        TextComponent textArea = new TextComponent();
+        textArea.setEditable(false);
+        textArea.setText("<html><center>" +
+                "<h1 style='font-size:30px'>Credits</h1>" +
+                "<h3 style='font-size:15px'>" + getTextFor("menu.credits.hugo") + "</h3>" +
+                "<h3 style='font-size:15px'>" + getTextFor("menu.credits.valentin") + "</h3></center></html>");
+
+        ScrollPaneComponent scrollPane = new ScrollPaneComponent(textArea, this::getWidth, () -> (int) ((this.getHeight() - this.logoZen.getHeight() - back.getHeight()) * 0.6));
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        this.add(Box.createVerticalGlue());
+        this.add(this.logoZen);
+        this.add(Box.createVerticalGlue());
         this.add(scrollPane);
+        this.add(Box.createVerticalGlue());
+        this.add(Box.createVerticalGlue());
+        this.add(back);
+        this.add(Box.createVerticalGlue());
+        this.add(Box.createVerticalGlue());
+
+        this.revalidate();
+        this.repaint();
     }
 
     public void changeLanguage() {
