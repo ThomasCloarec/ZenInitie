@@ -182,5 +182,8 @@ public class MenuContentSection extends Section<MenuController> {
         }
 
         buttonList.get(buttonList.size() - 1).addActionListener(actionEvent -> this.controller.backPreviousPage());
+
+        this.revalidate();
+        this.repaint();
     }
 }

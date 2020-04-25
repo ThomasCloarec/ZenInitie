@@ -86,9 +86,8 @@ public class Graphical2DView extends JFrame implements View {
     public GameView createGameView(GameController gameController) {
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
         SwingUtilities.invokeLater(() -> {
+            this.dispose();
             this.setContentPane(graphical2DGameView);
-            this.getContentPane().revalidate();
-            this.getContentPane().repaint();
             this.setVisible(true);
         });
         return graphical2DGameView;
@@ -98,9 +97,8 @@ public class Graphical2DView extends JFrame implements View {
     public MenuView createMenuView(MenuController menuController) {
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
         SwingUtilities.invokeLater(() -> {
+            this.dispose();
             this.setContentPane(graphical2DMenuView);
-            this.getContentPane().revalidate();
-            this.getContentPane().repaint();
             this.setVisible(true);
         });
 

@@ -21,29 +21,17 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void goCredits() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.goCredits();
-            this.revalidate();
-            this.repaint();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.goCredits());
     }
 
     @Override
     public void changeLanguage() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.changeLanguage();
-            this.revalidate();
-            this.repaint();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.changeLanguage());
     }
 
     @Override
     public void changeSettings() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.changeSettings();
-            this.revalidate();
-            this.repaint();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.changeSettings());
     }
 
     @Override
@@ -61,20 +49,12 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void newGame() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.newGame();
-            this.revalidate();
-            this.repaint();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.newGame());
     }
 
     @Override
     public void playOffline() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.playOffline();
-            this.revalidate();
-            this.repaint();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.playOffline());
     }
 
     @Override
@@ -86,10 +66,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
 
     @Override
     public void goHomepage() {
-        SwingUtilities.invokeLater(() -> {
-            this.contentSection.goHomepage();
-            this.revalidate();
-            this.repaint();
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.goHomepage());
     }
 }
