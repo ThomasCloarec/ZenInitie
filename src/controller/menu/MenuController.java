@@ -20,7 +20,7 @@ public class MenuController {
     }
 
     public void goCredits() {
-        this.menu.addActualPage(Menu.Page.GO_CREDITS);
+        this.menu.addActualPage(Menu.Page.CREDITS);
     }
 
     public void changeLanguage() {

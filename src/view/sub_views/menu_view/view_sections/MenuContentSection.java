@@ -39,7 +39,7 @@ public class MenuContentSection extends Section<MenuController> {
     public void goCredits() {
         this.removeAll();
 
-        JButton back = new ButtonComponent(getTextFor("menu.credits.answer1"), this, this.horizontalMode);
+        JButton back = new ButtonComponent(getTextFor("menu.credits.question1.answer1"), this, this.horizontalMode);
         back.addActionListener(actionEvent -> this.controller.backPreviousPage());
 
         TextComponent textArea = new TextComponent();
@@ -90,34 +90,32 @@ public class MenuContentSection extends Section<MenuController> {
         ArrayList<JButton> buttons = new ArrayList<>();
 
         JButton button1 = new ButtonComponent(getTextFor("menu.settings.question1.answer1"), this, this.horizontalMode);
-        JButton button2 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"), this, this.horizontalMode);
-        JButton button3 = new ButtonComponent(frame.isFullscreenModeActivated() ?
+        JButton button2 = new ButtonComponent(frame.isFullscreenModeActivated() ?
                 getTextFor("global.fullscreen.stop") :
                 getTextFor("global.fullscreen.start"),
                 this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(getTextFor("menu.settings.question1.answer2"), this, this.horizontalMode);
         JButton button4 = new ButtonComponent(getTextFor("menu.settings.question1.answer3"), this, this.horizontalMode);
-        JButton button5 = new ButtonComponent(getTextFor("menu.settings.question1.answer4"), this, this.horizontalMode);
 
         button1.addActionListener(actionEvent -> this.controller.changeLanguage());
-        button3.addActionListener(actionEvent -> frame.toggleFullScreen());
-        button3.addComponentListener(new ComponentAdapter() {
+        button2.addActionListener(actionEvent -> frame.toggleFullScreen());
+        button2.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent componentEvent) {
                 super.componentResized(componentEvent);
                 if (!frame.isFullscreenModeActivated()) {
-                    button3.setText(getTextFor("global.fullscreen.start"));
+                    button2.setText(getTextFor("global.fullscreen.start"));
                 } else {
-                    button3.setText(getTextFor("global.fullscreen.stop"));
+                    button2.setText(getTextFor("global.fullscreen.stop"));
                 }
             }
         });
-        button4.addActionListener(actionEvent -> this.controller.goCredits());
+        button3.addActionListener(actionEvent -> this.controller.goCredits());
 
         buttons.add(button1);
         buttons.add(button2);
         buttons.add(button3);
         buttons.add(button4);
-        buttons.add(button5);
 
         this.updateButtons(buttons);
     }

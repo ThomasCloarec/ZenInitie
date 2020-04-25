@@ -45,7 +45,7 @@ public interface MenuView {
             case CHANGE_LANGUAGE:
                 this.changeLanguage();
                 break;
-            case GO_CREDITS:
+            case CREDITS:
                 this.goCredits();
                 break;
         }

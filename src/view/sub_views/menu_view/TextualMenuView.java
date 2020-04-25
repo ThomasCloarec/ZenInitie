@@ -16,7 +16,14 @@ public class TextualMenuView implements MenuView {
 
     @Override
     public void goCredits() {
-
+        System.out.println(getTextFor("menu.credits"));
+        System.out.println("Credits :");
+        System.out.println(preInformation + getTextFor("menu.credits.hugo"));
+        System.out.println(preInformation + getTextFor("menu.credits.valentin"));
+        int input = TextInput.getMenuAnswer("menu.credits.question1");
+        if (input == 1) {
+            this.menuController.backPreviousPage();
+        }
     }
 
     @Override
@@ -42,7 +49,10 @@ public class TextualMenuView implements MenuView {
             case 1:
                 this.menuController.changeLanguage();
                 break;
-            case 4:
+            case 2:
+                this.menuController.goCredits();
+                break;
+            case 3:
                 this.menuController.backPreviousPage();
                 break;
         }
