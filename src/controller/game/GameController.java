@@ -5,9 +5,11 @@ import model.game.Position;
 
 public class GameController {
     private final Game game;
+    private final Runnable goMenu;
 
-    public GameController(Game game) {
+    public GameController(Game game, Runnable goMenu) {
         this.game = game;
+        this.goMenu = goMenu;
     }
 
     public ResponseError movePawn(Position position) {
@@ -38,5 +40,9 @@ public class GameController {
     public enum ResponseError {
         SELECT_PAWN_ERROR,
         MOVE_PAWN_ERROR
+    }
+
+    public void goMenu() {
+        this.goMenu.run();
     }
 }

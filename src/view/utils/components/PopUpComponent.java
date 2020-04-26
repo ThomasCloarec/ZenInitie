@@ -17,7 +17,6 @@ public class PopUpComponent extends JDialog {
                 e.printStackTrace();
             }
 
-            this.setAlwaysOnTop(true);
             this.setUndecorated(true);
             this.setLayout(new FlowLayout(FlowLayout.CENTER));
 

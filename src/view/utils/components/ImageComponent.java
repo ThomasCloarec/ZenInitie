@@ -15,7 +15,7 @@ public class ImageComponent extends JPanel {
     /**
      * The prefix of the path for the image. It directly goes into the images directory
      */
-    private static final String pathPrefix = "/view/resources/images/";
+    static final String pathPrefix = "/view/resources/images/";
     /**
      * The image of the component
      */
@@ -107,7 +107,9 @@ public class ImageComponent extends JPanel {
         super.paintComponent(graphics);
 
         if (this.visibleCondition.getAsBoolean()) {
-            graphics.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
+            Graphics2D graphics2D = (Graphics2D) graphics;
+            graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics2D.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }
 

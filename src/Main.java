@@ -39,6 +39,10 @@ public class Main {
             Main.view = new Graphical2DView();
         }
 
+        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
+        sound.setVolume(0.5f);
+        sound.play();
+        sound.loop();
         Main.newMenu();
     }
 
@@ -50,7 +54,7 @@ public class Main {
      */
     private static void newGame(Menu menu) {
         Game game = new Game(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
-        GameController gameController = new GameController(game);
+        GameController gameController = new GameController(game, Main::newMenu);
         game.addObserver(Main.view.createGameView(gameController));
     }
 
@@ -59,10 +63,6 @@ public class Main {
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
     private static void newMenu() {
-        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
-        sound.setVolume(0.5f);
-        sound.play();
-        sound.loop();
         Menu menu = new Menu();
         MenuController menuController = new MenuController(menu, Main::newGame);
         menu.addObserver(Main.view.createMenuView(menuController));

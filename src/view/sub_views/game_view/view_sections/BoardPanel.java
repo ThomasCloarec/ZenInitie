@@ -64,7 +64,7 @@ public class BoardPanel extends JPanel {
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        Dimension dimension = new Dimension(this.referenceComponent.getWidth(), this.referenceComponent.getWidth());
+        Dimension dimension = new Dimension(this.referenceComponent.getHeight() / 3, this.referenceComponent.getHeight() / 3);
         this.setSize(dimension);
         this.setMinimumSize(dimension);
         this.setMaximumSize(dimension);

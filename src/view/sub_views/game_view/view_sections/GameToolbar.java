@@ -1,6 +1,10 @@
 package view.sub_views.game_view.view_sections;
 
+import controller.game.GameController;
+import view.utils.Sound;
+import view.utils.components.MenuComponent;
 import view.utils.components.ScaledImageComponent;
+import view.utils.components.TimeComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,22 +14,30 @@ public class GameToolbar extends JPanel {
     private final Supplier<Integer> height;
     private final Supplier<Integer> width;
 
-    GameToolbar(Supplier<Integer> width, Supplier<Integer> height) {
+    GameToolbar(GameController gameController, Supplier<Integer> width, Supplier<Integer> height) {
         this.width = width;
         this.height = height;
 
+        ScaledImageComponent exit = new ScaledImageComponent("icons/exit.png", 0.3, this);
+        exit.addOnClick(gameController::goMenu);
+
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        ScaledImageComponent volume = new ScaledImageComponent("icons/volume_up.png", 0.7, this);
-        volume.addOnClick(() -> System.out.println("VOLUME"));
-        ScaledImageComponent save = new ScaledImageComponent("icons/save.png", 0.7, this);
-        save.addOnClick(() -> System.out.println("SAVE"));
-        ScaledImageComponent exit = new ScaledImageComponent("icons/exit.png", 0.7, this);
-        exit.addOnClick(() -> System.out.println("EXIT"));
+        ScaledImageComponent volume = new ScaledImageComponent(Sound.isVolumeOn() ? "icons/volume_up.png" : "icons/volume_down.png", exit);
+        volume.addOnClick(() -> {
+            Sound.toggleVolume();
+            volume.setImage(Sound.isVolumeOn() ? "icons/volume_up.png" : "icons/volume_down.png");
+            volume.revalidate();
+            volume.repaint();
+        });
+
+        MenuComponent menu = new MenuComponent();
+        menu.addElement(volume);
+        menu.setReferenceComponent(exit);
 
         this.add(Box.createHorizontalGlue());
-        this.add(volume);
+        this.add(menu);
         this.add(Box.createHorizontalGlue());
-        this.add(save);
+        this.add(new TimeComponent());
         this.add(Box.createHorizontalGlue());
         this.add(exit);
         this.add(Box.createHorizontalGlue());

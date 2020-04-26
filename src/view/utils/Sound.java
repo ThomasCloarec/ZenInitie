@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 
 public class Sound implements Runnable {
     private static final String pathPrefix = "/view/resources/sounds/";
+    private static boolean volumeOn = true;
     private final int byteChunkSize = 1024;//number of bytes to read at one time
     private final String filePath;
     private final byte[] muteData;
@@ -21,6 +22,10 @@ public class Sound implements Runnable {
         this.loop = false;
         this.restart = false;
         this.muteData = this.setMuteData();
+    }
+
+    public static void toggleVolume() {
+        Sound.volumeOn = !Sound.volumeOn;
     }
 
     /**
@@ -88,57 +93,8 @@ public class Sound implements Runnable {
         this.restart = true;
     }
 
-    /**
-     * Small sections of audio bytes are read off, watching for a call to stop, pause, restart, or mute the audio.
-     *
-     * @param targetFormat Format the audio will be changed to.
-     * @param din          The audio stream.
-     */
-    private void stream(AudioFormat targetFormat, AudioInputStream din) {
-        try {
-            byte[] data = new byte[this.byteChunkSize];
-            SourceDataLine line = this.getLine(targetFormat);
-            if (line != null) {
-                line.start();
-
-                FloatControl gainControl = null;
-                if (line.isControlSupported(FloatControl.Type.VOLUME)) {
-                    gainControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                } else if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                    gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-                }
-                int nBytesRead = 0;
-                while (nBytesRead != -1 && this.running && !this.restart) {
-                    if (gainControl != null) {
-                        if (gainControl.getType().equals(FloatControl.Type.VOLUME)) {
-                            gainControl.setValue((gainControl.getMaximum() - gainControl.getMinimum()) * this.volume + gainControl.getMinimum());
-                        } else if (gainControl.getType().equals(FloatControl.Type.MASTER_GAIN)) {
-                            gainControl.setValue((float) (Math.log(this.volume) / Math.log(10.0) * 20.0));
-                        }
-                    }
-
-                    nBytesRead = din.read(data, 0, data.length);
-                    if (nBytesRead != -1) {
-                        if (this.mute) {
-                            line.write(this.muteData, 0, nBytesRead);
-                        } else {
-                            line.write(data, 0, nBytesRead);
-                        }
-                    }
-
-                    while (this.pause && this.running) {
-                        this.wait(15);
-                    }
-                }
-                line.drain();
-                line.stop();
-                line.close();
-                din.close();
-            }
-        } catch (Exception e) {
-            System.err.println("Problem playing audio!");
-            e.printStackTrace();
-        }
+    public static boolean isVolumeOn() {
+        return Sound.volumeOn;
     }
 
     /**
@@ -266,5 +222,59 @@ public class Sound implements Runnable {
      */
     public boolean isPlaying() {
         return this.running;
+    }
+
+    /**
+     * Small sections of audio bytes are read off, watching for a call to stop, pause, restart, or mute the audio.
+     *
+     * @param targetFormat Format the audio will be changed to.
+     * @param din          The audio stream.
+     */
+    private void stream(AudioFormat targetFormat, AudioInputStream din) {
+        try {
+            byte[] data = new byte[this.byteChunkSize];
+            SourceDataLine line = this.getLine(targetFormat);
+            if (line != null) {
+                line.start();
+
+                FloatControl gainControl = null;
+                if (line.isControlSupported(FloatControl.Type.VOLUME)) {
+                    gainControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+                } else if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                }
+                int nBytesRead = 0;
+                while (nBytesRead != -1 && this.running && !this.restart) {
+                    if (gainControl != null) {
+                        float volume = Sound.volumeOn ? this.volume : 0;
+                        if (gainControl.getType().equals(FloatControl.Type.VOLUME)) {
+                            gainControl.setValue((gainControl.getMaximum() - gainControl.getMinimum()) * volume + gainControl.getMinimum());
+                        } else if (gainControl.getType().equals(FloatControl.Type.MASTER_GAIN)) {
+                            gainControl.setValue((float) (Math.log(volume) / Math.log(10.0) * 20.0));
+                        }
+                    }
+
+                    nBytesRead = din.read(data, 0, data.length);
+                    if (nBytesRead != -1) {
+                        if (this.mute) {
+                            line.write(this.muteData, 0, nBytesRead);
+                        } else {
+                            line.write(data, 0, nBytesRead);
+                        }
+                    }
+
+                    while (this.pause && this.running) {
+                        this.wait(15);
+                    }
+                }
+                line.drain();
+                line.stop();
+                line.close();
+                din.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Problem playing audio!");
+            e.printStackTrace();
+        }
     }
 }
