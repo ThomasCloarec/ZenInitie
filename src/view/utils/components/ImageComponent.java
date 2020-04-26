@@ -1,8 +1,11 @@
 package view.utils.components;
 
+import com.bulenkov.iconloader.util.Scalr;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
@@ -16,13 +19,17 @@ public class ImageComponent extends JPanel {
     static final String pathPrefix = "/view/resources/images/";
     private static final HashMap<String, Image> images = new HashMap<>();
     /**
-     * The image of the component
+     * The loaded image of the component
      */
     protected Image image;
     /**
      * The condition that returns if the image has to be visible or not
      */
     protected BooleanSupplier visibleCondition = () -> true;
+    /**
+     * The resized image of the component to draw
+     */
+    private BufferedImage bufferedImage;
 
     /**
      * ImageComponent constructor with custom width and height
@@ -65,6 +72,15 @@ public class ImageComponent extends JPanel {
 
         this.setImage(name);
         this.setOpaque(false);
+
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+                ImageComponent.this.bufferedImage = Scalr.resize(ImageComponent.toBufferedImage(ImageComponent.this.image), Scalr.Method.AUTOMATIC, ImageComponent.this.getWidth(), ImageComponent.this.getHeight());
+                ImageComponent.this.repaint();
+            }
+        });
     }
 
     /**
@@ -83,6 +99,26 @@ public class ImageComponent extends JPanel {
 
     public static void loadImage(String name) {
         ImageComponent.images.put(name, new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage());
+    }
+
+    /**
+     * Converts a given Image into a BufferedImage
+     *
+     * @param img The Image to be converted
+     * @return The converted BufferedImage
+     */
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
     }
 
     public void addOnClick(Runnable onClick) {
@@ -110,8 +146,7 @@ public class ImageComponent extends JPanel {
         super.paintComponent(graphics);
 
         if (this.visibleCondition.getAsBoolean()) {
-            Graphics2D graphics2D = (Graphics2D) graphics;
-            graphics2D.drawImage(new ImageIcon(this.image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH)).getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
+            graphics.drawImage(this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }
 

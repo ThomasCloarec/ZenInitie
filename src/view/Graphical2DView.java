@@ -14,8 +14,7 @@ import view.utils.text.AppText;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 import static view.utils.text.AppText.getTextFor;
@@ -29,6 +28,9 @@ public class Graphical2DView extends JFrame implements View {
             ImageComponent.loadImage("logo_zen.png");
             ImageComponent.loadImage("blue_dragon.png");
             ImageComponent.loadImage("red_dragon.png");
+            ImageComponent.loadImage("icons/exit.png");
+            ImageComponent.loadImage("left_baner.png");
+            ImageComponent.loadImage("right_baner.png");
 
             try {
                 UIManager.setLookAndFeel(new DarculaLaf());
