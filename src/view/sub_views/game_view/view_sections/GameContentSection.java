@@ -11,7 +11,7 @@ public class GameContentSection extends Section<GameController> {
         super(gameController, horizontalMode);
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalGlue());
-        this.add(new GameToolbar(this::getWidth, () -> this.getWidth() / 4));
+        this.add(new GameToolbar(this::getWidth, () -> this.getWidth() / 3));
         this.add(Box.createVerticalGlue());
         this.add(new BoardPanel(gameController, this));
         this.add(Box.createVerticalGlue());
