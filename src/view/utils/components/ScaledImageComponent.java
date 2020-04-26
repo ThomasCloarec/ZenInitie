@@ -8,6 +8,7 @@ public class ScaledImageComponent extends ImageComponent {
     private final boolean keepRatio;
     private final Component referenceComponent;
     private final Supplier<Double> widthScalar;
+    private boolean squared;
 
     public ScaledImageComponent(String name, Supplier<Double> widthScalar, Supplier<Double> heightScalar, Component referenceComponent, boolean keepRatio) {
         super(name);
@@ -59,6 +60,7 @@ public class ScaledImageComponent extends ImageComponent {
 
     public ScaledImageComponent(String name, Supplier<Double> sizeScalar, Component referenceComponent, boolean keepRatio) {
         this(name, sizeScalar, sizeScalar, referenceComponent, keepRatio);
+        this.squared = true;
     }
 
     /**
@@ -71,6 +73,7 @@ public class ScaledImageComponent extends ImageComponent {
      */
     public ScaledImageComponent(String name, double sizeScalar, Component referenceComponent, boolean keepRatio) {
         this(name, sizeScalar, sizeScalar, referenceComponent, keepRatio);
+        this.squared = true;
     }
 
     public ScaledImageComponent(String name, Supplier<Double> sizeScalar, Component referenceComponent) {
@@ -129,6 +132,12 @@ public class ScaledImageComponent extends ImageComponent {
         } else {
             imageWidth = (int) (this.widthScalar.get() * this.referenceComponent.getWidth());
             imageHeight = (int) (this.heightScalar.get() * this.referenceComponent.getHeight());
+
+            if (this.squared) {
+                int mini = Math.min(imageWidth, imageHeight);
+                imageWidth = mini;
+                imageHeight = mini;
+            }
         }
 
         this.setCustomSize(imageWidth, imageHeight);

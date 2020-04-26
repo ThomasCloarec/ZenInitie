@@ -2,6 +2,8 @@ package view.utils.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
@@ -66,10 +68,6 @@ public class ImageComponent extends JPanel {
         this.setOpaque(false);
     }
 
-    public static void loadImage(String name) {
-        ImageComponent.images.put(name, new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage());
-    }
-
     /**
      * ImageComponent constructor with custom size (squared component)
      *
@@ -80,15 +78,28 @@ public class ImageComponent extends JPanel {
         this(name, size, true);
     }
 
-    public void setImage(String name) {
-        if (!ImageComponent.images.containsKey(name)) {
-            ImageComponent.loadImage(name);
-        }
-        this.image = ImageComponent.images.get(name);
-    }
-
     protected ImageComponent(String name) {
         this(name, false);
+    }
+
+    public static void loadImage(String name) {
+        ImageComponent.images.put(name, new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage());
+    }
+
+    public void addOnClick(Runnable onClick) {
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
+                onClick.run();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                super.mouseEntered(mouseEvent);
+                ImageComponent.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        });
     }
 
     @Override
@@ -100,15 +111,22 @@ public class ImageComponent extends JPanel {
         }
     }
 
-    protected void setCustomSize(int width, int height) {
-        this.setCustomSize(new Dimension(width, height));
-    }
-
     protected void setCustomSize(Dimension dimension) {
         this.setMinimumSize(dimension);
         this.setPreferredSize(dimension);
         this.setMaximumSize(dimension);
         this.setSize(dimension);
+    }
+
+    protected void setCustomSize(int width, int height) {
+        this.setCustomSize(new Dimension(width, height));
+    }
+
+    public void setImage(String name) {
+        if (!ImageComponent.images.containsKey(name)) {
+            ImageComponent.loadImage(name);
+        }
+        this.image = ImageComponent.images.get(name);
     }
 
     public void setVisibleCondition(BooleanSupplier visibleCondition) {
