@@ -2,8 +2,7 @@ package view.utils.components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
@@ -11,11 +10,11 @@ import java.util.function.BooleanSupplier;
  * A generic component to show images
  */
 public class ImageComponent extends JPanel {
-    private static final HashMap<String, Image> images = new HashMap<>();
     /**
      * The prefix of the path for the image. It directly goes into the images directory
      */
     static final String pathPrefix = "/view/resources/images/";
+    private static final HashMap<String, Image> images = new HashMap<>();
     /**
      * The image of the component
      */
@@ -102,14 +101,17 @@ public class ImageComponent extends JPanel {
         });
     }
 
+    protected void setCustomSize(int width, int height) {
+        this.setCustomSize(new Dimension(width, height));
+    }
+
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
         if (this.visibleCondition.getAsBoolean()) {
             Graphics2D graphics2D = (Graphics2D) graphics;
-            graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            graphics2D.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), this);
+            graphics2D.drawImage(new ImageIcon(this.image.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH)).getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }
 
@@ -118,10 +120,6 @@ public class ImageComponent extends JPanel {
         this.setPreferredSize(dimension);
         this.setMaximumSize(dimension);
         this.setSize(dimension);
-    }
-
-    protected void setCustomSize(int width, int height) {
-        this.setCustomSize(new Dimension(width, height));
     }
 
     public void setImage(String name) {
