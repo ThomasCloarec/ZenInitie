@@ -23,7 +23,7 @@ public class MenuRightSection extends Section<MenuController> {
         this.lights.add(redLight);
 
         this.add(Box.createVerticalGlue());
-        ImageComponent redDragon = new ScaledImageComponent("red_dragon.gif", 0.75, 0.75, this);
+        ImageComponent redDragon = new ScaledImageComponent("red_dragon.png", 0.75, 0.75, this);
         redDragon.setVisibleCondition(this.horizontalMode);
         this.add(redDragon);
         this.add(Box.createVerticalGlue());

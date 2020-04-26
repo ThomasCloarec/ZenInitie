@@ -21,11 +21,14 @@ import java.io.IOException;
 import static view.utils.text.AppText.getTextFor;
 
 public class Graphical2DView extends JFrame implements View {
+    private static final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private boolean fullscreenModeActivated;
 
     public Graphical2DView() {
         SwingUtilities.invokeLater(() -> {
-            ImageComponent.loadImage("logo_zen.gif");
+            ImageComponent.loadImage("logo_zen.png");
+            ImageComponent.loadImage("blue_dragon.png");
+            ImageComponent.loadImage("red_dragon.png");
 
             try {
                 UIManager.setLookAndFeel(new DarculaLaf());
@@ -61,46 +64,59 @@ public class Graphical2DView extends JFrame implements View {
 
     public void toggleFullScreen() {
         this.fullscreenModeActivated = !this.fullscreenModeActivated;
-        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
         this.dispose();
-        this.setVisible(false);
+
         if (this.fullscreenModeActivated) {
-            if (!graphicsDevice.isFullScreenSupported()) {
-                throw new UnsupportedOperationException("Fullscreen mode is unsupported.");
-            }
-            this.setUndecorated(true);
-            this.setVisible(true);
-            graphicsDevice.setFullScreenWindow(this);
+            this.goFullScreen();
             new PopUpComponent("<html><h1>" + getTextFor("global.fullscreen.activated.message") + "</h1></html>");
         } else {
-            graphicsDevice.setFullScreenWindow(null);
-            this.setUndecorated(false);
-            this.setSize(1200, 600);
-            this.setLocationRelativeTo(null);
-            this.setVisible(true);
+            this.goWindowedScreen();
         }
+        this.setVisible(true);
+    }
+
+    private void goFullScreen() {
+        this.dispose();
+        this.setUndecorated(true);
+        Graphical2DView.graphicsDevice.setFullScreenWindow(this);
+        this.setVisible(true);
+        this.revalidate();
+        this.repaint();
+    }
+
+    private void goWindowedScreen() {
+        this.dispose();
+        Graphical2DView.graphicsDevice.setFullScreenWindow(null);
+        this.setUndecorated(false);
+        this.setSize(1200, 600);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.revalidate();
+        this.repaint();
     }
 
     @Override
     public GameView createGameView(GameController gameController) {
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
-        SwingUtilities.invokeLater(() -> {
-            this.dispose();
-            this.setContentPane(graphical2DGameView);
-            this.setVisible(true);
-        });
+        if (this.fullscreenModeActivated) {
+            this.goFullScreen();
+        } else {
+            this.goWindowedScreen();
+        }
+        this.setContentPane(graphical2DGameView);
+
         return graphical2DGameView;
     }
 
     @Override
     public MenuView createMenuView(MenuController menuController) {
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
-        SwingUtilities.invokeLater(() -> {
-            this.dispose();
-            this.setContentPane(graphical2DMenuView);
-            this.setVisible(true);
-        });
+        if (this.fullscreenModeActivated) {
+            this.goFullScreen();
+        } else {
+            this.goWindowedScreen();
+        }
+        this.setContentPane(graphical2DMenuView);
 
         return graphical2DMenuView;
     }

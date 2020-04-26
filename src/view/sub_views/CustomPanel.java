@@ -60,7 +60,16 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
     public CustomPanel(ControllerT controller) {
         this.controller = controller;
 
-        SwingUtilities.invokeLater(() -> this.setOpaque(false));
+        this.setOpaque(false);
+
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+                CustomPanel.this.revalidate();
+                CustomPanel.this.repaint();
+            }
+        });
     }
 
     /**
@@ -72,15 +81,6 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
         this.add(this.leftSection);
         this.add(this.contentSection);
         this.add(this.rightSection);
-
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                super.componentResized(componentEvent);
-                CustomPanel.this.revalidate();
-                CustomPanel.this.repaint();
-            }
-        });
     }
 
     /**

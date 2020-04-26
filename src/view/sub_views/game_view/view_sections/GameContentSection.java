@@ -6,6 +6,8 @@ import view.utils.ExtendedColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BooleanSupplier;
@@ -37,6 +39,13 @@ public class GameContentSection extends Section<GameController> {
             });
             this.panel.add(panel1);
         }
+        this.panel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+                GameContentSection.this.panel.doLayout();
+            }
+        });
         this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.LIGHT_GRAY, 3));
         this.add(this.panel);
         this.add(Box.createVerticalGlue());
@@ -45,8 +54,8 @@ public class GameContentSection extends Section<GameController> {
     }
 
     @Override
-    protected void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
         Dimension dimension = new Dimension(this.getWidth(), this.getWidth());
         this.panel.setSize(dimension);
         this.panel.setMinimumSize(dimension);
