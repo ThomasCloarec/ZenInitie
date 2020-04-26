@@ -4,6 +4,8 @@ import view.utils.components.LightComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 
@@ -18,6 +20,14 @@ public abstract class Section<ControllerT> extends JPanel {
 
         this.setOpaque(false);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+                Section.this.doLayout();
+            }
+        });
     }
 
     public void paintLights(Graphics2D graphics2D) {

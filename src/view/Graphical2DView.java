@@ -70,6 +70,8 @@ public class Graphical2DView extends JFrame implements View {
             this.goFullScreen();
             new PopUpComponent("<html><h1>" + getTextFor("global.fullscreen.activated.message") + "</h1></html>");
         } else {
+            this.setSize(1200, 600);
+            this.setLocationRelativeTo(null);
             this.goWindowedScreen();
         }
         this.setVisible(true);
@@ -88,8 +90,6 @@ public class Graphical2DView extends JFrame implements View {
         this.dispose();
         Graphical2DView.graphicsDevice.setFullScreenWindow(null);
         this.setUndecorated(false);
-        this.setSize(1200, 600);
-        this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.revalidate();
         this.repaint();
