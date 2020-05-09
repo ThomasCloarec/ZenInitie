@@ -3,8 +3,13 @@ package view.utils.components;
 import view.utils.ExtendedColor;
 import view.utils.text.AppText;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BooleanSupplier;
@@ -14,16 +19,16 @@ public class ButtonComponent extends JButton {
     private final JComponent referenceComponent;
     private Font font;
 
-    public ButtonComponent(String string, JComponent referenceComponent, BooleanSupplier horizontalMode) {
-        super(string);
+    public ButtonComponent(String text, JComponent referenceComponent, BooleanSupplier horizontalMode) {
+        super(text);
         this.referenceComponent = referenceComponent;
         this.horizontalMode = horizontalMode;
 
-        this.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        this.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.addMouseListener(new MouseAdapter() {
-            final int blue = ButtonComponent.this.getBackground().getBlue();
-            final int green = ButtonComponent.this.getBackground().getGreen();
-            final int red = ButtonComponent.this.getBackground().getRed();
+            private final int blue = ButtonComponent.this.getBackground().getBlue();
+            private final int green = ButtonComponent.this.getBackground().getGreen();
+            private final int red = ButtonComponent.this.getBackground().getRed();
 
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {

@@ -2,10 +2,18 @@ package view.utils.components;
 
 import com.bulenkov.iconloader.util.Scalr;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
 
@@ -53,7 +61,7 @@ public class ImageComponent extends JPanel {
     public ImageComponent(String name, int size, boolean keepRatio) {
         this(name);
         if (keepRatio) {
-            double ratio = ((double) this.image.getHeight(this)) / ((double) this.image.getWidth(this));
+            double ratio = ((double) this.image.getHeight(this)) / this.image.getWidth(this);
             this.setCustomSize(size, (int) (size * ratio));
         } else {
             this.setCustomSize(size, size);
@@ -66,12 +74,12 @@ public class ImageComponent extends JPanel {
      * @param name name of the image
      */
     public ImageComponent(String name, boolean originalSize) {
+        this.setImage(name);
+        this.setOpaque(false);
+
         if (originalSize) {
             this.setCustomSize(this.image.getWidth(this), this.image.getHeight(this));
         }
-
-        this.setImage(name);
-        this.setOpaque(false);
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -98,7 +106,8 @@ public class ImageComponent extends JPanel {
     }
 
     public static void loadImage(String name) {
-        ImageComponent.images.put(name, new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name)).getImage());
+        ImageIcon imageIcon = new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
+        ImageComponent.images.put(name, imageIcon.getImage());
     }
 
     /**
@@ -108,15 +117,17 @@ public class ImageComponent extends JPanel {
      * @return The converted BufferedImage
      */
     public static BufferedImage toBufferedImage(Image img) {
+        BufferedImage bimage;
+
         if (img instanceof BufferedImage) {
-            return (BufferedImage) img;
+            bimage = (BufferedImage) img;
+        } else {
+            bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+            Graphics2D bGr = bimage.createGraphics();
+            bGr.drawImage(img, 0, 0, null);
+            bGr.dispose();
         }
-
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
 
         return bimage;
     }

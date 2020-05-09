@@ -1,7 +1,7 @@
 package view.utils.components;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JEditorPane;
+import java.awt.Insets;
 
 public class TextComponent extends JEditorPane {
     public TextComponent() {

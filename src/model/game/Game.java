@@ -4,9 +4,11 @@ import model.Observable;
 import model.game.team.Player;
 import model.game.team.Team;
 import model.game.team.TeamColor;
-import view.sub_views.game_view.GameView;
+import view.subviews.gameview.GameView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Game extends Observable<GameView> {
     protected final boolean aiMode;
@@ -42,7 +44,8 @@ public class Game extends Observable<GameView> {
 
         int i = 0;
         while (i < this.allowedMoves.size() && !allowed) {
-            if (move.getLine() == this.allowedMoves.get(i).getLine() && move.getColumn() == this.allowedMoves.get(i).getColumn()) {
+            Position position = this.allowedMoves.get(i);
+            if (move.getLine() == position.getLine() && move.getColumn() == position.getColumn()) {
                 allowed = true;
             }
             i++;
@@ -53,14 +56,16 @@ public class Game extends Observable<GameView> {
 
     public boolean isPawnSelectable(Position position) {
         Pawn pawn = this.board.getArray()[position.getLine()][position.getColumn()];
-        return this.getCurrentTeam().controlPawn(pawn);
+        Team currentTeam = this.getCurrentTeam();
+        return currentTeam.controlPawn(pawn);
     }
 
     public void moveSelectedPawn(Position position) {
         this.board.getArray()[position.getLine()][position.getColumn()] = this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()];
         this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()] = Pawn.EMPTY;
 
-        if (!this.getCurrentTeam().nextPlayerPlay()) {
+        Team currentTeam = this.getCurrentTeam();
+        if (!currentTeam.nextPlayerPlay()) {
             this.currentTeamIndex = (this.currentTeamIndex + 1) % this.teams.size();
         }
         this.notifyPawnMoved();
@@ -95,20 +100,21 @@ public class Game extends Observable<GameView> {
         positions[2] = new Position(position.getLine(), position.getColumn() - horizontalPawnCount); // left
         positions[3] = new Position(position.getLine(), position.getColumn() + horizontalPawnCount); // right
 
-        int firstDiagonalPawnCount = this.board.getFirstDiagonalPawnCount(position);
-        positions[4] = new Position(position.getLine() - firstDiagonalPawnCount, position.getColumn() - firstDiagonalPawnCount); // top left
-        positions[5] = new Position(position.getLine() - firstDiagonalPawnCount, position.getColumn() + firstDiagonalPawnCount); // top right
+        int diagonal1PawnCount = this.board.getFirstDiagonalPawnCount(position);
+        positions[4] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() - diagonal1PawnCount); // top left
+        positions[5] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() + diagonal1PawnCount); // top right
 
-        int secondDiagonalPawnCount = this.board.getSecondDiagonalPawnCount(position);
-        positions[6] = new Position(position.getLine() + secondDiagonalPawnCount, position.getColumn() - secondDiagonalPawnCount); // bottom left
-        positions[7] = new Position(position.getLine() + secondDiagonalPawnCount, position.getColumn() + secondDiagonalPawnCount); // bottom right
+        int diagonal2PawnCount = this.board.getSecondDiagonalPawnCount(position);
+        positions[6] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() - diagonal2PawnCount); // bottom left
+        positions[7] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() + diagonal2PawnCount); // bottom right
         return positions;
     }
 
     private boolean isMoveValid(Position position) {
         boolean validMove = true;
 
-        if (this.board.isPositionValid(position) && !this.getCurrentTeam().controlPawn(this.board.getArray()[position.getLine()][position.getColumn()])) { // destination must be on the board and can't be my pawn
+        Team currentTeam = this.getCurrentTeam();
+        if (this.board.isPositionValid(position) && !currentTeam.controlPawn(this.board.getArray()[position.getLine()][position.getColumn()])) { // destination must be on the board and can't be my pawn
             int deltaLine = position.getLine() - this.selectedPawn.getLine();
             int lineGradient = deltaLine == 0 ? 0 : Math.abs(deltaLine) / deltaLine; // line direction
 
@@ -118,7 +124,7 @@ public class Game extends Observable<GameView> {
             int line = this.selectedPawn.getLine() + lineGradient;
             int column = this.selectedPawn.getColumn() + columnGradient;
             while (this.board.isPositionValid(new Position(line, column)) && validMove && !(position.getLine() == line && position.getColumn() == column)) {
-                if (this.getCurrentTeam().enemyHasPawn(this.board.getArray()[line][column])) { // can't go hover opponent's pawn
+                if (currentTeam.enemyHasPawn(this.board.getArray()[line][column])) { // can't go hover opponent's pawn
                     validMove = false;
                 }
                 line += lineGradient;
@@ -143,8 +149,8 @@ public class Game extends Observable<GameView> {
         this.notifyPawnSelected();
     }
 
-    public ArrayList<Position> getAllowedMoves() {
-        return this.allowedMoves;
+    public List<Position> getAllowedMoves() {
+        return Collections.unmodifiableList(this.allowedMoves);
     }
 
     public Pawn[][] getBoard() {
@@ -152,7 +158,8 @@ public class Game extends Observable<GameView> {
     }
 
     public String getCurrentPlayerName() {
-        return this.getCurrentTeam().getCurrentPlayerName();
+        Team currentTeam = this.getCurrentTeam();
+        return currentTeam.getCurrentPlayerName();
     }
 
     public Team getCurrentTeam() {
@@ -160,7 +167,8 @@ public class Game extends Observable<GameView> {
     }
 
     public String getCurrentTeamName() {
-        return this.getCurrentTeam().getName();
+        Team currentTeam = this.getCurrentTeam();
+        return currentTeam.getName();
     }
 
     public int getBoardSize() {

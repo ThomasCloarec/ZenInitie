@@ -1,7 +1,9 @@
 package view.utils.components;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.function.Supplier;
 
 public class ScrollPaneComponent extends JScrollPane {

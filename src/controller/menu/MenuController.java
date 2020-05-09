@@ -1,6 +1,7 @@
 package controller.menu;
 
 import model.menu.Menu;
+import model.menu.MenuPage;
 import view.utils.text.AppText;
 import view.utils.text.Language;
 
@@ -8,9 +9,9 @@ import java.util.function.Consumer;
 
 public class MenuController {
     private final Menu menu;
-    private final Consumer<Menu> newGame;
+    private final Consumer<? super Menu> newGame;
 
-    public MenuController(Menu menu, Consumer<Menu> newGame) {
+    public MenuController(Menu menu, Consumer<? super Menu> newGame) {
         this.menu = menu;
         this.newGame = newGame;
     }
@@ -20,28 +21,28 @@ public class MenuController {
     }
 
     public void goCredits() {
-        this.menu.addActualPage(Menu.Page.CREDITS);
+        this.menu.addActualPage(MenuPage.CREDITS);
     }
 
     public void changeLanguage() {
-        this.menu.addActualPage(Menu.Page.CHANGE_LANGUAGE);
+        this.menu.addActualPage(MenuPage.CHANGE_LANGUAGE);
     }
 
     public void changeSettings() {
-        this.menu.addActualPage(Menu.Page.CHANGE_SETTINGS);
+        this.menu.addActualPage(MenuPage.CHANGE_SETTINGS);
     }
 
     public void loadGame() {
-        this.menu.addActualPage(Menu.Page.LOAD_GAME);
+        this.menu.addActualPage(MenuPage.LOAD_GAME);
     }
 
     public void newGame() {
-        this.menu.addActualPage(Menu.Page.NEW_GAME);
+        this.menu.addActualPage(MenuPage.NEW_GAME);
     }
 
     public void playOffline() {
         this.menu.setOnlineMode(false);
-        this.menu.addActualPage(Menu.Page.PLAY_OFFLINE);
+        this.menu.addActualPage(MenuPage.PLAY_OFFLINE);
     }
 
     public void playOneVsAI() {
@@ -58,7 +59,7 @@ public class MenuController {
 
     public void playOnline() {
         this.menu.setOnlineMode(true);
-        this.menu.addActualPage(Menu.Page.PLAY_ONLINE);
+        this.menu.addActualPage(MenuPage.PLAY_ONLINE);
     }
 
     public void playTwoVSAI() {

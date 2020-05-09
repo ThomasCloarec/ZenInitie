@@ -1,6 +1,7 @@
 package view.utils.components;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.util.function.Supplier;
 
 public class ScaledImageComponent extends ImageComponent {
@@ -102,8 +103,8 @@ public class ScaledImageComponent extends ImageComponent {
         super(name);
 
         this.referenceComponent = referenceComponent;
-        this.widthScalar = () -> 1d;
-        this.heightScalar = () -> 1d;
+        this.widthScalar = () -> 1.0d;
+        this.heightScalar = () -> 1.0d;
         this.keepRatio = keepRatio;
     }
 
@@ -123,7 +124,7 @@ public class ScaledImageComponent extends ImageComponent {
         int imageHeight;
         double ratio = 1;
         if (this.keepRatio) {
-            ratio = ((double) this.image.getHeight(this)) / ((double) this.image.getWidth(this));
+            ratio = ((double) this.image.getHeight(this)) / this.image.getWidth(this);
         }
 
         if (this.keepRatio) {

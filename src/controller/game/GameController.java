@@ -36,11 +36,6 @@ public class GameController {
         return responseError;
     }
 
-    public enum ResponseError {
-        SELECT_PAWN_ERROR,
-        MOVE_PAWN_ERROR
-    }
-
     public void goMenu() {
         this.goMenu.run();
     }

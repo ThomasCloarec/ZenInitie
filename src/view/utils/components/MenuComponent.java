@@ -1,7 +1,12 @@
 package view.utils.components;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 
 public class MenuComponent extends JMenuBar {
     private final JMenu menu = new JMenu();
@@ -37,7 +42,6 @@ public class MenuComponent extends JMenuBar {
         this.menu.setMinimumSize(menuDimension);
         this.menu.setMaximumSize(menuDimension);
         this.menu.setIcon(new ImageIcon(this.menuIcon.getImage().getScaledInstance((int) (menuDimension.width * 0.8), (int) (menuDimension.height * 0.82), Image.SCALE_DEFAULT)));
-        //Arrays.asList(this.menu.getComponents()).forEach(component -> ((ImageComponent)component).setCustomSize(menuDimension));
     }
 
     public void setReferenceComponent(JComponent referenceComponent) {

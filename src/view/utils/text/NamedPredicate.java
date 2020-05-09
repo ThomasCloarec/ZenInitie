@@ -4,9 +4,9 @@ import java.util.function.Predicate;
 
 public class NamedPredicate<T> implements Predicate<T> {
     private final String name;
-    private final Predicate<T> predicate;
+    private final Predicate<? super T> predicate;
 
-    public NamedPredicate(String name, Predicate<T> predicate) {
+    public NamedPredicate(String name, Predicate<? super T> predicate) {
         this.name = name;
         this.predicate = predicate;
     }

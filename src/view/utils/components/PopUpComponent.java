@@ -2,15 +2,27 @@ package view.utils.components;
 
 import view.utils.ExtendedColor;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.WindowEvent;
 
 public class PopUpComponent extends JDialog {
+    private final String message;
+
     public PopUpComponent(String message) {
         super(new JFrame(), false);
-        new Thread(() -> {
+
+        this.message = message;
+    }
+
+    public void display() {
+        Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -20,8 +32,8 @@ public class PopUpComponent extends JDialog {
             this.setUndecorated(true);
             this.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-            JLabel label = new JLabel(message);
-            label.setForeground(ExtendedColor.LIGHT_GRAY);
+            JLabel label = new JLabel(this.message);
+            label.setForeground(Color.LIGHT_GRAY);
             label.setBorder(new CompoundBorder(
                     BorderFactory.createLineBorder(ExtendedColor.CUSTOM_LIGHT_GREY, 3),
                     BorderFactory.createEmptyBorder(20, 20, 20, 20)));
@@ -39,7 +51,7 @@ public class PopUpComponent extends JDialog {
             }
             this.setVisible(false);
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        }).start();
-
+        });
+        thread.start();
     }
 }

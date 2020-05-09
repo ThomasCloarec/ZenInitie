@@ -1,7 +1,7 @@
 package model.menu;
 
 import model.Observable;
-import view.sub_views.menu_view.MenuView;
+import view.subviews.menuview.MenuView;
 
 public abstract class MenuObservable extends Observable<MenuView> {
     protected void notifyExit() {

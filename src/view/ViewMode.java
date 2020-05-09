@@ -6,8 +6,8 @@ public enum ViewMode {
     GRAPHICAL_3D;
 
     public static boolean contains(String test) {
-        for (ViewMode c : ViewMode.values()) {
-            if (c.name().equals(test)) {
+        for (ViewMode viewMode : ViewMode.values()) {
+            if (viewMode.name().equals(test)) {
                 return true;
             }
         }

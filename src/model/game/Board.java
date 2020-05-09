@@ -68,10 +68,12 @@ public class Board {
      * @return is position on board
      */
     boolean isPositionValid(Position position) {
-        return ((position.getLine() >= 0 && position.getLine() < this.board.length) && (position.getColumn() >= 0 && position.getColumn() < this.board[0].length));
+        boolean lineValid = position.getLine() >= 0 && position.getLine() < this.board.length;
+        boolean columnValid = position.getColumn() >= 0 && position.getColumn() < this.board[0].length;
+        return lineValid && columnValid;
     }
 
     Pawn[][] getArray() {
-        return this.board;
+        return this.board.clone();
     }
 }

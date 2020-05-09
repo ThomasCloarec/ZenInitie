@@ -2,13 +2,11 @@ package view;
 
 import controller.game.GameController;
 import controller.menu.MenuController;
-import view.sub_views.game_view.GameView;
-import view.sub_views.game_view.TextualGameView;
-import view.sub_views.menu_view.MenuView;
-import view.sub_views.menu_view.TextualMenuView;
-
-import static view.utils.text.AppText.getTextFor;
-import static view.utils.text.AppText.preInformation;
+import view.subviews.gameview.GameView;
+import view.subviews.gameview.TextualGameView;
+import view.subviews.menuview.MenuView;
+import view.subviews.menuview.TextualMenuView;
+import view.utils.text.AppText;
 
 public class TextualView implements View {
     public TextualView() {
@@ -23,7 +21,7 @@ public class TextualView implements View {
                 "██      by Thomas Cloarec - 2020      ██\n" +
                 "██  First Year Undergraduate Project  ██\n" +
                 "████████████████████████████████████████\n");
-        System.out.println(preInformation + getTextFor("global.welcome"));
+        System.out.println(AppText.preInformation + AppText.getTextFor("global.welcome"));
     }
 
     @Override

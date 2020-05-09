@@ -29,11 +29,11 @@ public class Position {
     }
 
     public char getFormattedColumn() {
-        return (char) (65 + this.getColumn());
+        return (char) (65 + this.column);
     }
 
     public int getFormattedLine() {
-        return 11 - this.getLine();
+        return 11 - this.line;
     }
 
     public int getLine() {

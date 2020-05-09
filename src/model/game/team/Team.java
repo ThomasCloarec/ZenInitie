@@ -31,7 +31,8 @@ public class Team {
     }
 
     public boolean hasPawn(Pawn pawn) {
-        return pawn.name().equals(this.teamColor.name());
+        String name = pawn.name();
+        return name.equals(this.teamColor.name());
     }
 
     public boolean enemyHasPawn(Pawn pawn) {
@@ -43,7 +44,8 @@ public class Team {
     }
 
     public String getCurrentPlayerName() {
-        return this.getCurrentPlayer().getName();
+        Player currentPlayer = this.getCurrentPlayer();
+        return currentPlayer.getName();
     }
 
     public String getName() {

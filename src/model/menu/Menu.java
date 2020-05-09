@@ -1,21 +1,21 @@
 package model.menu;
 
-import view.sub_views.menu_view.MenuView;
+import view.subviews.menuview.MenuView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Menu extends MenuObservable {
-    private final List<Page> pagesBreadcrumb = new ArrayList<>();
+    private final List<MenuPage> pagesBreadcrumb = new ArrayList<>();
     private boolean aiMode;
     private boolean duoMode;
     private boolean onlineMode;
 
     public Menu() {
-        this.pagesBreadcrumb.add(Page.ROOT);
+        this.pagesBreadcrumb.add(MenuPage.ROOT);
     }
 
-    public void addActualPage(Page actualPage) {
+    public void addActualPage(MenuPage actualPage) {
         this.pagesBreadcrumb.add(actualPage);
         this.notifyUpdatePage(this);
     }
@@ -36,7 +36,7 @@ public class Menu extends MenuObservable {
         this.notifyUpdatePage(this);
     }
 
-    public Page getActualPage() {
+    public MenuPage getActualPage() {
         return this.pagesBreadcrumb.get(this.pagesBreadcrumb.size() - 1);
     }
 
@@ -62,16 +62,5 @@ public class Menu extends MenuObservable {
 
     public void setOnlineMode(boolean onlineMode) {
         this.onlineMode = onlineMode;
-    }
-
-    public enum Page {
-        ROOT,
-        PLAY_ONLINE,
-        LOAD_GAME,
-        NEW_GAME,
-        PLAY_OFFLINE,
-        CHANGE_SETTINGS,
-        CHANGE_LANGUAGE,
-        CREDITS
     }
 }

@@ -3,21 +3,27 @@ package view;
 import com.bulenkov.darcula.DarculaLaf;
 import controller.game.GameController;
 import controller.menu.MenuController;
-import view.sub_views.game_view.GameView;
-import view.sub_views.game_view.Graphical2DGameView;
-import view.sub_views.menu_view.Graphical2DMenuView;
-import view.sub_views.menu_view.MenuView;
+import view.subviews.gameview.GameView;
+import view.subviews.gameview.Graphical2DGameView;
+import view.subviews.menuview.Graphical2DMenuView;
+import view.subviews.menuview.MenuView;
 import view.utils.ExtendedColor;
 import view.utils.components.ImageComponent;
 import view.utils.components.PopUpComponent;
 import view.utils.text.AppText;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
-
-import static view.utils.text.AppText.getTextFor;
 
 public class Graphical2DView extends JFrame implements View {
     private static final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -44,7 +50,7 @@ public class Graphical2DView extends JFrame implements View {
                 e.printStackTrace();
             }
 
-            this.setTitle(getTextFor("global.frame.title"));
+            this.setTitle(AppText.getTextFor("global.frame.title"));
             this.setSize(1200, 600);
             this.setMinimumSize(new Dimension(700, 350));
             this.setLocationRelativeTo(null);
@@ -70,7 +76,8 @@ public class Graphical2DView extends JFrame implements View {
 
         if (this.fullscreenModeActivated) {
             this.goFullScreen();
-            new PopUpComponent("<html><h1>" + getTextFor("global.fullscreen.activated.message") + "</h1></html>");
+            PopUpComponent popUpComponent = new PopUpComponent("<html><h1>" + AppText.getTextFor("global.fullscreen.activated.message") + "</h1></html>");
+            popUpComponent.display();
         } else {
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
