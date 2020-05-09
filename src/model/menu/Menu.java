@@ -1,11 +1,12 @@
 package model.menu;
 
+import utils.observer.Observable;
 import view.subviews.menuview.MenuView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu extends MenuObservable {
+public class Menu extends Observable<MenuView> {
     private final List<MenuPage> pagesBreadcrumb = new ArrayList<>();
     private boolean aiMode;
     private boolean duoMode;
@@ -17,23 +18,36 @@ public class Menu extends MenuObservable {
 
     public void addActualPage(MenuPage actualPage) {
         this.pagesBreadcrumb.add(actualPage);
-        this.notifyUpdatePage(this);
+        this.notifyUpdatePage();
     }
 
     public void backPreviousPage() {
         this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
 
-        if (!this.pagesBreadcrumb.isEmpty()) {
-            this.notifyUpdatePage(this);
-        } else {
+        if (this.pagesBreadcrumb.isEmpty()) {
             this.notifyExit();
+        } else {
+            this.notifyUpdatePage();
         }
+    }
+
+    protected void notifyExit() {
+        this.forEachObserver(MenuView::exit);
+    }
+
+    protected void notifyUpdatePage() {
+        this.forEachObserver(menuView -> menuView.updatePage(this.getActualPage()));
+    }
+
+    @Override
+    protected void notifyUpdateEverything(MenuView observer) {
+        observer.updatePage(this.getActualPage());
     }
 
     @Override
     public void addObserver(MenuView observer) {
         super.addObserver(observer);
-        this.notifyUpdatePage(this);
+        this.notifyUpdatePage();
     }
 
     public MenuPage getActualPage() {

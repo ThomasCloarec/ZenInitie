@@ -1,8 +1,9 @@
 package view.subviews.gameview;
 
 import model.game.Game;
+import utils.observer.Observer;
 
-public interface GameView {
+public interface GameView extends Observer<GameView> {
     void movePawn(Game game);
 
     void start(Game game);

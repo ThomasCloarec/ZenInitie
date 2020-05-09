@@ -1,9 +1,9 @@
 package model.game;
 
-import model.Observable;
 import model.game.team.Player;
 import model.game.team.Team;
 import model.game.team.TeamColor;
+import utils.observer.Observable;
 import view.subviews.gameview.GameView;
 
 import java.util.ArrayList;
@@ -72,11 +72,11 @@ public class Game extends Observable<GameView> {
     }
 
     private void notifyPawnMoved() {
-        this.observers.forEach(gameView -> gameView.pawnMoved(this));
+        this.forEachObserver(gameView -> gameView.pawnMoved(this));
     }
 
     private void notifyPawnSelected() {
-        this.observers.forEach(gameView -> gameView.pawnSelected(this));
+        this.forEachObserver(gameView -> gameView.pawnSelected(this));
     }
 
     private void setAllowedMoves() {
@@ -135,6 +135,11 @@ public class Game extends Observable<GameView> {
         }
 
         return validMove;
+    }
+
+    @Override
+    protected void notifyUpdateEverything(GameView observer) {
+
     }
 
     @Override

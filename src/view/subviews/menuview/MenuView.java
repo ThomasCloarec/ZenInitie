@@ -1,9 +1,9 @@
 package view.subviews.menuview;
 
-import model.menu.Menu;
 import model.menu.MenuPage;
+import utils.observer.Observer;
 
-public interface MenuView {
+public interface MenuView extends Observer<MenuView> {
     void goCredits();
 
     void changeLanguage();
@@ -22,9 +22,8 @@ public interface MenuView {
 
     void goHomepage();
 
-    default void updatePage(Menu menu) {
-        MenuPage actualPage = menu.getActualPage();
-        switch (actualPage) {
+    default void updatePage(MenuPage menuPage) {
+        switch (menuPage) {
             case ROOT:
                 this.goHomepage();
                 break;
