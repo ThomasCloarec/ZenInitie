@@ -42,7 +42,7 @@ public class Graphic2DGameController extends GameController {
 
     public static ActionListener getTimerTickListener(TimeComponent timeComponent) {
         return actionEvent -> {
-            if (!SwingUtilities.getWindowAncestor(timeComponent).isVisible()) {
+            if (SwingUtilities.getWindowAncestor(timeComponent) == null || !SwingUtilities.getWindowAncestor(timeComponent).isVisible()) {
                 timeComponent.stopTimer();
             }
 
