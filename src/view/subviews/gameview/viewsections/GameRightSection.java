@@ -28,7 +28,7 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         this.add(Box.createHorizontalGlue());
         this.add(Box.createHorizontalGlue());
         this.add(Box.createHorizontalGlue());
-        ImageComponent chineseGirl = new ScaledImageComponent("woman2.png", 0.55, 0.55, this);
+        ImageComponent chineseGirl = new ScaledImageComponent("robot.png", 0.55, 0.55, this);
         chineseGirl.setVisibleCondition(this.horizontalMode);
         this.add(chineseGirl);
 

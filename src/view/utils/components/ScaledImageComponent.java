@@ -99,13 +99,14 @@ public class ScaledImageComponent extends ImageComponent {
      * @param referenceComponent referenceComponent used to scale the image
      * @param keepRatio          keep the ratio of the image or not
      */
-    public ScaledImageComponent(String name, Component referenceComponent, boolean keepRatio) {
+    public ScaledImageComponent(String name, Component referenceComponent, boolean keepRatio, boolean noBufferingResize) {
         super(name);
 
         this.referenceComponent = referenceComponent;
         this.widthScalar = () -> 1.0d;
         this.heightScalar = () -> 1.0d;
         this.keepRatio = keepRatio;
+        this.noBufferingResize = noBufferingResize;
     }
 
     /**
@@ -115,7 +116,7 @@ public class ScaledImageComponent extends ImageComponent {
      * @param referenceComponent referenceComponent used to scale the image
      */
     public ScaledImageComponent(String name, Component referenceComponent) {
-        this(name, referenceComponent, true);
+        this(name, referenceComponent, true, false);
     }
 
     @Override

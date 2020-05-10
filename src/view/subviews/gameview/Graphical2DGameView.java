@@ -27,7 +27,9 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
 
     @Override
     public void start(Game game) {
-
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.start(game);
+        });
     }
 
     @Override

@@ -10,6 +10,7 @@ import view.subviews.menuview.Graphical2DMenuView;
 import view.subviews.menuview.MenuView;
 import view.utils.ExtendedColor;
 import view.utils.Sound;
+import view.utils.components.FireComponent;
 import view.utils.components.ImageComponent;
 import view.utils.text.AppText;
 
@@ -106,12 +107,25 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
     @Override
     public GameView createGameView(Graphic2DGameController gameController) {
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
-        this.setContentPane(graphical2DGameView);
-        if (this.fullscreenModeActivated) {
-            this.goFullScreen();
-        } else {
-            this.goWindowedScreen();
-        }
+
+        new Thread(() -> {
+            FireComponent fireComponent = new FireComponent();
+            this.setContentPane(fireComponent);
+            if (this.fullscreenModeActivated) {
+                this.goFullScreen();
+            } else {
+                this.goWindowedScreen();
+            }
+
+            fireComponent.launch();
+
+            this.setContentPane(graphical2DGameView);
+            if (this.fullscreenModeActivated) {
+                this.goFullScreen();
+            } else {
+                this.goWindowedScreen();
+            }
+        }).start();
 
         return graphical2DGameView;
     }

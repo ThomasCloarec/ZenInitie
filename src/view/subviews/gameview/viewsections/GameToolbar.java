@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 
 public class GameToolbar extends JPanel {
     private final Supplier<Integer> height;
+    private final TimeComponent timeComponent;
     private final Supplier<Integer> width;
 
     GameToolbar(Graphic2DGameController gameController, Supplier<Integer> width, Supplier<Integer> height) {
@@ -41,12 +42,17 @@ public class GameToolbar extends JPanel {
         this.add(Box.createHorizontalGlue());
         this.add(volume);
         this.add(Box.createHorizontalGlue());
-        this.add(new TimeComponent());
+        this.timeComponent = new TimeComponent();
+        this.add(this.timeComponent);
         this.add(Box.createHorizontalGlue());
         this.add(exit);
         this.add(Box.createHorizontalGlue());
 
         this.setOpaque(false);
+    }
+
+    public void start() {
+        this.timeComponent.startTimer();
     }
 
     @Override

@@ -38,6 +38,22 @@ public class ImageComponent extends JPanel {
      * The resized image of the component to draw
      */
     private BufferedImage resizedImage;
+    /**
+     * Useful for gif, the image loses a bit of quality but it is not buffered so image animation is kept.
+     */
+    protected boolean noBufferingResize;
+
+    /**
+     * Allow an imageComponent to be copied in another while still saving resources on not having to resize multiple images, resize once => show everywhere.
+     *
+     * @param imageComponent the reference imageComponent
+     */
+    /*public ImageComponent(ImageComponent imageComponent) {
+        this.setCustomSize(imageComponent.getC);
+        this.visibleCondition = imageComponent.visibleCondition;
+        this.resizedImage = imageComponent.resizedImage;
+        this.setOpaque(false);
+    }*/
 
     /**
      * ImageComponent constructor with custom width and height
@@ -76,6 +92,7 @@ public class ImageComponent extends JPanel {
     public ImageComponent(String name, boolean originalSize) {
         this.setBaseImage(name);
         this.setOpaque(false);
+        this.noBufferingResize = originalSize;
 
         if (originalSize) {
             this.setCustomSize(this.baseImage.getWidth(this), this.baseImage.getHeight(this));
@@ -157,7 +174,22 @@ public class ImageComponent extends JPanel {
         super.paintComponent(graphics);
 
         if (this.visibleCondition.getAsBoolean()) {
-            graphics.drawImage(this.resizedImage, 0, 0, this.getWidth(), this.getHeight(), this);
+            if (this.noBufferingResize) {
+                graphics.drawImage(this.baseImage, 0, 0, this.getWidth(), this.getHeight(), this);
+            } else {
+                graphics.drawImage(this.resizedImage, 0, 0, this.getWidth(), this.getHeight(), this);
+            }
+        }
+    }
+
+    public void setBaseImage(String name) {
+        if (!ImageComponent.images.containsKey(name)) {
+            ImageComponent.loadImage(name);
+        }
+        this.baseImage = ImageComponent.images.get(name);
+
+        if (!this.noBufferingResize) {
+            this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
         }
     }
 
@@ -166,14 +198,6 @@ public class ImageComponent extends JPanel {
         this.setPreferredSize(dimension);
         this.setMaximumSize(dimension);
         this.setSize(dimension);
-    }
-
-    public void setBaseImage(String name) {
-        if (!ImageComponent.images.containsKey(name)) {
-            ImageComponent.loadImage(name);
-        }
-        this.baseImage = ImageComponent.images.get(name);
-        this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
     }
 
     public void setVisibleCondition(BooleanSupplier visibleCondition) {

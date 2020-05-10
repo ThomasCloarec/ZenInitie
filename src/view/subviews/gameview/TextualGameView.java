@@ -27,9 +27,9 @@ public class TextualGameView implements GameView {
         for (int line = 0; line < board.length; line++) {
             System.out.print("║\t" + (board.length - line) + "\t");
             for (int column = 0; column < board[0].length; column++) {
-                if (board[line][column] == Pawn.BLACK) {
+                if (board[line][column] == Pawn.BLUE) {
                     System.out.print("o");
-                } else if (board[line][column] == Pawn.WHITE) {
+                } else if (board[line][column] == Pawn.RED) {
                     System.out.print("*");
                 } else if (board[line][column] == Pawn.ZEN) {
                     System.out.print("+");
@@ -68,7 +68,7 @@ public class TextualGameView implements GameView {
 
     @Override
     public void selectPawn(Game game) {
-        TextualGameView.updateBoard(game.getBoard());
+        TextualGameView.updateBoard(game.getBoardArray());
         System.out.println(AppText.preInformation + "(" + game.getCurrentTeamName() + ") " + game.getCurrentPlayerName() + AppText.getTextFor("game.playerTurn"));
         Position position = TextInput.getSelectPositionAnswer(game);
         if (this.gameController.selectPawn(position) == ResponseError.SELECT_PAWN_ERROR) {

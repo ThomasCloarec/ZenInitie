@@ -158,12 +158,12 @@ public class Game extends Observable<GameView> {
         return Collections.unmodifiableList(this.allowedMoves);
     }
 
-    public Pawn[][] getBoard() {
+    public Pawn[][] getBoardArray() {
         return this.board.getArray();
     }
 
     public int getBoardSize() {
-        return this.getBoard().length;
+        return this.getBoardArray().length;
     }
 
     public String getCurrentPlayerName() {

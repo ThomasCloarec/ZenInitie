@@ -13,9 +13,9 @@ import java.awt.RenderingHints;
 import java.util.Map;
 
 public class TimeComponent extends JLabel {
-    private final Timer timer;
     private int minutes;
     private int seconds;
+    private Timer timer;
 
     public TimeComponent() {
         this.setHorizontalAlignment(SwingConstants.CENTER);
@@ -25,13 +25,18 @@ public class TimeComponent extends JLabel {
         this.setMinimumSize(size);
         this.setPreferredSize(size);
         this.setText("<html><center><h1>00s</h1></center></html>");
-
-        this.timer = new Timer(1000, Graphic2DGameController.getTimerTickListener(this));
-        this.timer.start();
     }
 
     public void stopTimer() {
-        this.timer.stop();
+        if (this.timer.isRunning()) {
+            this.timer.stop();
+        }
+    }
+
+    public void startTimer() {
+        this.timer = new Timer(1000, Graphic2DGameController.getTimerTickListener(this));
+        this.timer.setInitialDelay(8000);
+        this.timer.start();
     }
 
     @Override
