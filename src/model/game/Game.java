@@ -162,6 +162,10 @@ public class Game extends Observable<GameView> {
         return this.board.getArray();
     }
 
+    public int getBoardSize() {
+        return this.getBoard().length;
+    }
+
     public String getCurrentPlayerName() {
         Team currentTeam = this.getCurrentTeam();
         return currentTeam.getCurrentPlayerName();
@@ -174,9 +178,5 @@ public class Game extends Observable<GameView> {
     public String getCurrentTeamName() {
         Team currentTeam = this.getCurrentTeam();
         return currentTeam.getName();
-    }
-
-    public int getBoardSize() {
-        return this.getBoard().length;
     }
 }
