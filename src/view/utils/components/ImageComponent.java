@@ -1,18 +1,16 @@
 package view.utils.components;
 
 import com.bulenkov.iconloader.util.Scalr;
+import controller.Graphic2DController;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.function.BooleanSupplier;
@@ -50,7 +48,7 @@ public class ImageComponent extends JPanel {
      */
     /*public ImageComponent(ImageComponent imageComponent) {
         this.setCustomSize(imageComponent.getC);
-        this.visibleCondition = imageComponent.visibleCondition;
+        this.visibleCondition = imageComponent.visibleCondition;<
         this.resizedImage = imageComponent.resizedImage;
         this.setOpaque(false);
     }*/
@@ -150,19 +148,7 @@ public class ImageComponent extends JPanel {
     }
 
     public void addOnClick(Runnable onClick) {
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                super.mouseClicked(mouseEvent);
-                onClick.run();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                super.mouseEntered(mouseEvent);
-                ImageComponent.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-        });
+        this.addMouseListener(Graphic2DController.getImageOnClickListener(this, onClick));
     }
 
     protected void setCustomSize(int width, int height) {

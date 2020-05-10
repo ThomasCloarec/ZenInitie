@@ -6,9 +6,13 @@ import model.game.Game;
 import model.menu.Menu;
 import view.Graphical2DView;
 import view.View;
+import view.utils.components.ImageComponent;
 
+import java.awt.Cursor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -69,5 +73,21 @@ public final class Graphic2DController extends Controller {
         Menu menu = new Menu();
         Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame);
         menu.addObserver(this.view.createMenuView(menuController));
+    }
+
+    public static MouseAdapter getImageOnClickListener(ImageComponent imageComponent, Runnable runnable) {
+        return new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                super.mouseClicked(mouseEvent);
+                runnable.run();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                super.mouseEntered(mouseEvent);
+                imageComponent.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        };
     }
 }
