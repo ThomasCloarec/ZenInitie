@@ -47,12 +47,11 @@ public final class Graphic2DController extends Controller {
         };
     }
 
-    public static WindowAdapter getExitClickListener(Graphical2DView graphical2DView) {
+    public static WindowAdapter getExitClickListener(View<Graphic2DMenuController, Graphic2DGameController> graphical2DView) {
         return new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 super.windowClosing(windowEvent);
-                graphical2DView.dispose();
                 graphical2DView.close();
             }
         };

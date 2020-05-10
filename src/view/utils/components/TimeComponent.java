@@ -1,7 +1,10 @@
 package view.utils.components;
 
+import controller.game.Graphic2DGameController;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,6 +13,10 @@ import java.awt.RenderingHints;
 import java.util.Map;
 
 public class TimeComponent extends JLabel {
+    private final Timer timer;
+    private int minutes;
+    private int seconds;
+
     public TimeComponent() {
         this.setHorizontalAlignment(SwingConstants.CENTER);
         this.setText("<html><center><h1>000m00s</h1></center></html>");
@@ -17,24 +24,14 @@ public class TimeComponent extends JLabel {
         this.setMaximumSize(size);
         this.setMinimumSize(size);
         this.setPreferredSize(size);
-        Thread thread = new Thread(() -> {
-            for (int minutes = 0; minutes < Integer.MAX_VALUE; minutes++) {
-                for (int seconds = 0; seconds < 60; seconds++) {
-                    if (minutes < 100) {
-                        this.setText("<html><center><h1 margin=\"0\">" + (minutes == 0 ? "" : String.format("%02d", minutes) + "m") + String.format("%02d", seconds) + "s</h1></center></html>");
-                    } else {
-                        this.setText("<html><center><h1 margin=\"0\">" + minutes + "m</h1></center></html>");
-                    }
+        this.setText("<html><center><h1>00s</h1></center></html>");
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        thread.start();
+        this.timer = new Timer(1000, Graphic2DGameController.getTimerTickListener(this));
+        this.timer.start();
+    }
+
+    public void stopTimer() {
+        this.timer.stop();
     }
 
     @Override
@@ -50,5 +47,41 @@ public class TimeComponent extends JLabel {
         graphics.fillRoundRect(2, 2, this.getWidth() - 5, this.getHeight() - 5, 20, 20);
 
         super.paintComponent(graphics);
+    }
+
+    /**
+     * Gets minutes.
+     *
+     * @return Value of minutes.
+     */
+    public int getMinutes() {
+        return this.minutes;
+    }
+
+    /**
+     * Sets new minutes.
+     *
+     * @param minutes New value of minutes.
+     */
+    public void setMinutes(int minutes) {
+        this.minutes = minutes;
+    }
+
+    /**
+     * Gets seconds.
+     *
+     * @return Value of seconds.
+     */
+    public int getSeconds() {
+        return this.seconds;
+    }
+
+    /**
+     * Sets new seconds.
+     *
+     * @param seconds New value of seconds.
+     */
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 }

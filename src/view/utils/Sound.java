@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Sound implements Runnable {
     private static final int byteChunkSize = 1024;//number of bytes to read at one time
     private static final String pathPrefix = "/view/resources/sounds/";
-    private static SoundVolume volume = SoundVolume.MEDIUM;
+    private static SoundVolume volume = SoundVolume.LOW;
     private final String filePath;
     private final byte[] muteData;
     private boolean running, mute, pause, loop, restart;

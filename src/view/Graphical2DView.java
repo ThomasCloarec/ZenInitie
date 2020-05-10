@@ -11,7 +11,6 @@ import view.subviews.menuview.MenuView;
 import view.utils.ExtendedColor;
 import view.utils.Sound;
 import view.utils.components.ImageComponent;
-import view.utils.components.PopUpComponent;
 import view.utils.text.AppText;
 
 import javax.swing.JFrame;
@@ -78,8 +77,6 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
 
         if (this.fullscreenModeActivated) {
             this.goFullScreen();
-            PopUpComponent popUpComponent = new PopUpComponent("<html><h1>" + AppText.getTextFor("global.fullscreen.activated.message") + "</h1></html>");
-            popUpComponent.display();
         } else {
             this.setSize(1200, 600);
             this.setLocationRelativeTo(null);
@@ -121,6 +118,7 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
 
     @Override
     public MenuView createMenuView(Graphic2DMenuController menuController) {
+        this.sounds.forEach(Sound::stop);
         Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
         sound.play();
         sound.loop();

@@ -59,6 +59,7 @@ public class TextualMenuView implements MenuView {
     @Override
     public void exit() {
         System.out.println(AppText.preInformation + AppText.getTextFor("global.exit"));
+        System.exit(0);
     }
 
     @Override
