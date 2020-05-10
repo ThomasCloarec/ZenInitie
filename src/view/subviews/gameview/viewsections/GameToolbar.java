@@ -2,6 +2,7 @@ package view.subviews.gameview.viewsections;
 
 import controller.game.Graphic2DGameController;
 import view.utils.Sound;
+import view.utils.SoundVolume;
 import view.utils.components.ScaledImageComponent;
 import view.utils.components.TimeComponent;
 
@@ -28,10 +29,11 @@ public class GameToolbar extends JPanel {
         exit.addOnClick(gameController::goMenu);
 
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        ScaledImageComponent volume = new ScaledImageComponent(Sound.isVolumeOn() ? "icons/volume_up.png" : "icons/volume_down.png", exit);
+
+        ScaledImageComponent volume = new ScaledImageComponent(SoundVolume.getIconPath(), exit);
         volume.addOnClick(() -> {
-            Sound.toggleVolume();
-            volume.setBaseImage(Sound.isVolumeOn() ? "icons/volume_up.png" : "icons/volume_down.png");
+            Sound.nextVolumeTick();
+            volume.setBaseImage(SoundVolume.getIconPath());
             volume.revalidate();
             volume.repaint();
         });

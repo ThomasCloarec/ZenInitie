@@ -9,4 +9,6 @@ public interface View<MenuControllerT extends MenuController, GameControllerT ex
     GameView createGameView(GameControllerT gameController);
 
     MenuView createMenuView(MenuControllerT menuController);
+
+    void close();
 }

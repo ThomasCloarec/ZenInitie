@@ -11,13 +11,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 public class Sound implements Runnable {
-    private static final String pathPrefix = "/view/resources/sounds/";
-    private static boolean volumeOn = true;
     private static final int byteChunkSize = 1024;//number of bytes to read at one time
+    private static final String pathPrefix = "/view/resources/sounds/";
+    private static SoundVolume volume = SoundVolume.MEDIUM;
     private final String filePath;
     private final byte[] muteData;
     private boolean running, mute, pause, loop, restart;
-    private float volume;
 
     /**
      * Declares default variable values.
@@ -32,12 +31,12 @@ public class Sound implements Runnable {
         this.muteData = Sound.setMuteData();
     }
 
-    public static void toggleVolume() {
-        Sound.volumeOn = !Sound.volumeOn;
+    public static void nextVolumeTick() {
+        Sound.volume = Sound.volume.nextVolumeTick();
     }
 
-    public static boolean isVolumeOn() {
-        return Sound.volumeOn;
+    public static SoundVolume getVolume() {
+        return Sound.volume;
     }
 
     /**
@@ -160,9 +159,9 @@ public class Sound implements Runnable {
                 int nBytesRead = 0;
                 while (nBytesRead != -1 && this.running && !this.restart) {
                     if (gainControl != null) {
-                        float volume = Sound.volumeOn ? this.volume : 0;
+                        double volume = Sound.volume.getValue();
                         if (gainControl.getType().equals(FloatControl.Type.VOLUME)) {
-                            gainControl.setValue((gainControl.getMaximum() - gainControl.getMinimum()) * volume + gainControl.getMinimum());
+                            gainControl.setValue((float) ((gainControl.getMaximum() - gainControl.getMinimum()) * volume + gainControl.getMinimum()));
                         } else if (gainControl.getType().equals(FloatControl.Type.MASTER_GAIN)) {
                             gainControl.setValue((float) (StrictMath.log(volume) / StrictMath.log(10.0) * 20.0));
                         }
@@ -218,14 +217,6 @@ public class Sound implements Runnable {
         } catch (IOException | UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
-    }
-
-    public float getVolume() {
-        return this.volume;
-    }
-
-    public void setVolume(float volume) {
-        this.volume = volume;
     }
 
     /**

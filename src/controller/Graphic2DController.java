@@ -7,6 +7,11 @@ import model.menu.Menu;
 import view.Graphical2DView;
 import view.View;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 public final class Graphic2DController extends Controller {
     private static final int MAX_COUNT = 4;
     private static int count;
@@ -28,6 +33,29 @@ public final class Graphic2DController extends Controller {
             Graphic2DController.count++;
         }
         return graphic2DController;
+    }
+
+    public static KeyAdapter getViewKeyListener(Graphical2DView graphical2DView) {
+        return new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                super.keyPressed(keyEvent);
+                if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE && graphical2DView.isFullscreenModeActivated()) {
+                    graphical2DView.toggleFullScreen();
+                }
+            }
+        };
+    }
+
+    public static WindowAdapter getExitClickListener(Graphical2DView graphical2DView) {
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                super.windowClosing(windowEvent);
+                graphical2DView.dispose();
+                graphical2DView.close();
+            }
+        };
     }
 
     @Override

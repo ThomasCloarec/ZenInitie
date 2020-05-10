@@ -2,7 +2,6 @@ package controller;
 
 import model.menu.Menu;
 import view.ViewMode;
-import view.utils.Sound;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,10 +48,5 @@ public abstract class Controller {
      * Create a new menu and collect information for the future game.
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
-    protected void newMenu() {
-        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
-        sound.setVolume(0.3f);
-        sound.play();
-        sound.loop();
-    }
+    protected abstract void newMenu();
 }

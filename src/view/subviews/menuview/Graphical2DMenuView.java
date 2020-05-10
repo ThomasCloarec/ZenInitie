@@ -1,6 +1,7 @@
 package view.subviews.menuview;
 
 import controller.menu.Graphic2DMenuController;
+import view.Graphical2DView;
 import view.subviews.CustomPanel;
 import view.subviews.menuview.viewsections.MenuContentSection;
 import view.subviews.menuview.viewsections.MenuLeftSection;
@@ -38,7 +39,8 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
     @Override
     public void exit() {
         Window windowAncestor = SwingUtilities.getWindowAncestor(this);
-        windowAncestor.dispose();
+        //noinspection OverlyStrongTypeCast
+        ((Graphical2DView) windowAncestor).close();
     }
 
     @Override

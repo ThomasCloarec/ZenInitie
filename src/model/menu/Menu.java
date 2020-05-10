@@ -22,11 +22,10 @@ public class Menu extends Observable<MenuView> {
     }
 
     public void backPreviousPage() {
-        this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
-
-        if (this.pagesBreadcrumb.isEmpty()) {
+        if (this.pagesBreadcrumb.size() <= 1) {
             this.notifyExit();
         } else {
+            this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
             this.notifyUpdatePage();
         }
     }
@@ -45,7 +44,15 @@ public class Menu extends Observable<MenuView> {
     }
 
     public MenuPage getActualPage() {
-        return this.pagesBreadcrumb.get(this.pagesBreadcrumb.size() - 1);
+        MenuPage actualPage;
+
+        if (this.pagesBreadcrumb.isEmpty()) {
+            actualPage = MenuPage.ROOT;
+        } else {
+            actualPage = this.pagesBreadcrumb.get(this.pagesBreadcrumb.size() - 1);
+        }
+
+        return actualPage;
     }
 
     public boolean isAiMode() {

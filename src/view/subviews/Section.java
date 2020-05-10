@@ -27,6 +27,7 @@ public abstract class Section<ControllerT> extends JPanel {
             public void componentResized(ComponentEvent componentEvent) {
                 super.componentResized(componentEvent);
                 Section.this.doLayout();
+                Section.this.repaint();
             }
         });
     }

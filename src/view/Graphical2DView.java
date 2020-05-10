@@ -1,6 +1,7 @@
 package view;
 
 import com.bulenkov.darcula.DarculaLaf;
+import controller.Graphic2DController;
 import controller.game.Graphic2DGameController;
 import controller.menu.Graphic2DMenuController;
 import view.subviews.gameview.GameView;
@@ -8,6 +9,7 @@ import view.subviews.gameview.Graphical2DGameView;
 import view.subviews.menuview.Graphical2DMenuView;
 import view.subviews.menuview.MenuView;
 import view.utils.ExtendedColor;
+import view.utils.Sound;
 import view.utils.components.ImageComponent;
 import view.utils.components.PopUpComponent;
 import view.utils.text.AppText;
@@ -22,12 +24,13 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Graphical2DView extends JFrame implements View<Graphic2DMenuController, Graphic2DGameController> {
     private static final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private final Collection<Sound> sounds = new ArrayList<>();
     private boolean fullscreenModeActivated;
 
     public Graphical2DView() {
@@ -37,8 +40,10 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
             ImageComponent.loadImage("blue_dragon.png");
             ImageComponent.loadImage("red_dragon.png");
             ImageComponent.loadImage("icons/exit.png");
-            ImageComponent.loadImage("icons/volume_up.png");
-            ImageComponent.loadImage("icons/volume_down.png");
+            ImageComponent.loadImage("icons/volume_none.png");
+            ImageComponent.loadImage("icons/volume_low.png");
+            ImageComponent.loadImage("icons/volume_medium.png");
+            ImageComponent.loadImage("icons/volume_high.png");
             ImageComponent.loadImage("left_baner.png");
             ImageComponent.loadImage("right_baner.png");
 
@@ -58,19 +63,12 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
             this.setSize(1200, 600);
             this.setMinimumSize(new Dimension(700, 350));
             this.setLocationRelativeTo(null);
-            this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             this.setBackground(ExtendedColor.CUSTOM_GREY);
             this.setFocusable(true);
 
-            this.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed(KeyEvent keyEvent) {
-                    super.keyPressed(keyEvent);
-                    if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE && Graphical2DView.this.fullscreenModeActivated) {
-                        Graphical2DView.this.toggleFullScreen();
-                    }
-                }
-            });
+            this.addKeyListener(Graphic2DController.getViewKeyListener(this));
+            this.addWindowListener(Graphic2DController.getExitClickListener(this));
         });
     }
 
@@ -123,6 +121,11 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
 
     @Override
     public MenuView createMenuView(Graphic2DMenuController menuController) {
+        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
+        sound.play();
+        sound.loop();
+        this.sounds.add(sound);
+
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
         this.setContentPane(graphical2DMenuView);
         if (this.fullscreenModeActivated) {
@@ -132,6 +135,12 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         }
 
         return graphical2DMenuView;
+    }
+
+    @Override
+    public void close() {
+        this.dispose();
+        this.sounds.forEach(Sound::stop);
     }
 
     public boolean isFullscreenModeActivated() {
