@@ -20,7 +20,12 @@ public class TimeComponent extends JLabel {
         Thread thread = new Thread(() -> {
             for (int minutes = 0; minutes < Integer.MAX_VALUE; minutes++) {
                 for (int seconds = 0; seconds < 60; seconds++) {
-                    this.setText("<html><center><h1 margin=\"0\">" + (minutes == 0 ? "" : String.format("%02d", minutes) + "m") + String.format("%02d", seconds) + "s</h1></center></html>");
+                    if (minutes < 100) {
+                        this.setText("<html><center><h1 margin=\"0\">" + (minutes == 0 ? "" : String.format("%02d", minutes) + "m") + String.format("%02d", seconds) + "s</h1></center></html>");
+                    } else {
+                        this.setText("<html><center><h1 margin=\"0\">" + minutes + "m</h1></center></html>");
+                    }
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
