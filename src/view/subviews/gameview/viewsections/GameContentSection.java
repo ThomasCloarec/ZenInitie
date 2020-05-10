@@ -28,4 +28,12 @@ public class GameContentSection extends Section<Graphic2DGameController> {
         this.boardPanel.start(game);
         this.gameToolbar.start();
     }
+
+    public void selectPawn(Game game) {
+        this.boardPanel.selectPawn(game);
+    }
+
+    public void movePawn(Game game) {
+        this.boardPanel.movePawn(game);
+    }
 }

@@ -3,6 +3,8 @@ package view.subviews.gameview.viewsections;
 import controller.game.Graphic2DGameController;
 import model.game.Game;
 import model.game.Pawn;
+import model.game.Position;
+import view.utils.ExtendedColor;
 import view.utils.components.ScaledImageComponent;
 
 import javax.swing.BorderFactory;
@@ -36,17 +38,6 @@ public class BoardPanel extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 3));
     }
 
-    @Override
-    public void paint(Graphics graphics) {
-        super.paint(graphics);
-        int size = (int) Math.min(this.referenceComponent.getHeight() * (3.0d / 4.0d), this.referenceComponent.getWidth());
-        Dimension dimension = new Dimension(size, size);
-        this.setSize(dimension);
-        this.setMinimumSize(dimension);
-        this.setMaximumSize(dimension);
-        this.setPreferredSize(dimension);
-    }
-
     public void start(Game game) {
         this.setLayout(new GridLayout(game.getBoardSize(), game.getBoardSize()));
 
@@ -58,13 +49,23 @@ public class BoardPanel extends JPanel {
                 cell.setLayout(new BoxLayout(cell, BoxLayout.X_AXIS));
                 cell.setBackground((line + column) % 2 == 0 ? Color.LIGHT_GRAY : Color.BLACK);
 
-                cell.addMouseListener(Graphic2DGameController.getBoardListener(cell, line, column));
+                cell.addMouseListener(this.gameController.getBoardCellListener(cell, line, column));
                 this.add(cell);
                 this.cells[line][column] = cell;
             }
         }
 
         this.updateBoard(game.getBoardArray());
+    }
+
+    public void selectPawn(Game game) {
+        this.updateBoard(game.getBoardArray());
+    }
+
+    public void movePawn(Game game) {
+        for (Position allowedMove : game.getAllowedMoves()) {
+            this.cells[allowedMove.getLine()][allowedMove.getColumn()].setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
+        }
     }
 
     private void updateBoard(Pawn[][] boardArray) {
@@ -85,7 +86,23 @@ public class BoardPanel extends JPanel {
                 }
 
                 cell.add(Box.createHorizontalGlue());
+
+                cell.setBorder(null);
             }
         }
+
+        this.revalidate();
+        this.repaint();
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+        int size = (int) Math.min(this.referenceComponent.getHeight() * (3.0d / 4.0d), this.referenceComponent.getWidth());
+        Dimension dimension = new Dimension(size, size);
+        this.setSize(dimension);
+        this.setMinimumSize(dimension);
+        this.setMaximumSize(dimension);
+        this.setPreferredSize(dimension);
     }
 }

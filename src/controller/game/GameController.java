@@ -3,6 +3,8 @@ package controller.game;
 import model.game.Game;
 import model.game.Position;
 
+import java.util.List;
+
 public class GameController {
     private final Game game;
     private final Runnable goMenu;
@@ -38,5 +40,13 @@ public class GameController {
 
     public void goMenu() {
         this.goMenu.run();
+    }
+
+    protected List<Position> getAllowedMoves() {
+        return this.game.getAllowedMoves();
+    }
+
+    protected boolean isMovingPawn() {
+        return this.game.isMovingPawn();
     }
 }

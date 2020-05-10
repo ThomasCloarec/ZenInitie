@@ -12,20 +12,23 @@ import java.util.List;
 
 public class Game extends Observable<GameView> {
     protected final boolean aiMode;
+    protected final boolean duoMode;
     protected final boolean onlineMode;
     private final ArrayList<Position> allowedMoves = new ArrayList<>();
     private final Board board = new Board();
     private final ArrayList<Team> teams = new ArrayList<>(2);
     private int currentTeamIndex;
+    private boolean movingPawn;
     private Position selectedPawn;
 
     public Game(boolean aiMode, boolean duoMode, boolean onlineMode) {
         this.aiMode = aiMode;
+        this.duoMode = duoMode;
         this.onlineMode = onlineMode;
 
-        this.teams.add(new Team(TeamColor.BLACK));
-        this.teams.add(new Team(TeamColor.WHITE));
-        if (duoMode) {
+        this.teams.add(new Team(TeamColor.BLUE));
+        this.teams.add(new Team(TeamColor.RED));
+        if (this.duoMode) {
             for (Team team : this.teams) {
                 team.addPlayer(new Player("Player 1"));
                 team.addPlayer(new Player("Player 2"));
@@ -61,6 +64,7 @@ public class Game extends Observable<GameView> {
     }
 
     public void moveSelectedPawn(Position position) {
+        this.movingPawn = false;
         this.board.getArray()[position.getLine()][position.getColumn()] = this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()];
         this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()] = Pawn.EMPTY;
 
@@ -149,6 +153,7 @@ public class Game extends Observable<GameView> {
     }
 
     public void setSelectedPawn(Position position) {
+        this.movingPawn = true;
         this.selectedPawn = position;
         this.setAllowedMoves();
         this.notifyPawnSelected();
@@ -178,5 +183,17 @@ public class Game extends Observable<GameView> {
     public String getCurrentTeamName() {
         Team currentTeam = this.getCurrentTeam();
         return currentTeam.getName();
+    }
+
+    public boolean isAiMode() {
+        return this.aiMode;
+    }
+
+    public boolean isDuoMode() {
+        return this.duoMode;
+    }
+
+    public boolean isMovingPawn() {
+        return this.movingPawn;
     }
 }

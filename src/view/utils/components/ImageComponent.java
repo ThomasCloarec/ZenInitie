@@ -122,6 +122,7 @@ public class ImageComponent extends JPanel {
 
     public static void loadImage(String name) {
         ImageIcon imageIcon = new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
+        imageIcon.getImage().flush();
         ImageComponent.images.put(name, imageIcon.getImage());
     }
 
@@ -188,5 +189,9 @@ public class ImageComponent extends JPanel {
 
     public void setVisibleCondition(BooleanSupplier visibleCondition) {
         this.visibleCondition = visibleCondition;
+    }
+
+    public static void removeImage(String path) {
+        ImageComponent.images.remove(path);
     }
 }

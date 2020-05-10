@@ -1,6 +1,7 @@
 package view.subviews.gameview.viewsections;
 
 import controller.game.Graphic2DGameController;
+import model.game.Game;
 import view.subviews.Section;
 import view.utils.ExtendedColor;
 import view.utils.components.ImageComponent;
@@ -23,14 +24,23 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
         LightComponent blueLight = new LightComponent(center, radius, ExtendedColor.CUSTOM_BLUE);
         blueLight.setVisibleCondition(this.horizontalMode);
         this.lights.add(blueLight);
+    }
+
+    public void start(Game game) {
+        String playerImagePath;
+        if (game.isDuoMode()) {
+            playerImagePath = "man2.png";
+        } else {
+            playerImagePath = "man.png";
+        }
 
         ImageComponent blueDragon = new ScaledImageComponent("left_baner.png", 0.4, 0.9, this, false);
         blueDragon.setVisibleCondition(this.horizontalMode);
         this.add(blueDragon);
         this.add(Box.createHorizontalGlue());
-        ImageComponent chineseBoy = new ScaledImageComponent("man2.png", 0.55, 0.55, this);
-        chineseBoy.setVisibleCondition(this.horizontalMode);
-        this.add(chineseBoy);
+        ImageComponent bluePlayer = new ScaledImageComponent(playerImagePath, 0.55, 0.55, this);
+        bluePlayer.setVisibleCondition(this.horizontalMode);
+        this.add(bluePlayer);
         this.add(Box.createHorizontalGlue());
         this.add(Box.createHorizontalGlue());
         this.add(Box.createHorizontalGlue());
