@@ -1,6 +1,6 @@
 package view.subviews.gameview;
 
-import controller.game.GameController;
+import controller.game.Graphic2DGameController;
 import model.game.Game;
 import view.subviews.CustomPanel;
 import view.subviews.gameview.viewsections.GameContentSection;
@@ -9,8 +9,8 @@ import view.subviews.gameview.viewsections.GameRightSection;
 
 import javax.swing.SwingUtilities;
 
-public class Graphical2DGameView extends CustomPanel<GameController, GameLeftSection, GameContentSection, GameRightSection> implements GameView {
-    public Graphical2DGameView(GameController gameController) {
+public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, GameLeftSection, GameContentSection, GameRightSection> implements GameView {
+    public Graphical2DGameView(Graphic2DGameController gameController) {
         super(gameController);
 
         SwingUtilities.invokeLater(() -> {

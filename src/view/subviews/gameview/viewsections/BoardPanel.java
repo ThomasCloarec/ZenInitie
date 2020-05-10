@@ -1,26 +1,22 @@
 package view.subviews.gameview.viewsections;
 
-import controller.game.GameController;
-import view.utils.ExtendedColor;
+import controller.game.Graphic2DGameController;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class BoardPanel extends JPanel {
-    private final GameController gameController;
+    private final Graphic2DGameController gameController;
     private final JComponent referenceComponent;
 
-    BoardPanel(GameController gameController, JComponent referenceComponent) {
+    BoardPanel(Graphic2DGameController gameController, JComponent referenceComponent) {
         this.gameController = gameController;
         this.referenceComponent = referenceComponent;
 
@@ -31,28 +27,7 @@ public class BoardPanel extends JPanel {
                 JPanel panel1 = new JPanel();
                 panel1.setBackground((line + column) % 2 == 0 ? Color.LIGHT_GRAY : Color.BLACK);
 
-                int finalLine = line;
-                int finalColumn = column;
-                panel1.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent mouseEvent) {
-                        super.mouseClicked(mouseEvent);
-                        System.out.println("(" + finalLine + ", " + finalColumn + ")");
-                    }
-
-                    @Override
-                    public void mouseEntered(MouseEvent mouseEvent) {
-                        super.mouseEntered(mouseEvent);
-                        panel1.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
-                        panel1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent mouseEvent) {
-                        super.mouseExited(mouseEvent);
-                        panel1.setBorder(null);
-                    }
-                });
+                panel1.addMouseListener(Graphic2DGameController.getBoardListener(panel1, line, column));
                 this.add(panel1);
             }
         }
@@ -70,7 +45,8 @@ public class BoardPanel extends JPanel {
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);
-        Dimension dimension = new Dimension(this.referenceComponent.getHeight() / 3, this.referenceComponent.getHeight() / 3);
+        int size = (int) Math.min(this.referenceComponent.getHeight() * (3.0d / 4.0d), this.referenceComponent.getWidth());
+        Dimension dimension = new Dimension(size, size);
         this.setSize(dimension);
         this.setMinimumSize(dimension);
         this.setMaximumSize(dimension);

@@ -5,8 +5,8 @@ import controller.menu.MenuController;
 import view.subviews.gameview.GameView;
 import view.subviews.menuview.MenuView;
 
-public interface View {
-    GameView createGameView(GameController gameController);
+public interface View<MenuControllerT extends MenuController, GameControllerT extends GameController> {
+    GameView createGameView(GameControllerT gameController);
 
-    MenuView createMenuView(MenuController menuController);
+    MenuView createMenuView(MenuControllerT menuController);
 }

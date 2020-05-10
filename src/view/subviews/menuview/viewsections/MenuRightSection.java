@@ -1,6 +1,6 @@
 package view.subviews.menuview.viewsections;
 
-import controller.menu.MenuController;
+import controller.menu.Graphic2DMenuController;
 import view.subviews.Section;
 import view.utils.ExtendedColor;
 import view.utils.components.ImageComponent;
@@ -12,9 +12,9 @@ import java.awt.Point;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class MenuRightSection extends Section<MenuController> {
-    public MenuRightSection(MenuController menuController, BooleanSupplier horizontalMode) {
-        super(menuController, horizontalMode);
+public class MenuRightSection extends Section<Graphic2DMenuController> {
+    public MenuRightSection(Graphic2DMenuController graphics2DMenuController, BooleanSupplier horizontalMode) {
+        super(graphics2DMenuController, horizontalMode);
 
         Supplier<Point> center = () -> new Point((int) (this.getWidth() * 3.2), this.getHeight() / 2);
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;

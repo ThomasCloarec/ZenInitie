@@ -44,12 +44,6 @@ public class Menu extends Observable<MenuView> {
         observer.updatePage(this.getActualPage());
     }
 
-    @Override
-    public void addObserver(MenuView observer) {
-        super.addObserver(observer);
-        this.notifyUpdatePage();
-    }
-
     public MenuPage getActualPage() {
         return this.pagesBreadcrumb.get(this.pagesBreadcrumb.size() - 1);
     }

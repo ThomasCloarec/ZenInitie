@@ -1,6 +1,6 @@
 package view.subviews.menuview;
 
-import controller.menu.MenuController;
+import controller.menu.Graphic2DMenuController;
 import view.subviews.CustomPanel;
 import view.subviews.menuview.viewsections.MenuContentSection;
 import view.subviews.menuview.viewsections.MenuLeftSection;
@@ -9,8 +9,8 @@ import view.subviews.menuview.viewsections.MenuRightSection;
 import javax.swing.SwingUtilities;
 import java.awt.Window;
 
-public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSection, MenuContentSection, MenuRightSection> implements MenuView {
-    public Graphical2DMenuView(MenuController controller) {
+public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, MenuLeftSection, MenuContentSection, MenuRightSection> implements MenuView {
+    public Graphical2DMenuView(Graphic2DMenuController controller) {
         super(controller);
 
         SwingUtilities.invokeLater(() -> {
@@ -39,7 +39,6 @@ public class Graphical2DMenuView extends CustomPanel<MenuController, MenuLeftSec
     public void exit() {
         Window windowAncestor = SwingUtilities.getWindowAncestor(this);
         windowAncestor.dispose();
-        System.exit(0);
     }
 
     @Override

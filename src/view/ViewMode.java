@@ -6,12 +6,14 @@ public enum ViewMode {
     GRAPHICAL_3D;
 
     public static boolean contains(String test) {
-        for (ViewMode viewMode : ViewMode.values()) {
-            if (viewMode.name().equals(test)) {
-                return true;
-            }
+        boolean ret = false;
+
+        int i = 0;
+        while (i < ViewMode.values().length && !ret) {
+            ret = ViewMode.values()[i].name().equals(test);
+            i++;
         }
 
-        return false;
+        return ret;
     }
 }

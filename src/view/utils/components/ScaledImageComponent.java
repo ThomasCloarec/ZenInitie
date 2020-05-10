@@ -124,7 +124,7 @@ public class ScaledImageComponent extends ImageComponent {
         int imageHeight;
         double ratio = 1;
         if (this.keepRatio) {
-            ratio = ((double) this.image.getHeight(this)) / this.image.getWidth(this);
+            ratio = ((double) this.baseImage.getHeight(this)) / this.baseImage.getWidth(this);
         }
 
         if (this.keepRatio) {

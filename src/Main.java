@@ -1,12 +1,10 @@
-import controller.game.GameController;
-import controller.menu.MenuController;
-import model.game.Game;
-import model.menu.Menu;
-import view.Graphical2DView;
-import view.TextualView;
-import view.View;
+import controller.Controller;
+import controller.Graphic2DController;
 import view.ViewMode;
-import view.utils.Sound;
+import view.utils.text.AppText;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * More information about the game in the README.md file.
@@ -15,56 +13,75 @@ import view.utils.Sound;
  */
 public class Main {
     /**
-     * The view of the application (can either be textual or graphical).
+     * The list of controllers launched in the app (some may be finished), each controller takes care of a global app instance.
      */
-    private static View view;
+    private static final Collection<Controller> controllers = new ArrayList<>();
 
     /**
      * This main method launch the application either in textual mode or in graphical mode depending of it's parameters.
+     * The possible modes are :
+     * <ul>
+     * <li>TEXTUAL</li>
+     * <li>TEXTUAL-[count]</li>
+     * <li>GRAPHICAL_2D</li>
+     * <li>GRAPHICAL_2D-[count]</li>
+     * </ul>
+     *
+     * By default the display mode is "GRAPHICAL_2D."
      *
      * @param args The first index of this array may contain the display mode used.
-     *             You can either launch with argument "TEXTUAL" or argument "GRAPHICAL_2D".
-     *             By default the display mode is "GRAPHICAL_2D."
      */
     public static void main(String[] args) {
-        if (args.length == 1) {
-            ViewMode viewMode = ViewMode.valueOf(args[0].toUpperCase());
+        boolean badArgumentsJar = false;
 
-            if (viewMode == ViewMode.TEXTUAL) {
-                Main.view = new TextualView();
-            } else if (viewMode == ViewMode.GRAPHICAL_2D) {
-                Main.view = new Graphical2DView();
+        for (String arg : args) {
+            String upperArg = arg.toUpperCase();
+
+            if (upperArg.contains("-")) {
+                // if the arg is of the form [string]-[string]
+
+                String[] upperArgSplit = upperArg.split("-");
+
+                if (upperArgSplit.length == 2) {
+                    // if the arg is of the form [string(not empty)]-[string(not empty)]
+
+                    String testViewMode = upperArgSplit[0];
+                    String testCount = upperArgSplit[1];
+
+                    if (ViewMode.contains(testViewMode)) {
+                        // if the arg is of the form [viewMode]-[string(not empty)]
+
+                        ViewMode viewMode = ViewMode.valueOf(testViewMode);
+
+                        try {
+                            // if there is no exception then the arg is of the form [viewMode]-[count]
+                            int count = Integer.parseInt(testCount);
+
+                            // launch "count" number of instances
+                            Main.controllers.addAll(Controller.createInstances(viewMode, count));
+                        } catch (NumberFormatException e) {
+                            badArgumentsJar = true;
+                        }
+                    }
+                } else {
+                    badArgumentsJar = true;
+                }
+            } else if (ViewMode.contains(upperArg)) {
+                // If the arg is of the form [viewMode]
+
+                ViewMode viewMode = ViewMode.valueOf(upperArg);
+                Main.controllers.add(Controller.createInstance(viewMode));
             }
-        } else {
-            Main.view = new Graphical2DView();
         }
 
-        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
-        sound.setVolume(0.5f);
-        sound.play();
-        sound.loop();
-        Main.newMenu();
-    }
+        if (badArgumentsJar) {
+            // If bad arguments passed, then tell it to the user
+            System.out.println(AppText.getTextFor("global.badArgumentsJar"));
+        }
 
-    /**
-     * Create a new game and launch it using the previously collected information from the menu.
-     * This method set up the MVC architectural pattern and the Observer behavioral pattern used during the game.
-     *
-     * @param menu The menu containing the necessary information to launch the game.
-     */
-    private static void newGame(Menu menu) {
-        Game game = new Game(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
-        GameController gameController = new GameController(game, Main::newMenu);
-        game.addObserver(Main.view.createGameView(gameController));
-    }
-
-    /**
-     * Create a new menu and collect information for the future game.
-     * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
-     */
-    private static void newMenu() {
-        Menu menu = new Menu();
-        MenuController menuController = new MenuController(menu, Main::newGame);
-        menu.addObserver(Main.view.createMenuView(menuController));
+        // By default, launch a GRAPHIC_2D view
+        if (Main.controllers.isEmpty()) {
+            Main.controllers.add(Graphic2DController.createInstance());
+        }
     }
 }

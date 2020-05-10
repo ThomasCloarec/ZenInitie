@@ -29,7 +29,7 @@ public class ImageComponent extends JPanel {
     /**
      * The loaded image of the component
      */
-    protected Image image;
+    protected Image baseImage;
     /**
      * The condition that returns if the image has to be visible or not
      */
@@ -37,7 +37,7 @@ public class ImageComponent extends JPanel {
     /**
      * The resized image of the component to draw
      */
-    private BufferedImage bufferedImage;
+    private BufferedImage resizedImage;
 
     /**
      * ImageComponent constructor with custom width and height
@@ -61,7 +61,7 @@ public class ImageComponent extends JPanel {
     public ImageComponent(String name, int size, boolean keepRatio) {
         this(name);
         if (keepRatio) {
-            double ratio = ((double) this.image.getHeight(this)) / this.image.getWidth(this);
+            double ratio = ((double) this.baseImage.getHeight(this)) / this.baseImage.getWidth(this);
             this.setCustomSize(size, (int) (size * ratio));
         } else {
             this.setCustomSize(size, size);
@@ -74,18 +74,18 @@ public class ImageComponent extends JPanel {
      * @param name name of the image
      */
     public ImageComponent(String name, boolean originalSize) {
-        this.setImage(name);
+        this.setBaseImage(name);
         this.setOpaque(false);
 
         if (originalSize) {
-            this.setCustomSize(this.image.getWidth(this), this.image.getHeight(this));
+            this.setCustomSize(this.baseImage.getWidth(this), this.baseImage.getHeight(this));
         }
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent componentEvent) {
                 super.componentResized(componentEvent);
-                ImageComponent.this.bufferedImage = Scalr.resize(ImageComponent.toBufferedImage(ImageComponent.this.image), Scalr.Method.AUTOMATIC, ImageComponent.this.getWidth(), ImageComponent.this.getHeight());
+                ImageComponent.this.resizedImage = Scalr.resize(ImageComponent.toBufferedImage(ImageComponent.this.baseImage), Scalr.Method.AUTOMATIC, ImageComponent.this.getWidth(), ImageComponent.this.getHeight());
                 ImageComponent.this.repaint();
             }
         });
@@ -157,7 +157,7 @@ public class ImageComponent extends JPanel {
         super.paintComponent(graphics);
 
         if (this.visibleCondition.getAsBoolean()) {
-            graphics.drawImage(this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), this);
+            graphics.drawImage(this.resizedImage, 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }
 
@@ -168,11 +168,12 @@ public class ImageComponent extends JPanel {
         this.setSize(dimension);
     }
 
-    public void setImage(String name) {
+    public void setBaseImage(String name) {
         if (!ImageComponent.images.containsKey(name)) {
             ImageComponent.loadImage(name);
         }
-        this.image = ImageComponent.images.get(name);
+        this.baseImage = ImageComponent.images.get(name);
+        this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
     }
 
     public void setVisibleCondition(BooleanSupplier visibleCondition) {

@@ -1,6 +1,6 @@
 package view.subviews.menuview.viewsections;
 
-import controller.menu.MenuController;
+import controller.menu.Graphic2DMenuController;
 import view.Graphical2DView;
 import view.subviews.Section;
 import view.utils.ExtendedColor;
@@ -11,25 +11,20 @@ import view.utils.components.ScaledImageComponent;
 import view.utils.components.ScrollPaneComponent;
 import view.utils.components.TextComponent;
 import view.utils.text.AppText;
-import view.utils.text.Language;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import java.awt.Point;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class MenuContentSection extends Section<MenuController> {
+public class MenuContentSection extends Section<Graphic2DMenuController> {
     private final ImageComponent logoZen;
 
-    public MenuContentSection(MenuController menuController, BooleanSupplier horizontalMode) {
-        super(menuController, horizontalMode);
+    public MenuContentSection(Graphic2DMenuController graphics2DMenuController, BooleanSupplier horizontalMode) {
+        super(graphics2DMenuController, horizontalMode);
 
         this.logoZen = new ScaledImageComponent("logo_zen.png", 0.9, 0.3, this);
 
@@ -47,7 +42,7 @@ public class MenuContentSection extends Section<MenuController> {
         this.removeAll();
 
         JButton back = new ButtonComponent(AppText.getTextFor("menu.credits.question1.answer1"), this, this.horizontalMode);
-        back.addActionListener(actionEvent -> this.controller.backPreviousPage());
+        back.addActionListener(this.controller.getBackPreviousPageListener());
 
         TextComponent textArea = new TextComponent();
         textArea.setEditable(false);
@@ -75,26 +70,18 @@ public class MenuContentSection extends Section<MenuController> {
     }
 
     public void changeLanguage() {
-        List<JButton> buttons = new ArrayList<>();
-
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.settings.language.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.settings.language.question1.answer2"), this, this.horizontalMode);
         JButton button3 = new ButtonComponent(AppText.getTextFor("menu.settings.language.question1.answer3"), this, this.horizontalMode);
 
-        button1.addActionListener(actionEvent -> this.controller.setLanguage(Language.ENGLISH));
-        button2.addActionListener(actionEvent -> this.controller.setLanguage(Language.FRENCH));
+        button1.addActionListener(this.controller.getEnglishListener());
+        button2.addActionListener(this.controller.getFrenchListener());
 
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-
-        this.updateButtons(buttons);
+        this.updateButtons(button1, button2, button3);
     }
 
     public void changeSettings() {
         Graphical2DView frame = ((Graphical2DView) SwingUtilities.getWindowAncestor(this));
-
-        List<JButton> buttons = new ArrayList<>();
 
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.settings.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(frame.isFullscreenModeActivated() ?
@@ -104,102 +91,66 @@ public class MenuContentSection extends Section<MenuController> {
         JButton button3 = new ButtonComponent(AppText.getTextFor("menu.settings.question1.answer2"), this, this.horizontalMode);
         JButton button4 = new ButtonComponent(AppText.getTextFor("menu.settings.question1.answer3"), this, this.horizontalMode);
 
-        button1.addActionListener(actionEvent -> this.controller.changeLanguage());
-        button2.addActionListener(actionEvent -> frame.toggleFullScreen());
-        button2.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                super.componentResized(componentEvent);
-                if (frame.isFullscreenModeActivated()) {
-                    button2.setText(AppText.getTextFor("global.fullscreen.stop"));
-                } else {
-                    button2.setText(AppText.getTextFor("global.fullscreen.start"));
-                }
-            }
-        });
-        button3.addActionListener(actionEvent -> this.controller.goCredits());
+        button1.addActionListener(this.controller.getChangeLanguageListener());
+        button2.addActionListener(Graphic2DMenuController.getToggleFullScreenListener(frame));
+        button2.addComponentListener(Graphic2DMenuController.getButtonFullScreenResized(frame, button2));
+        button3.addActionListener(this.controller.getCreditsListener());
 
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-        buttons.add(button4);
-
-        this.updateButtons(buttons);
+        this.updateButtons(button1, button2, button3, button4);
     }
 
     public void goHomepage() {
-        List<JButton> buttons = new ArrayList<>();
-
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.question1.answer2"), this, this.horizontalMode);
         JButton button3 = new ButtonComponent(AppText.getTextFor("menu.question1.answer3"), this, this.horizontalMode);
         JButton button4 = new ButtonComponent(AppText.getTextFor("menu.question1.answer4"), this, this.horizontalMode);
 
-        button1.addActionListener(actionEvent -> this.controller.playOnline());
-        button2.addActionListener(actionEvent -> this.controller.playOffline());
-        button3.addActionListener(actionEvent -> this.controller.changeSettings());
+        button1.addActionListener(this.controller.getPlayOnlineListener());
+        button2.addActionListener(this.controller.getPlayOfflineListener());
+        button3.addActionListener(this.controller.getChangeSettingsListener());
 
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-        buttons.add(button4);
-
-        this.updateButtons(buttons);
+        this.updateButtons(button1, button2, button3, button4);
     }
 
     public void newGame() {
-        List<JButton> buttons = new ArrayList<>();
-
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer2"), this, this.horizontalMode);
         JButton button3 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer3"), this, this.horizontalMode);
         JButton button4 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer4"), this, this.horizontalMode);
         JButton button5 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer5"), this, this.horizontalMode);
 
-        button1.addActionListener(actionEvent -> this.controller.playOneVsOne());
-        button2.addActionListener(actionEvent -> this.controller.playOneVsAI());
-        button3.addActionListener(actionEvent -> this.controller.playTwoVsTwo());
-        button4.addActionListener(actionEvent -> this.controller.playTwoVSAI());
+        button1.addActionListener(this.controller.getOneVsOneListener());
+        button2.addActionListener(this.controller.getOneVsAIListener());
+        button3.addActionListener(this.controller.getTwoVsTwoListener());
+        button4.addActionListener(this.controller.getTwoVsAiListener());
 
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-        buttons.add(button4);
-        buttons.add(button5);
-
-        this.updateButtons(buttons);
+        this.updateButtons(button1, button2, button3, button4, button5);
     }
 
     public void playOffline() {
-        List<JButton> buttons = new ArrayList<>();
-
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.offline.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.offline.question1.answer2"), this, this.horizontalMode);
         JButton button3 = new ButtonComponent(AppText.getTextFor("menu.offline.question1.answer3"), this, this.horizontalMode);
 
-        button1.addActionListener(actionEvent -> this.controller.newGame());
-        button2.addActionListener(actionEvent -> this.controller.loadGame());
+        button1.addActionListener(this.controller.getNewGameListener());
+        button2.addActionListener(this.controller.getLoadGameListener());
 
-        buttons.add(button1);
-        buttons.add(button2);
-        buttons.add(button3);
-
-        this.updateButtons(buttons);
+        this.updateButtons(button1, button2, button3);
     }
 
-    public void updateButtons(List<? extends JButton> buttonList) {
+    public void updateButtons(JButton... buttons) {
         this.removeAll();
 
         this.add(Box.createVerticalGlue());
         this.add(this.logoZen);
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalGlue());
-        for (JButton button : buttonList) {
+        for (JButton button : buttons) {
             this.add(button);
             this.add(Box.createVerticalGlue());
         }
 
-        buttonList.get(buttonList.size() - 1).addActionListener(actionEvent -> this.controller.backPreviousPage());
+        buttons[buttons.length - 1].addActionListener(this.controller.getBackPreviousPageListener());
 
         this.revalidate();
         this.repaint();

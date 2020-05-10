@@ -59,11 +59,12 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
      *
      * @param controller The controller of the CustomPanel. Its type is defined by the generic type given to the class.
      */
-    public CustomPanel(ControllerT controller) {
+    protected CustomPanel(ControllerT controller) {
         this.controller = controller;
 
         this.setOpaque(false);
 
+        // Some really really basic revalidate/repaint on resize to be sure there is no problem, shouldn't go to the controller as it is ONLY a behavior of the view
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent componentEvent) {

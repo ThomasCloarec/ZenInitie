@@ -8,7 +8,7 @@ import view.subviews.menuview.MenuView;
 import view.subviews.menuview.TextualMenuView;
 import view.utils.text.AppText;
 
-public class TextualView implements View {
+public class TextualView implements View<MenuController, GameController> {
     public TextualView() {
         System.out.println("███████╗███████╗███╗   ██╗    ██╗     ▄█╗██╗███╗   ██╗██╗████████╗██╗███████╗\n" +
                 "╚══███╔╝██╔════╝████╗  ██║    ██║     ╚═╝██║████╗  ██║██║╚══██╔══╝██║██╔════╝\n" +
