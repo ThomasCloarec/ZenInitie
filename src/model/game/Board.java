@@ -1,5 +1,8 @@
 package model.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private final Pawn[][] board = {
             {Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE},
@@ -14,6 +17,63 @@ public class Board {
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
             {Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED}
     };
+
+    int getPawnCount(Pawn... pawnsToCount) {
+        int count = 0;
+        for (Pawn[] pawns : this.board) {
+            for (Pawn pawn : pawns) {
+                for (Pawn pawnToCount : pawnsToCount) {
+                    if (pawn == pawnToCount) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    Position[] getPawnPositions(Pawn... pawnsToGet) {
+        Position[] positions = new Position[this.getPawnCount(pawnsToGet)];
+
+        int positionIndex = 0;
+        for (int line = 0; line < this.board.length; line++) {
+            for (int column = 0; column < this.board[0].length; column++) {
+                for (Pawn pawnToGet : pawnsToGet) {
+                    if (this.board[line][column] == pawnToGet) {
+                        positions[positionIndex] = new Position(line, column);
+                        positionIndex++;
+                    }
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    List<Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
+        List<Position[]> pawnPositionsAround = new ArrayList<>();
+
+        for (Position position : this.getPawnPositions(pawnsToGetAround)) {
+            // 8 columns to check if there is one connected around
+            pawnPositionsAround.add(new Position[]{
+                    new Position(position.getLine() - 1, position.getColumn()),
+                    new Position(position.getLine() + 1, position.getColumn()),
+                    new Position(position.getLine(), position.getColumn() - 1),
+                    new Position(position.getLine(), position.getColumn() + 1),
+                    new Position(position.getLine() - 1, position.getColumn() - 1),
+                    new Position(position.getLine() - 1, position.getColumn() + 1),
+                    new Position(position.getLine() + 1, position.getColumn() - 1),
+                    new Position(position.getLine() + 1, position.getColumn() + 1)
+            });
+        }
+
+        return pawnPositionsAround;
+    }
+
+    Pawn getPawn(Position position) {
+        return this.board[position.getLine()][position.getColumn()];
+    }
 
     int getFirstDiagonalPawnCount(Position position) {
         int count = 0;
@@ -59,6 +119,27 @@ public class Board {
         }
 
         return count;
+    }
+
+    Position[] generatePositionsFrom(Position position) {
+        Position[] positions = new Position[8];
+
+        int verticalPawnCount = this.getVerticalPawnCount(position);
+        positions[0] = new Position(position.getLine() - verticalPawnCount, position.getColumn()); // top
+        positions[1] = new Position(position.getLine() + verticalPawnCount, position.getColumn()); // bottom
+
+        int horizontalPawnCount = this.getHorizontalPawnCount(position);
+        positions[2] = new Position(position.getLine(), position.getColumn() - horizontalPawnCount); // left
+        positions[3] = new Position(position.getLine(), position.getColumn() + horizontalPawnCount); // right
+
+        int diagonal1PawnCount = this.getFirstDiagonalPawnCount(position);
+        positions[4] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() - diagonal1PawnCount); // top left
+        positions[5] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() + diagonal1PawnCount); // top right
+
+        int diagonal2PawnCount = this.getSecondDiagonalPawnCount(position);
+        positions[6] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() - diagonal2PawnCount); // bottom left
+        positions[7] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() + diagonal2PawnCount); // bottom right
+        return positions;
     }
 
     /**

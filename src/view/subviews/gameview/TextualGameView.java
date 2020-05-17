@@ -69,7 +69,7 @@ public class TextualGameView implements GameView {
     @Override
     public void selectPawn(Game game) {
         TextualGameView.updateBoard(game.getBoardArray());
-        System.out.println(AppText.preInformation + "(" + game.getCurrentTeamName() + ") " + game.getCurrentPlayerName() + AppText.getTextFor("game.playerTurn"));
+        System.out.println(AppText.preInformation + "(" + game.getCurrentTeam().getName() + ") " + game.getCurrentPlayerName() + AppText.getTextFor("game.playerTurn"));
         Position position = TextInput.getSelectPositionAnswer(game);
         if (this.gameController.selectPawn(position) == ResponseError.SELECT_PAWN_ERROR) {
             System.out.println(AppText.preError + AppText.getTextFor("game.error.selectPawn"));

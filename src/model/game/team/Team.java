@@ -48,11 +48,22 @@ public class Team {
         return currentPlayer.getName();
     }
 
-    public TeamColor getTeamColor() {
-        return this.teamColor;
-    }
-
     public String getName() {
         return this.teamColor.name();
+    }
+
+    public TeamColor getOpponentTeamColor() {
+        TeamColor teamColor = null;
+        if (this.teamColor == TeamColor.BLUE) {
+            teamColor = TeamColor.RED;
+        } else if (this.teamColor == TeamColor.RED) {
+            teamColor = TeamColor.BLUE;
+        }
+
+        return teamColor;
+    }
+
+    public TeamColor getTeamColor() {
+        return this.teamColor;
     }
 }
