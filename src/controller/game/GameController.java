@@ -42,11 +42,11 @@ public class GameController {
         this.goMenu.run();
     }
 
-    protected List<Position> getAllowedMoves() {
+    public List<Position> getAllowedMoves() {
         return this.game.getAllowedMoves();
     }
 
-    protected boolean isMovingPawn() {
+    public boolean isMovingPawn() {
         return this.game.isMovingPawn();
     }
 }
