@@ -29,51 +29,43 @@ public class ImageComponent extends JPanel {
      */
     protected Image baseImage;
     /**
+     * Useful for gif, the image loses a bit of quality but it is not buffered so image animation is kept.
+     */
+    protected boolean noBufferingResize;
+    /**
      * The condition that returns if the image has to be visible or not
      */
     protected BooleanSupplier visibleCondition = () -> true;
     /**
+     * The name of the image
+     */
+    private String pathName;
+    /**
      * The resized image of the component to draw
      */
     private BufferedImage resizedImage;
-    /**
-     * Useful for gif, the image loses a bit of quality but it is not buffered so image animation is kept.
-     */
-    protected boolean noBufferingResize;
-
-    /**
-     * Allow an imageComponent to be copied in another while still saving resources on not having to resize multiple images, resize once => show everywhere.
-     *
-     * @param imageComponent the reference imageComponent
-     */
-    /*public ImageComponent(ImageComponent imageComponent) {
-        this.setCustomSize(imageComponent.getC);
-        this.visibleCondition = imageComponent.visibleCondition;<
-        this.resizedImage = imageComponent.resizedImage;
-        this.setOpaque(false);
-    }*/
 
     /**
      * ImageComponent constructor with custom width and height
      *
-     * @param name   name of the image
-     * @param width  width of the image
-     * @param height height of the image
+     * @param pathName name of the image
+     * @param width    width of the image
+     * @param height   height of the image
      */
-    public ImageComponent(String name, int width, int height) {
-        this(name);
+    public ImageComponent(String pathName, int width, int height) {
+        this(pathName);
         this.setCustomSize(width, height);
     }
 
     /**
      * ImageComponent constructor with custom size (keep ratio component)
      *
-     * @param name      name of the image
+     * @param pathName  name of the image
      * @param size      size of the image
      * @param keepRatio keep the ratio of the image or not
      */
-    public ImageComponent(String name, int size, boolean keepRatio) {
-        this(name);
+    public ImageComponent(String pathName, int size, boolean keepRatio) {
+        this(pathName);
         if (keepRatio) {
             double ratio = ((double) this.baseImage.getHeight(this)) / this.baseImage.getWidth(this);
             this.setCustomSize(size, (int) (size * ratio));
@@ -85,10 +77,10 @@ public class ImageComponent extends JPanel {
     /**
      * ImageComponent constructor with original size
      *
-     * @param name name of the image
+     * @param pathName name of the image
      */
-    public ImageComponent(String name, boolean originalSize) {
-        this.setBaseImage(name);
+    public ImageComponent(String pathName, boolean originalSize) {
+        this.setBaseImage(pathName);
         this.setOpaque(false);
         this.noBufferingResize = originalSize;
 
@@ -109,21 +101,24 @@ public class ImageComponent extends JPanel {
     /**
      * ImageComponent constructor with custom size (squared component)
      *
-     * @param name name of the image
-     * @param size size of the image
+     * @param pathName name of the image
+     * @param size     size of the image
      */
-    public ImageComponent(String name, int size) {
-        this(name, size, true);
+    public ImageComponent(String pathName, int size) {
+        this(pathName, size, true);
     }
 
-    protected ImageComponent(String name) {
-        this(name, false);
+    protected ImageComponent(String pathName) {
+        this(pathName, false);
     }
 
     public static void loadImage(String name) {
         ImageIcon imageIcon = new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
-        imageIcon.getImage().flush();
         ImageComponent.images.put(name, imageIcon.getImage());
+    }
+
+    public static void resetImage(String name) {
+        ImageComponent.images.get(name).flush();
     }
 
     /**
@@ -170,6 +165,7 @@ public class ImageComponent extends JPanel {
     }
 
     public void setBaseImage(String name) {
+        this.pathName = name;
         if (!ImageComponent.images.containsKey(name)) {
             ImageComponent.loadImage(name);
         }
@@ -191,7 +187,7 @@ public class ImageComponent extends JPanel {
         this.visibleCondition = visibleCondition;
     }
 
-    public static void removeImage(String path) {
-        ImageComponent.images.remove(path);
+    public String getPathName() {
+        return this.pathName;
     }
 }

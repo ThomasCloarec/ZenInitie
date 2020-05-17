@@ -48,6 +48,10 @@ public class Team {
         return currentPlayer.getName();
     }
 
+    public TeamColor getTeamColor() {
+        return this.teamColor;
+    }
+
     public String getName() {
         return this.teamColor.name();
     }

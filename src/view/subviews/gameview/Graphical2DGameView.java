@@ -37,7 +37,11 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
     @Override
     public void selectPawn(Game game) {
         SwingUtilities.invokeLater(() -> {
+            this.leftSection.selectPawn(game);
             this.contentSection.selectPawn(game);
+            this.rightSection.selectPawn(game);
+            this.revalidate();
+            this.repaint();
         });
     }
 }

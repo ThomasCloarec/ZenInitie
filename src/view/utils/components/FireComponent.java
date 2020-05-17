@@ -24,8 +24,7 @@ public class FireComponent extends JPanel {
 
             String gifPath = "logo_zen_fire.gif";
             this.add(new ImageComponent(gifPath, true));
-            ImageComponent.removeImage(gifPath); // remove it to start it at the right time next launch
-
+            ImageComponent.resetImage(gifPath);
             this.add(Box.createHorizontalGlue());
             this.revalidate();
             this.repaint();

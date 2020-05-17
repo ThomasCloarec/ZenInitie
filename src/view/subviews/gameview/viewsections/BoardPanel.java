@@ -8,7 +8,6 @@ import view.utils.ExtendedColor;
 import view.utils.components.ScaledImageComponent;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -22,7 +21,7 @@ import java.awt.event.ComponentEvent;
 public class BoardPanel extends JPanel {
     private final Graphic2DGameController gameController;
     private final JComponent referenceComponent;
-    private JPanel[][] cells;
+    private Cell[][] cells;
 
     BoardPanel(Graphic2DGameController gameController, JComponent referenceComponent) {
         this.gameController = gameController;
@@ -41,11 +40,11 @@ public class BoardPanel extends JPanel {
     public void start(Game game) {
         this.setLayout(new GridLayout(game.getBoardSize(), game.getBoardSize()));
 
-        this.cells = new JPanel[game.getBoardSize()][game.getBoardSize()];
+        this.cells = new Cell[game.getBoardSize()][game.getBoardSize()];
 
         for (int line = 0; line < game.getBoardSize(); line++) {
             for (int column = 0; column < game.getBoardSize(); column++) {
-                JPanel cell = new JPanel();
+                Cell cell = new Cell();
                 cell.setLayout(new BoxLayout(cell, BoxLayout.X_AXIS));
                 cell.setBackground((line + column) % 2 == 0 ? Color.LIGHT_GRAY : Color.BLACK);
 
@@ -71,21 +70,18 @@ public class BoardPanel extends JPanel {
     private void updateBoard(Pawn[][] boardArray) {
         for (int line = 0; line < this.cells.length; line++) {
             for (int column = 0; column < this.cells[0].length; column++) {
-                JPanel cell = this.cells[line][column];
-
-                cell.removeAll();
-                cell.add(Box.createHorizontalGlue());
+                Cell cell = this.cells[line][column];
 
                 Pawn pawn = boardArray[line][column];
                 if (pawn == Pawn.ZEN) {
-                    cell.add(new ScaledImageComponent("pawns/zen.png", 0.85, cell));
+                    cell.setImageComponent(new ScaledImageComponent("pawns/zen.png", 0.85, cell));
                 } else if (pawn == Pawn.BLUE) {
-                    cell.add(new ScaledImageComponent("pawns/blue.png", 0.85, cell));
+                    cell.setImageComponent(new ScaledImageComponent("pawns/blue.png", 0.85, cell));
                 } else if (pawn == Pawn.RED) {
-                    cell.add(new ScaledImageComponent("pawns/red.png", 0.85, cell));
+                    cell.setImageComponent(new ScaledImageComponent("pawns/red.png", 0.85, cell));
+                } else {
+                    cell.setImageComponent(null);
                 }
-
-                cell.add(Box.createHorizontalGlue());
 
                 cell.setBorder(null);
             }

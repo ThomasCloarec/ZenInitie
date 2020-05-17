@@ -2,6 +2,7 @@ package view.subviews.gameview.viewsections;
 
 import controller.game.Graphic2DGameController;
 import model.game.Game;
+import model.game.team.TeamColor;
 import view.subviews.Section;
 import view.utils.ExtendedColor;
 import view.utils.components.ImageComponent;
@@ -10,12 +11,16 @@ import view.utils.components.ScaledImageComponent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class GameRightSection extends Section<Graphic2DGameController> {
+    private ImageComponent jumpingHand;
+    private LightComponent playerLight;
+
     public GameRightSection(Graphic2DGameController gameController, BooleanSupplier horizontalMode) {
         super(gameController, horizontalMode);
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -31,19 +36,28 @@ public class GameRightSection extends Section<Graphic2DGameController> {
     public void start(Game game) {
         String playerImagePath;
         if (game.isAiMode()) {
-            playerImagePath = "robot.png";
+            playerImagePath = "people/robot.png";
         } else if (game.isDuoMode()) {
-            playerImagePath = "woman2.png";
+            playerImagePath = "people/woman2.png";
         } else {
-            playerImagePath = "woman.png";
+            playerImagePath = "people/woman.png";
         }
 
         this.add(Box.createHorizontalGlue());
         this.add(Box.createHorizontalGlue());
         this.add(Box.createHorizontalGlue());
+
+        JPanel playerPanel = new JPanel();
+        playerPanel.setOpaque(false);
+        playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+
+        this.jumpingHand = new ImageComponent("red_jumper.gif", true);
+        playerPanel.add(this.jumpingHand);
+        playerPanel.add(Box.createVerticalStrut(10));
         ImageComponent redPlayer = new ScaledImageComponent(playerImagePath, 0.55, 0.55, this);
         redPlayer.setVisibleCondition(this.horizontalMode);
-        this.add(redPlayer);
+        playerPanel.add(redPlayer);
+        this.add(playerPanel);
 
         this.add(Box.createHorizontalGlue());
         ImageComponent redDragon = new ScaledImageComponent("right_baner.png", 0.4, 0.9, this, false);
@@ -52,7 +66,20 @@ public class GameRightSection extends Section<Graphic2DGameController> {
 
         Supplier<Point> playerCenter = () -> new Point(redPlayer.getX() + this.getWidth() * 2 + redPlayer.getWidth() / 2, redPlayer.getY() + redPlayer.getHeight() / 2);
         Supplier<Float> playerRadius = () -> redPlayer.getHeight() * 1.5f;
-        LightComponent playerLight = new LightComponent(playerCenter, playerRadius, Color.GRAY);
-        this.lights.add(playerLight);
+        this.playerLight = new LightComponent(playerCenter, playerRadius, Color.GRAY);
+        this.lights.add(this.playerLight);
+
+        this.updatePlayerTurn(game);
+    }
+
+    public void selectPawn(Game game) {
+        this.updatePlayerTurn(game);
+    }
+
+    private void updatePlayerTurn(Game game) {
+        TeamColor teamColor = game.getCurrentTeam().getTeamColor();
+        boolean visible = teamColor == TeamColor.RED;
+        this.playerLight.setVisibleCondition(() -> visible);
+        this.jumpingHand.setVisible(visible);
     }
 }
