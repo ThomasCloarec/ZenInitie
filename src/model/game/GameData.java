@@ -48,6 +48,21 @@ public class GameData {
      */
     private Position selectedPawn;
 
+    @Override
+    public String toString() {
+        return "GameData{" +
+                "teams=" + this.teams +
+                ", allowedMoves=" + this.allowedMoves +
+                ", board=" + this.board +
+                ", aiMode=" + this.aiMode +
+                ", duoMode=" + this.duoMode +
+                ", currentTeamIndex=" + this.currentTeamIndex +
+                ", movingPawn=" + this.movingPawn +
+                ", running=" + this.running +
+                ", selectedPawn=" + this.selectedPawn +
+                '}';
+    }
+
     /**
      * Gets allowed moves.
      *

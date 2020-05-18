@@ -3,6 +3,7 @@ package model.game.board;
 import model.game.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -241,5 +242,12 @@ public class Board {
      */
     public Pawn[][] getArray() {
         return this.board.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "board=" + Arrays.toString(this.board) +
+                '}';
     }
 }

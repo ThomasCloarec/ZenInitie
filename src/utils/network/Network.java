@@ -59,6 +59,8 @@ public final class Network {
         kryo.register(List.class);
         kryo.register(Team.class);
         kryo.register(Pawn.class);
+        kryo.register(Pawn[].class);
+        kryo.register(Pawn[][].class);
         kryo.register(Player.class);
         kryo.register(TeamColor.class);
     }

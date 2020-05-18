@@ -375,4 +375,8 @@ public class Game extends Observable<GameView> {
     public boolean isRunning() {
         return this.gameData.isRunning();
     }
+
+    public void setGameData(GameData gameData) {
+        this.gameData = gameData;
+    }
 }

@@ -15,11 +15,18 @@ public class Team {
     /**
      * The Team color.
      */
-    private final TeamColor teamColor;
+    private TeamColor teamColor;
     /**
      * The Current player index.
      */
     private int currentPlayerIndex;
+
+    /**
+     * Instantiates a new Team.
+     */
+    public Team() {
+        // Used for kryo deserialization.
+    }
 
     /**
      * Instantiates a new Team.
@@ -132,5 +139,19 @@ public class Team {
      */
     public TeamColor getTeamColor() {
         return this.teamColor;
+    }
+
+    /**
+     * To string string.
+     *
+     * @return the string
+     */
+    @Override
+    public String toString() {
+        return "Team{" +
+                "players=" + this.players +
+                ", teamColor=" + this.teamColor +
+                ", currentPlayerIndex=" + this.currentPlayerIndex +
+                '}';
     }
 }
