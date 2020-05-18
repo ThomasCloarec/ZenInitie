@@ -2,7 +2,6 @@ package utils.observer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -19,38 +18,8 @@ public interface Observer<T extends Observer<T>> {
      *
      * @param consumer the functional interface iterating over all the observer children.
      */
-    default void forEachObserverChild(Consumer<T> consumer) {
+    default void forEachObserverChild(Consumer<? super T> consumer) {
         this.getObserverChildren().forEach(consumer);
-    }
-
-    /**
-     * Allow the use of method reference for single integer parameter observer methods.
-     *
-     * @param consumer The method of the observer
-     * @param arg2     The integer parameter of the method
-     */
-    default void forEachObserverChild(BiConsumer<T, Integer> consumer, Integer arg2) {
-        this.forEachObserverChild(arg1 -> consumer.accept(arg1, arg2));
-    }
-
-    /**
-     * Allow the use of method reference for single boolean parameter observer methods.
-     *
-     * @param consumer The method of the observer
-     * @param arg2     The boolean parameter of the method
-     */
-    default void forEachObserverChild(BiConsumer<T, Boolean> consumer, Boolean arg2) {
-        this.forEachObserverChild(arg1 -> consumer.accept(arg1, arg2));
-    }
-
-    /**
-     * Allow the use of method reference for single String parameter observer methods.
-     *
-     * @param consumer The method of the observer
-     * @param arg2     The String parameter of the method
-     */
-    default void forEachObserverChild(BiConsumer<T, String> consumer, String arg2) {
-        this.forEachObserverChild(arg1 -> consumer.accept(arg1, arg2));
     }
 
     /**

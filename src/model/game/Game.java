@@ -225,11 +225,6 @@ public class Game extends Observable<GameView> {
     }
 
     @Override
-    protected void notifyUpdateEverything(GameView observer) {
-
-    }
-
-    @Override
     public void addObserver(GameView observer) {
         super.addObserver(observer);
         observer.start(this);

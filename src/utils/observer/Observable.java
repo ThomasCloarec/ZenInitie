@@ -2,7 +2,6 @@ package utils.observer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -22,19 +21,11 @@ import java.util.function.Consumer;
  *
  * @param <T> A sub type of Observer, it allows to use methods of this T type.
  */
-public abstract class Observable<T extends Observer<T>> {
+public class Observable<T extends Observer<T>> {
     /**
      * The list of observers
      */
     private final Collection<T> observers = new ArrayList<>(1);
-
-    /**
-     * Notify an observer about the whole state of the app.
-     * This method should generally be used to initialize this observer.
-     *
-     * @param observer the observer
-     */
-    protected abstract void notifyUpdateEverything(T observer);
 
     /**
      * Add an observer and initialize it according to the model data.
@@ -43,7 +34,6 @@ public abstract class Observable<T extends Observer<T>> {
      */
     public void addObserver(T observer) {
         this.observers.add(observer);
-        this.notifyUpdateEverything(observer);
     }
 
     /**
@@ -56,17 +46,6 @@ public abstract class Observable<T extends Observer<T>> {
         for (T observer : observers) {
             this.addObserver(observer);
         }
-
-        this.notifyUpdateEverything();
-    }
-
-    /**
-     * Notify all observers about the whole state of the app.
-     */
-    protected void notifyUpdateEverything() {
-        for (T observer : this.observers) {
-            this.notifyUpdateEverything(observer);
-        }
     }
 
     /**
@@ -74,37 +53,7 @@ public abstract class Observable<T extends Observer<T>> {
      *
      * @param consumer the iterator consumer
      */
-    protected void forEachObserver(Consumer<T> consumer) {
+    protected void forEachObserver(Consumer<? super T> consumer) {
         this.observers.forEach(consumer);
-    }
-
-    /**
-     * Allow the use of method reference for single integer parameter observer methods.
-     *
-     * @param consumer The method of the observer
-     * @param arg2     The integer parameter of the method
-     */
-    protected void forEachObserver(BiConsumer<T, Integer> consumer, Integer arg2) {
-        this.forEachObserver(arg1 -> consumer.accept(arg1, arg2));
-    }
-
-    /**
-     * Allow the use of method reference for single boolean parameter observer methods.
-     *
-     * @param consumer The method of the observer
-     * @param arg2     The boolean parameter of the method
-     */
-    protected void forEachObserver(BiConsumer<T, Boolean> consumer, Boolean arg2) {
-        this.forEachObserver(arg1 -> consumer.accept(arg1, arg2));
-    }
-
-    /**
-     * Allow the use of method reference for single String parameter observer methods.
-     *
-     * @param consumer The method of the observer
-     * @param arg2     The String parameter of the method
-     */
-    protected void forEachObserver(BiConsumer<T, String> consumer, String arg2) {
-        this.forEachObserver(arg1 -> consumer.accept(arg1, arg2));
     }
 }
