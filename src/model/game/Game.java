@@ -17,42 +17,7 @@ import java.util.Map;
  * The global Game class, it handles a whole game of Zen l'Initié from the start to the end.
  */
 public class Game extends Observable<GameView> {
-    /**
-     * is the game in ai mode (against computer) ?
-     */
-    public final boolean aiMode;
-    /**
-     * is the game in duo mode ?
-     */
-    public final boolean duoMode;
-    /**
-     * The Finished.
-     */
-    private boolean running = true;
-    /**
-     * The allowed moves for the current selected pawn
-     */
-    private final ArrayList<Position> allowedMoves = new ArrayList<>();
-    /**
-     * The board of the game
-     */
-    private final Board board = new Board();
-    /**
-     * The list of teams playing this game
-     */
-    private final ArrayList<Team> teams = new ArrayList<>(2);
-    /**
-     * The current index of the team playing
-     */
-    private int currentTeamIndex;
-    /**
-     * Is the pawn moving ? so if true we are selecting a target location for it, if false we are selecting a pawn to move
-     */
-    private boolean movingPawn;
-    /**
-     * The currently selectedPawn (or last one)
-     */
-    private Position selectedPawn;
+    protected GameData gameData = new GameData();
 
     /**
      * The Game constructor, add teams, players and start game
@@ -61,23 +26,12 @@ public class Game extends Observable<GameView> {
      * @param duoMode is the game in duo mode ?
      */
     public Game(boolean aiMode, boolean duoMode) {
-        this.aiMode = aiMode;
-        this.duoMode = duoMode;
+        this.gameData.setAiMode(aiMode);
+        this.gameData.setDuoMode(duoMode);
 
-        this.teams.add(new Team(TeamColor.BLUE));
-        this.teams.add(new Team(TeamColor.RED));
-        if (this.duoMode) {
-            for (Team team : this.teams) {
-                team.addPlayer(new Player("Player 1"));
-                team.addPlayer(new Player("Player 2"));
-            }
-        } else {
-            for (Team team : this.teams) {
-                team.addPlayer(new Player("Player 1"));
-            }
-        }
+        this.initializeTeams();
 
-        this.currentTeamIndex = (int) (Math.random() * this.teams.size());
+        this.gameData.setCurrentTeamIndex((int) (Math.random() * this.gameData.getTeams().size()));
     }
 
     /**
@@ -90,8 +44,8 @@ public class Game extends Observable<GameView> {
         boolean allowed = false;
 
         int i = 0;
-        while (i < this.allowedMoves.size() && !allowed) {
-            Position position = this.allowedMoves.get(i);
+        while (i < this.gameData.getAllowedMoves().size() && !allowed) {
+            Position position = this.gameData.getAllowedMoves().get(i);
             if (move.getLine() == position.getLine() && move.getColumn() == position.getColumn()) {
                 allowed = true;
             }
@@ -108,9 +62,39 @@ public class Game extends Observable<GameView> {
      * @return is the position selectable
      */
     public boolean isPawnSelectable(Position position) {
-        Pawn pawn = this.board.getArray()[position.getLine()][position.getColumn()];
+        Pawn pawn = this.gameData.getBoard().getArray()[position.getLine()][position.getColumn()];
         Team currentTeam = this.getCurrentTeam();
         return currentTeam.controlPawn(pawn);
+    }
+
+    /**
+     * Move the selected pawn to the target position
+     *
+     * @param position the target position
+     */
+    public void moveSelectedPawn(Position position) {
+        this.gameData.setMovingPawn(false);
+        this.gameData.getBoard().getArray()[position.getLine()][position.getColumn()] = this.gameData.getBoard().getArray()[this.gameData.getSelectedPawn().getLine()][this.gameData.getSelectedPawn().getColumn()];
+        this.gameData.getBoard().getArray()[this.gameData.getSelectedPawn().getLine()][this.gameData.getSelectedPawn().getColumn()] = Pawn.EMPTY;
+
+        boolean win = this.isTeamWin(this.getCurrentTeam().getTeamColor());
+        boolean opponentWin = this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
+        if (win && opponentWin) {
+            this.gameData.setRunning(false);
+            this.notifyGameWinner(null);
+        } else if (win) {
+            this.gameData.setRunning(false);
+            this.notifyGameWinner(this.getCurrentTeam());
+        } else if (opponentWin) {
+            this.gameData.setRunning(false);
+            this.notifyGameWinner(this.getOpponentTeam());
+        }
+
+        Team currentTeam = this.getCurrentTeam();
+        if (!currentTeam.nextPlayerPlay()) {
+            this.gameData.setCurrentTeamIndex((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().size());
+        }
+        this.notifyPawnMoved();
     }
 
     /**
@@ -124,34 +108,19 @@ public class Game extends Observable<GameView> {
         return currentTeam.controlPawn(pawn);
     }
 
-    /**
-     * Move the selected pawn to the target position
-     *
-     * @param position the target position
-     */
-    public void moveSelectedPawn(Position position) {
-        this.movingPawn = false;
-        this.board.getArray()[position.getLine()][position.getColumn()] = this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()];
-        this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()] = Pawn.EMPTY;
-
-        boolean win = this.isTeamWin(this.getCurrentTeam().getTeamColor());
-        boolean opponentWin = this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
-        if (win && opponentWin) {
-            this.running = false;
-            this.notifyGameWinner(null);
-        } else if (win) {
-            this.running = false;
-            this.notifyGameWinner(this.getCurrentTeam());
-        } else if (opponentWin) {
-            this.running = false;
-            this.notifyGameWinner(this.getOpponentTeam());
+    protected void initializeTeams() {
+        this.gameData.getTeams().add(new Team(TeamColor.BLUE));
+        this.gameData.getTeams().add(new Team(TeamColor.RED));
+        if (this.gameData.isDuoMode()) {
+            for (Team team : this.gameData.getTeams()) {
+                team.addPlayer(new Player("Player 1"));
+                team.addPlayer(new Player("Player 2"));
+            }
+        } else {
+            for (Team team : this.gameData.getTeams()) {
+                team.addPlayer(new Player("Player 1"));
+            }
         }
-
-        Team currentTeam = this.getCurrentTeam();
-        if (!currentTeam.nextPlayerPlay()) {
-            this.currentTeamIndex = (this.currentTeamIndex + 1) % this.teams.size();
-        }
-        this.notifyPawnMoved();
     }
 
     /**
@@ -172,11 +141,11 @@ public class Game extends Observable<GameView> {
      * Sets allowed moves.
      */
     private void setAllowedMoves() {
-        this.allowedMoves.clear();
+        this.gameData.getAllowedMoves().clear();
 
-        for (Position position : this.board.generatePositionsFrom(this.selectedPawn)) {
+        for (Position position : this.gameData.getBoard().generatePositionsFrom(this.gameData.getSelectedPawn())) {
             if (this.isMoveValid(position)) {
-                this.allowedMoves.add(position);
+                this.gameData.getAllowedMoves().add(position);
             }
         }
     }
@@ -191,17 +160,17 @@ public class Game extends Observable<GameView> {
         boolean validMove = true;
 
         Team currentTeam = this.getCurrentTeam();
-        if (this.board.isPositionValid(position) && !currentTeam.controlPawn(this.board.getArray()[position.getLine()][position.getColumn()])) { // destination must be on the board and can't be my pawn
-            int deltaLine = position.getLine() - this.selectedPawn.getLine();
+        if (this.gameData.getBoard().isPositionValid(position) && !currentTeam.controlPawn(this.gameData.getBoard().getArray()[position.getLine()][position.getColumn()])) { // destination must be on the board and can't be my pawn
+            int deltaLine = position.getLine() - this.gameData.getSelectedPawn().getLine();
             int lineGradient = deltaLine == 0 ? 0 : Math.abs(deltaLine) / deltaLine; // line direction
 
-            int deltaColumn = position.getColumn() - this.selectedPawn.getColumn();
+            int deltaColumn = position.getColumn() - this.gameData.getSelectedPawn().getColumn();
             int columnGradient = deltaColumn == 0 ? 0 : Math.abs(deltaColumn) / deltaColumn; // column direction
 
-            int line = this.selectedPawn.getLine() + lineGradient;
-            int column = this.selectedPawn.getColumn() + columnGradient;
-            while (this.board.isPositionValid(new Position(line, column)) && validMove && !(position.getLine() == line && position.getColumn() == column)) {
-                if (currentTeam.enemyHasPawn(this.board.getArray()[line][column])) { // can't go hover opponent's pawn
+            int line = this.gameData.getSelectedPawn().getLine() + lineGradient;
+            int column = this.gameData.getSelectedPawn().getColumn() + columnGradient;
+            while (this.gameData.getBoard().isPositionValid(new Position(line, column)) && validMove && !(position.getLine() == line && position.getColumn() == column)) {
+                if (currentTeam.enemyHasPawn(this.gameData.getBoard().getArray()[line][column])) { // can't go hover opponent's pawn
                     validMove = false;
                 }
                 line += lineGradient;
@@ -225,7 +194,7 @@ public class Game extends Observable<GameView> {
         Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
 
         // find all positions around each pawn of a color
-        Map<Position, Position[]> toMarkMap = this.board.getPawnPositionsAround(Pawn.ZEN, pawn);
+        Map<Position, Position[]> toMarkMap = this.gameData.getBoard().getPawnPositionsAround(Pawn.ZEN, pawn);
         Collection<Position> markedList = new ArrayList<>();
 
         Position randomPosition = (Position) toMarkMap.keySet().toArray()[0]; // random position because order is not always kept in an hashmap
@@ -285,8 +254,8 @@ public class Game extends Observable<GameView> {
      * @param position the position of the pawn to select
      */
     public void setSelectedPawn(Position position) {
-        this.movingPawn = true;
-        this.selectedPawn = position;
+        this.gameData.setMovingPawn(true);
+        this.gameData.setSelectedPawn(position);
         this.setAllowedMoves();
         this.notifyPawnSelected();
     }
@@ -297,7 +266,7 @@ public class Game extends Observable<GameView> {
      * @return the allowed moves
      */
     public List<Position> getAllowedMoves() {
-        return Collections.unmodifiableList(this.allowedMoves);
+        return Collections.unmodifiableList(this.gameData.getAllowedMoves());
     }
 
     /**
@@ -306,7 +275,25 @@ public class Game extends Observable<GameView> {
      * @return the game board array
      */
     public Pawn[][] getBoardArray() {
-        return this.board.getArray();
+        return this.gameData.getBoard().getArray();
+    }
+
+    /**
+     * Get the team playing during this turn
+     *
+     * @return the team
+     */
+    public Team getCurrentTeam() {
+        return this.gameData.getTeams().get(this.gameData.getCurrentTeamIndex());
+    }
+
+    /**
+     * Gets opponent team.
+     *
+     * @return the opponent team
+     */
+    private Team getOpponentTeam() {
+        return this.gameData.getTeams().get((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().size());
     }
 
     /**
@@ -329,30 +316,21 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Get the team playing during this turn
-     *
-     * @return the team
-     */
-    public Team getCurrentTeam() {
-        return this.teams.get(this.currentTeamIndex);
-    }
-
-    /**
-     * Gets opponent team.
-     *
-     * @return the opponent team
-     */
-    private Team getOpponentTeam() {
-        return this.teams.get((this.currentTeamIndex + 1) % this.teams.size());
-    }
-
-    /**
      * Gets is the game in ai mode against computer ?.
      *
      * @return Value of is the game in ai mode against computer ?.
      */
     public boolean isAiMode() {
-        return this.aiMode;
+        return this.gameData.isAiMode();
+    }
+
+    /**
+     * Sets ai mode.
+     *
+     * @param aiMode the ai mode
+     */
+    public void setAiMode(boolean aiMode) {
+        this.gameData.setAiMode(aiMode);
     }
 
     /**
@@ -361,7 +339,16 @@ public class Game extends Observable<GameView> {
      * @return Value of is the game in duo mode ?.
      */
     public boolean isDuoMode() {
-        return this.duoMode;
+        return this.gameData.isDuoMode();
+    }
+
+    /**
+     * Sets duo mode.
+     *
+     * @param duoMode the duo mode
+     */
+    public void setDuoMode(boolean duoMode) {
+        this.gameData.setDuoMode(duoMode);
     }
 
     /**
@@ -370,7 +357,7 @@ public class Game extends Observable<GameView> {
      * @return Value of Is the pawn moving ? so if true we are selecting a target location for it, if false we are selecting a pawn to move.
      */
     public boolean isMovingPawn() {
-        return this.movingPawn;
+        return this.gameData.isMovingPawn();
     }
 
     /**
@@ -379,6 +366,6 @@ public class Game extends Observable<GameView> {
      * @return the boolean
      */
     public boolean isRunning() {
-        return this.running;
+        return this.gameData.isRunning();
     }
 }

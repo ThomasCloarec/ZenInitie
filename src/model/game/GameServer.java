@@ -1,5 +1,7 @@
 package model.game;
 
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import utils.network.Network;
 
@@ -13,6 +15,7 @@ public class GameServer extends Game {
 
     public GameServer(boolean aiMode, boolean duoMode) {
         super(aiMode, duoMode);
+
         boolean tcpPortNotFound = true;
         this.server = new Server();
 
@@ -31,5 +34,24 @@ public class GameServer extends Game {
                 udpPort++;
             }
         }
+
+        this.server.addListener(new Listener() {
+            @Override
+            public void connected(Connection connection) {
+                super.connected(connection);
+                GameServer.this.server.sendToTCP(connection.getID(), GameServer.this.gameData);
+            }
+
+            @Override
+            public void received(Connection connection, Object object) {
+                /*if (object instanceof GameInit) {
+                    GameInit gameInit = (GameInit) object;
+                    System.out.println("server received : " + gameInit);
+                    SomeResponse response = new SomeResponse();
+                    response.text = "Thanks";
+                    connection.sendTCP(response);
+                }*/
+            }
+        });
     }
 }

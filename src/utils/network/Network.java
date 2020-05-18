@@ -1,5 +1,18 @@
 package utils.network;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.EndPoint;
+import model.game.Board;
+import model.game.GameData;
+import model.game.Pawn;
+import model.game.Position;
+import model.game.team.Player;
+import model.game.team.Team;
+import model.game.team.TeamColor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The type Network.
  */
@@ -30,5 +43,23 @@ public final class Network {
      */
     private Network() {
 
+    }
+
+    /**
+     * Register send-able classes
+     *
+     * @param endPoint the end point
+     */
+    public static void register(EndPoint endPoint) {
+        Kryo kryo = endPoint.getKryo();
+        kryo.register(GameData.class);
+        kryo.register(ArrayList.class);
+        kryo.register(Position.class);
+        kryo.register(Board.class);
+        kryo.register(List.class);
+        kryo.register(Team.class);
+        kryo.register(Pawn.class);
+        kryo.register(Player.class);
+        kryo.register(TeamColor.class);
     }
 }
