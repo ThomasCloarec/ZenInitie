@@ -116,6 +116,17 @@ public class Game extends Observable<GameView> {
     }
 
     /**
+     * Check if a pawn is selectable
+     *
+     * @param pawn the pawn
+     * @return is the pawn selectable
+     */
+    public boolean isPawnSelectable(Pawn pawn) {
+        Team currentTeam = this.getCurrentTeam();
+        return currentTeam.controlPawn(pawn);
+    }
+
+    /**
      * Move the selected pawn to the target position
      *
      * @param position the target position
@@ -188,6 +199,7 @@ public class Game extends Observable<GameView> {
     }
 
     private boolean isTeamWin(TeamColor teamColor) {
+        // Convert TeamColor to Pawn
         Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
 
         // find all positions around each pawn of a color
@@ -208,12 +220,13 @@ public class Game extends Observable<GameView> {
                 int positionAroundIndex = 0;
                 while (noPawnAround && positionAroundIndex < entryToMark.getValue().length) { // iterate over all the positions around pawns until end or pawn around marked
                     Position position = entryToMark.getValue()[positionAroundIndex];
-                    if (markedList.contains(position)) {
+                    if (markedList.contains(position)) { // If position around a marked position, then mark it too
                         noPawnAround = false;
                         changeMarkedPosition = true;
+
                         Position newMarkedPosition = entryToMark.getKey();
-                        iterator.remove();
-                        markedList.add(newMarkedPosition);
+                        iterator.remove(); // remove from "to mark" list
+                        markedList.add(newMarkedPosition); // add to marked list
                     }
 
                     positionAroundIndex++;
@@ -224,9 +237,14 @@ public class Game extends Observable<GameView> {
         return toMarkMap.isEmpty();
     }
 
+    /**
+     * Notify an observer about the whole state of the app.
+     * This method should generally be used to initialize this observer.
+     *
+     * @param observer the observer
+     */
     @Override
-    public void addObserver(GameView observer) {
-        super.addObserver(observer);
+    protected void notifyUpdateEverything(GameView observer) {
         observer.start(this);
     }
 
@@ -313,10 +331,6 @@ public class Game extends Observable<GameView> {
      */
     public boolean isMovingPawn() {
         return this.movingPawn;
-    }
-
-    private boolean isOpponentTeamWin() {
-        return this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
     }
 
     private boolean isWin() {

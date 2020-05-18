@@ -1,9 +1,11 @@
 package view.subviews.gameview.viewsections;
 
+import controller.Graphic2DController;
 import controller.game.Graphic2DGameController;
 import model.game.Game;
 import model.game.Pawn;
 import model.game.Position;
+import model.game.team.TeamColor;
 import view.utils.ExtendedColor;
 import view.utils.components.ScaledImageComponent;
 
@@ -27,13 +29,7 @@ public class BoardPanel extends JPanel {
         this.gameController = gameController;
         this.referenceComponent = referenceComponent;
 
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                super.componentResized(componentEvent);
-                BoardPanel.this.doLayout();
-            }
-        });
+        this.addComponentListener(Graphic2DController.getResizeListener(this));
         this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 3));
     }
 
@@ -54,11 +50,11 @@ public class BoardPanel extends JPanel {
             }
         }
 
-        this.updateBoard(game.getBoardArray());
+        this.updateBoard(game);
     }
 
     public void selectPawn(Game game) {
-        this.updateBoard(game.getBoardArray());
+        this.updateBoard(game);
     }
 
     public void movePawn(Game game) {
@@ -73,12 +69,16 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    private void updateBoard(Pawn[][] boardArray) {
+    private void updateBoard(Game game) {
+        Pawn[][] boardArray = game.getBoardArray();
+
         for (int line = 0; line < this.cells.length; line++) {
             for (int column = 0; column < this.cells[0].length; column++) {
                 Cell cell = this.cells[line][column];
-
                 Pawn pawn = boardArray[line][column];
+                Color borderColor = game.getCurrentTeam().getTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
+                cell.setBorder(game.isPawnSelectable(pawn) ? BorderFactory.createLineBorder(borderColor, 2) : null);
+
                 if (pawn == Pawn.ZEN) {
                     cell.setImageComponent(new ScaledImageComponent("pawns/zen.png", 0.85, cell));
                 } else if (pawn == Pawn.BLUE) {
@@ -89,7 +89,6 @@ public class BoardPanel extends JPanel {
                     cell.setImageComponent(null);
                 }
 
-                cell.setBorder(null);
             }
         }
 

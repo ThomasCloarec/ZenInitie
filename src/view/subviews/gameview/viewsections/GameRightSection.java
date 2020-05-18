@@ -64,7 +64,7 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         redDragon.setVisibleCondition(this.horizontalMode);
         this.add(redDragon);
 
-        Supplier<Point> playerCenter = () -> new Point(redPlayer.getX() + this.getWidth() * 2 + redPlayer.getWidth() / 2, redPlayer.getY() + redPlayer.getHeight() / 2);
+        Supplier<Point> playerCenter = () -> new Point(playerPanel.getX() + redPlayer.getX() + this.getWidth() * 2 + redPlayer.getWidth() / 2, playerPanel.getY() + redPlayer.getY() + redPlayer.getHeight() / 2);
         Supplier<Float> playerRadius = () -> redPlayer.getHeight() * 1.5f;
         this.playerLight = new LightComponent(playerCenter, playerRadius, Color.GRAY);
         this.lights.add(this.playerLight);

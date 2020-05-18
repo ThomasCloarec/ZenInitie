@@ -4,6 +4,7 @@ import view.utils.components.ImageComponent;
 
 import javax.swing.Box;
 import javax.swing.JPanel;
+import java.awt.Rectangle;
 
 public class Cell extends JPanel {
     private ImageComponent imageComponent;
@@ -14,7 +15,6 @@ public class Cell extends JPanel {
             this.removeAll();
         } else if (this.imageComponent == null || !imageComponent.getPathName().equals(this.imageComponent.getPathName())) {
             this.imageComponent = imageComponent;
-
             this.removeAll();
             this.add(Box.createHorizontalGlue());
             this.add(imageComponent);

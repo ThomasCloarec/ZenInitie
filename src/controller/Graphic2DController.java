@@ -9,6 +9,10 @@ import view.Graphical2DView;
 import view.View;
 import view.utils.components.ImageComponent;
 
+import javax.swing.JComponent;
+import java.awt.Component;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -76,5 +80,17 @@ public final class Graphic2DController extends Controller {
 
     public static MouseAdapter getImageOnClickListener(ImageComponent imageComponent, Runnable runnable) {
         return new ImageOnClickListener(runnable, imageComponent);
+    }
+
+    public static ComponentAdapter getResizeListener(Component component) {
+        return new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent componentEvent) {
+                super.componentResized(componentEvent);
+                component.doLayout();
+                component.revalidate();
+                component.repaint();
+            }
+        };
     }
 }

@@ -2,10 +2,12 @@ package controller.game.listeners;
 
 import controller.game.Graphic2DGameController;
 import model.game.Position;
+import model.game.team.TeamColor;
 import view.utils.ExtendedColor;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -56,7 +58,8 @@ public class BoardCellListener extends MouseAdapter {
     public void mouseExited(MouseEvent mouseEvent) {
         super.mouseExited(mouseEvent);
         if (!this.graphic2DGameController.isMovingPawn()) {
-            this.panel.setBorder(null);
+            Color borderColor = this.graphic2DGameController.getCurrentTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
+            this.panel.setBorder(this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column) ? BorderFactory.createLineBorder(borderColor, 2) : null);
         }
         this.panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }

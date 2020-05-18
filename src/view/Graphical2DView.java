@@ -24,6 +24,8 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +71,7 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
 
             this.addKeyListener(Graphic2DController.getViewKeyListener(this));
             this.addWindowListener(Graphic2DController.getExitClickListener(this));
+            this.addComponentListener(Graphic2DController.getResizeListener(this));
         });
     }
 

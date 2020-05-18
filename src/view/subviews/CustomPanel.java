@@ -1,5 +1,7 @@
 package view.subviews;
 
+import controller.Graphic2DController;
+
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -65,14 +67,7 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
         this.setOpaque(false);
 
         // Some really really basic revalidate/repaint on resize to be sure there is no problem, shouldn't go to the controller as it is ONLY a behavior of the view
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                super.componentResized(componentEvent);
-                CustomPanel.this.revalidate();
-                CustomPanel.this.repaint();
-            }
-        });
+        this.addComponentListener(Graphic2DController.getResizeListener(this));
     }
 
     /**

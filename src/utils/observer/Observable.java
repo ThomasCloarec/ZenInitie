@@ -2,6 +2,7 @@ package utils.observer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -21,11 +22,19 @@ import java.util.function.Consumer;
  *
  * @param <T> A sub type of Observer, it allows to use methods of this T type.
  */
-public class Observable<T extends Observer<T>> {
+public abstract class Observable<T extends Observer<T>> {
     /**
      * The list of observers
      */
     private final Collection<T> observers = new ArrayList<>(1);
+
+    /**
+     * Notify an observer about the whole state of the app.
+     * This method should generally be used to initialize this observer.
+     *
+     * @param observer the observer
+     */
+    protected abstract void notifyUpdateEverything(T observer);
 
     /**
      * Add an observer and initialize it according to the model data.
@@ -34,6 +43,7 @@ public class Observable<T extends Observer<T>> {
      */
     public void addObserver(T observer) {
         this.observers.add(observer);
+        this.notifyUpdateEverything(observer);
     }
 
     /**
@@ -46,6 +56,17 @@ public class Observable<T extends Observer<T>> {
         for (T observer : observers) {
             this.addObserver(observer);
         }
+
+        this.notifyUpdateEverything();
+    }
+
+    /**
+     * Notify all observers about the whole state of the app.
+     */
+    protected void notifyUpdateEverything() {
+        for (T observer : this.observers) {
+            this.notifyUpdateEverything(observer);
+        }
     }
 
     /**
@@ -53,7 +74,7 @@ public class Observable<T extends Observer<T>> {
      *
      * @param consumer the iterator consumer
      */
-    protected void forEachObserver(Consumer<? super T> consumer) {
+    protected void forEachObserver(Consumer<T> consumer) {
         this.observers.forEach(consumer);
     }
 }

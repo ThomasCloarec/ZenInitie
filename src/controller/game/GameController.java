@@ -2,6 +2,7 @@ package controller.game;
 
 import model.game.Game;
 import model.game.Position;
+import model.game.team.TeamColor;
 
 import java.util.List;
 
@@ -52,5 +53,9 @@ public class GameController {
 
     public boolean isCurrentTeamPawn(int line, int column) {
         return this.game.isPawnSelectable(new Position(line, column));
+    }
+
+    public TeamColor getCurrentTeamColor() {
+        return this.game.getCurrentTeam().getTeamColor();
     }
 }
