@@ -13,8 +13,17 @@ import java.util.List;
  * The type Game client.
  */
 public class GameClient extends Game {
+    /**
+     * The Client.
+     */
     private final Client client;
 
+    /**
+     * Instantiates a new Game client.
+     *
+     * @param aiMode  the ai mode
+     * @param duoMode the duo mode
+     */
     public GameClient(boolean aiMode, boolean duoMode) {
         super(aiMode, duoMode);
 

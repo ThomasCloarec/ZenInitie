@@ -17,6 +17,9 @@ import java.util.Map;
  * The global Game class, it handles a whole game of Zen l'Initié from the start to the end.
  */
 public class Game extends Observable<GameView> {
+    /**
+     * The Game data.
+     */
     protected GameData gameData = new GameData();
 
     /**
@@ -108,6 +111,9 @@ public class Game extends Observable<GameView> {
         return currentTeam.controlPawn(pawn);
     }
 
+    /**
+     * Initialize teams.
+     */
     protected void initializeTeams() {
         this.gameData.getTeams().add(new Team(TeamColor.BLUE));
         this.gameData.getTeams().add(new Team(TeamColor.RED));

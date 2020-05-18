@@ -11,8 +11,17 @@ import java.io.IOException;
  * The type Game server.
  */
 public class GameServer extends Game {
+    /**
+     * The Server.
+     */
     private final Server server;
 
+    /**
+     * Instantiates a new Game server.
+     *
+     * @param aiMode  the ai mode
+     * @param duoMode the duo mode
+     */
     public GameServer(boolean aiMode, boolean duoMode) {
         super(aiMode, duoMode);
 
