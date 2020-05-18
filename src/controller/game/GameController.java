@@ -49,4 +49,8 @@ public class GameController {
     public boolean isMovingPawn() {
         return this.game.isMovingPawn();
     }
+
+    public boolean isCurrentTeamPawn(int line, int column) {
+        return this.game.isPawnSelectable(new Position(line, column));
+    }
 }

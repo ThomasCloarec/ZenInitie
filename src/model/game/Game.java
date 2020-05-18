@@ -7,8 +7,11 @@ import utils.observer.Observable;
 import view.subviews.gameview.GameView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The global Game class, it handles a whole game of Zen l'Initié from the start to the end.
@@ -122,19 +125,21 @@ public class Game extends Observable<GameView> {
         this.board.getArray()[position.getLine()][position.getColumn()] = this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()];
         this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()] = Pawn.EMPTY;
 
+        boolean win = this.isWin();
+        boolean opponentWin = this.isOpponentWin();
+        if (win && opponentWin) {
+            System.out.println("DRAW");
+        } else if (win) {
+            System.out.println("WIN OF " + this.getCurrentTeam().getTeamColor());
+        } else if (opponentWin) {
+            System.out.println("WIN OF " + this.getCurrentTeam().getOpponentTeamColor());
+        }
+
         Team currentTeam = this.getCurrentTeam();
         if (!currentTeam.nextPlayerPlay()) {
             this.currentTeamIndex = (this.currentTeamIndex + 1) % this.teams.size();
         }
         this.notifyPawnMoved();
-
-        if (this.isWin()) {
-            if (this.isOpponentTeamWin()) {
-                System.out.println("DRAW");
-            } else {
-                System.out.println("WIN");
-            }
-        }
     }
 
     private void notifyPawnMoved() {
@@ -182,6 +187,43 @@ public class Game extends Observable<GameView> {
         return validMove;
     }
 
+    private boolean isTeamWin(TeamColor teamColor) {
+        Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
+
+        // find all positions around each pawn of a color
+        Map<Position, Position[]> toMarkMap = this.board.getPawnPositionsAround(Pawn.ZEN, pawn);
+        Collection<Position> markedList = new ArrayList<>();
+
+        Position randomPosition = (Position) toMarkMap.keySet().toArray()[0]; // random position because order is not always kept in an hashmap
+        markedList.add(randomPosition); // Set a random one as marked
+        toMarkMap.remove(randomPosition); // Remove from the map of "to mark" positions
+        boolean changeMarkedPosition = true;
+        while (!toMarkMap.isEmpty() && changeMarkedPosition) { // iterate while there is change or until mark map is empty (so there is a winner)
+            changeMarkedPosition = false;
+
+            Iterator<Map.Entry<Position, Position[]>> iterator = toMarkMap.entrySet().iterator();
+            while (iterator.hasNext()) { // iterate over all the positions of pawns
+                Map.Entry<Position, Position[]> entryToMark = iterator.next();
+                boolean noPawnAround = true;
+                int positionAroundIndex = 0;
+                while (noPawnAround && positionAroundIndex < entryToMark.getValue().length) { // iterate over all the positions around pawns until end or pawn around marked
+                    Position position = entryToMark.getValue()[positionAroundIndex];
+                    if (markedList.contains(position)) {
+                        noPawnAround = false;
+                        changeMarkedPosition = true;
+                        Position newMarkedPosition = entryToMark.getKey();
+                        iterator.remove();
+                        markedList.add(newMarkedPosition);
+                    }
+
+                    positionAroundIndex++;
+                }
+            }
+        }
+
+        return toMarkMap.isEmpty();
+    }
+
     @Override
     protected void notifyUpdateEverything(GameView observer) {
 
@@ -191,28 +233,6 @@ public class Game extends Observable<GameView> {
     public void addObserver(GameView observer) {
         super.addObserver(observer);
         observer.start(this);
-    }
-
-    private boolean isTeamWin(TeamColor teamColor) {
-        Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
-
-        boolean win = true;
-        List<Position[]> checkArray = this.board.getPawnPositionsAround(Pawn.ZEN, pawn);
-
-        int i = 0;
-        while (i < checkArray.size() && win) {
-            Position[] positions = checkArray.get(i);
-            int j = 0;
-
-            win = false;
-            while (j < positions.length && !win) {
-                win = this.getCurrentTeam().controlPawn(this.board.getPawn(positions[j]));
-                j++;
-            }
-            i++;
-        }
-
-        return win;
     }
 
     /**
@@ -306,5 +326,9 @@ public class Game extends Observable<GameView> {
 
     private boolean isWin() {
         return this.isTeamWin(this.getCurrentTeam().getTeamColor());
+    }
+
+    private boolean isOpponentWin() {
+        return this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
     }
 }

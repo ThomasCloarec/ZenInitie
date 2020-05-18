@@ -62,6 +62,12 @@ public class BoardPanel extends JPanel {
     }
 
     public void movePawn(Game game) {
+        for (Cell[] cellLine : this.cells) {
+            for (Cell cell : cellLine) {
+                cell.setBorder(null);
+            }
+        }
+
         for (Position allowedMove : game.getAllowedMoves()) {
             this.cells[allowedMove.getLine()][allowedMove.getColumn()].setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
         }

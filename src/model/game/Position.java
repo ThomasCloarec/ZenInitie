@@ -20,6 +20,18 @@ public class Position {
     }
 
     @Override
+    public boolean equals(Object o) {
+        boolean ret = false;
+
+        if (o != null && this.getClass() == o.getClass()) {
+            Position position = (Position) o;
+            ret = this.column == position.column && this.line == position.line;
+        }
+
+        return ret;
+    }
+
+    @Override
     public String toString() {
         return "(" + (this.getFormattedLine()) + ", " + (this.getFormattedColumn()) + ")";
     }

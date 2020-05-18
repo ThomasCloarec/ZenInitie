@@ -26,7 +26,7 @@ public class BoardCellListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         super.mouseClicked(mouseEvent);
-        if (this.graphic2DGameController.isMovingPawn()) {
+        if (this.graphic2DGameController.isMovingPawn() && !this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column)) {
             this.graphic2DGameController.movePawn(new Position(this.line, this.column));
         } else {
             this.graphic2DGameController.selectPawn(new Position(this.line, this.column));
@@ -37,15 +37,18 @@ public class BoardCellListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
         super.mouseEntered(mouseEvent);
-        if (!this.graphic2DGameController.isMovingPawn()) {
-            this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
-            this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        } else {
+        if (this.graphic2DGameController.isMovingPawn()) {
             for (Position position : this.graphic2DGameController.getAllowedMoves()) {
                 if (position.getLine() == this.line && position.getColumn() == this.column) {
                     this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
             }
+            if (this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column)) {
+                this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        } else {
+            this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
+            this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
     }
 
@@ -55,5 +58,6 @@ public class BoardCellListener extends MouseAdapter {
         if (!this.graphic2DGameController.isMovingPawn()) {
             this.panel.setBorder(null);
         }
+        this.panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }

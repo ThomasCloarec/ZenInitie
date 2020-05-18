@@ -10,6 +10,7 @@ public class Cell extends JPanel {
 
     public void setImageComponent(ImageComponent imageComponent) {
         if (imageComponent == null) {
+            this.imageComponent = null;
             this.removeAll();
         } else if (this.imageComponent == null || !imageComponent.getPathName().equals(this.imageComponent.getPathName())) {
             this.imageComponent = imageComponent;

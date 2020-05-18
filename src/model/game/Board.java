@@ -1,7 +1,9 @@
 package model.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Board {
     private final Pawn[][] board = {
@@ -51,12 +53,12 @@ public class Board {
         return positions;
     }
 
-    List<Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
-        List<Position[]> pawnPositionsAround = new ArrayList<>();
+    Map<Position, Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
+        Map<Position, Position[]> pawnPositionsAround = new HashMap<>();
 
         for (Position position : this.getPawnPositions(pawnsToGetAround)) {
             // 8 columns to check if there is one connected around
-            pawnPositionsAround.add(new Position[]{
+            Position[] testPositions = {
                     new Position(position.getLine() - 1, position.getColumn()),
                     new Position(position.getLine() + 1, position.getColumn()),
                     new Position(position.getLine(), position.getColumn() - 1),
@@ -65,7 +67,23 @@ public class Board {
                     new Position(position.getLine() - 1, position.getColumn() + 1),
                     new Position(position.getLine() + 1, position.getColumn() - 1),
                     new Position(position.getLine() + 1, position.getColumn() + 1)
-            });
+            };
+
+            // Filter valid positions by using a List<Position>
+            List<Position> positionList = new ArrayList<>();
+            for (Position testPosition : testPositions) {
+                if (this.isPositionValid(testPosition)) {
+                    positionList.add(testPosition);
+                }
+            }
+
+            // Convert back to Position[]
+            Position[] positions = new Position[positionList.size()];
+            for (int i = 0; i < positions.length; i++) {
+                positions[i] = positionList.get(i);
+            }
+
+            pawnPositionsAround.put(position, positions);
         }
 
         return pawnPositionsAround;
