@@ -1,4 +1,4 @@
-package model.game;
+package model.game.board;
 
 import model.game.team.TeamColor;
 

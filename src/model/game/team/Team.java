@@ -1,6 +1,6 @@
 package model.game.team;
 
-import model.game.Pawn;
+import model.game.board.Pawn;
 
 import java.util.ArrayList;
 

@@ -2,10 +2,10 @@ package utils.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import model.game.Board;
 import model.game.GameData;
-import model.game.Pawn;
 import model.game.Position;
+import model.game.board.Board;
+import model.game.board.Pawn;
 import model.game.team.Player;
 import model.game.team.Team;
 import model.game.team.TeamColor;

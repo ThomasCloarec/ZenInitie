@@ -1,8 +1,8 @@
 package controller;
 
 import model.game.Game;
-import model.game.GameClient;
-import model.game.GameServer;
+import model.game.network.GameClient;
+import model.game.network.GameServer;
 import model.menu.Menu;
 import view.ViewMode;
 

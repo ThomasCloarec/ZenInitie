@@ -1,8 +1,9 @@
-package model.game;
+package model.game.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import model.game.Game;
 import utils.network.Network;
 
 import java.io.IOException;

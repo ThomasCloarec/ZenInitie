@@ -1,4 +1,6 @@
-package model.game;
+package model.game.board;
+
+import model.game.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +79,7 @@ public class Board {
      * @param pawnsToGetAround the pawns to get around
      * @return the pawn positions around
      */
-    Map<Position, Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
+    public Map<Position, Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
         Map<Position, Position[]> pawnPositionsAround = new HashMap<>();
 
         for (Position position : this.getPawnPositions(pawnsToGetAround)) {
@@ -199,7 +201,7 @@ public class Board {
      * @param position the position
      * @return the position [ ]
      */
-    Position[] generatePositionsFrom(Position position) {
+    public Position[] generatePositionsFrom(Position position) {
         Position[] positions = new Position[8];
 
         int verticalPawnCount = this.getVerticalPawnCount(position);
@@ -226,7 +228,7 @@ public class Board {
      * @param position the position to check
      * @return is position on board
      */
-    boolean isPositionValid(Position position) {
+    public boolean isPositionValid(Position position) {
         boolean lineValid = position.getLine() >= 0 && position.getLine() < this.board.length;
         boolean columnValid = position.getColumn() >= 0 && position.getColumn() < this.board[0].length;
         return lineValid && columnValid;
@@ -237,7 +239,7 @@ public class Board {
      *
      * @return the pawn [ ] [ ]
      */
-    Pawn[][] getArray() {
+    public Pawn[][] getArray() {
         return this.board.clone();
     }
 }
