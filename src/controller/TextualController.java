@@ -8,19 +8,36 @@ import model.menu.Menu;
 import view.TextualView;
 import view.View;
 
+/**
+ * The type Textual controller.
+ */
 public final class TextualController extends Controller {
+    /**
+     * The constant MAX_COUNT.
+     */
     private static final int MAX_COUNT = 1;
+    /**
+     * The constant count.
+     */
     private static int count;
     /**
      * The view of the application (can either be textual or graphical).
      */
     private final View<MenuController, GameController> view;
 
+    /**
+     * Instantiates a new Textual controller.
+     */
     private TextualController() {
         this.view = new TextualView();
         this.newMenu();
     }
 
+    /**
+     * Create instance textual controller.
+     *
+     * @return the textual controller
+     */
     public static TextualController createInstance() {
         TextualController textualController = null;
 
@@ -32,6 +49,11 @@ public final class TextualController extends Controller {
         return textualController;
     }
 
+    /**
+     * New game.
+     *
+     * @param menu the menu
+     */
     @Override
     protected void newGame(Menu menu) {
         Game game = new Game(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
@@ -39,6 +61,9 @@ public final class TextualController extends Controller {
         game.addObserver(this.view.createGameView(gameController));
     }
 
+    /**
+     * New menu.
+     */
     @Override
     protected void newMenu() {
         Menu menu = new Menu();

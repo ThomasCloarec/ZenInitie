@@ -17,14 +17,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
+/**
+ * The type Board panel.
+ */
 public class BoardPanel extends JPanel {
     private final Graphic2DGameController gameController;
     private final JComponent referenceComponent;
     private Cell[][] cells;
 
+    /**
+     * Instantiates a new Board panel.
+     *
+     * @param gameController     the game controller
+     * @param referenceComponent the reference component
+     */
     BoardPanel(Graphic2DGameController gameController, JComponent referenceComponent) {
         this.gameController = gameController;
         this.referenceComponent = referenceComponent;
@@ -33,6 +40,11 @@ public class BoardPanel extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 3));
     }
 
+    /**
+     * When a new game starts
+     *
+     * @param game the game
+     */
     public void start(Game game) {
         this.setLayout(new GridLayout(game.getBoardSize(), game.getBoardSize()));
 
@@ -53,10 +65,20 @@ public class BoardPanel extends JPanel {
         this.updateBoard(game);
     }
 
+    /**
+     * Select pawn.
+     *
+     * @param game the game
+     */
     public void selectPawn(Game game) {
         this.updateBoard(game);
     }
 
+    /**
+     * Move pawn.
+     *
+     * @param game the game
+     */
     public void movePawn(Game game) {
         for (Cell[] cellLine : this.cells) {
             for (Cell cell : cellLine) {
@@ -88,7 +110,6 @@ public class BoardPanel extends JPanel {
                 } else {
                     cell.setImageComponent(null);
                 }
-
             }
         }
 

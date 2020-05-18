@@ -6,11 +6,23 @@ import view.ViewMode;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The type Controller.
+ */
 public abstract class Controller {
+    /**
+     * Instantiates a new Controller.
+     */
     protected Controller() {
 
     }
 
+    /**
+     * Create instance controller.
+     *
+     * @param viewMode the view mode
+     * @return the controller
+     */
     public static Controller createInstance(ViewMode viewMode) {
         Controller controller = null;
 
@@ -22,6 +34,13 @@ public abstract class Controller {
         return controller;
     }
 
+    /**
+     * Create instances collection.
+     *
+     * @param viewMode the view mode
+     * @param number   the number
+     * @return the collection
+     */
     public static Collection<Controller> createInstances(ViewMode viewMode, int number) {
         Collection<Controller> controllers = new ArrayList<>(number);
 

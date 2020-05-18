@@ -77,7 +77,8 @@ public class ImageComponent extends JPanel {
     /**
      * ImageComponent constructor with original size
      *
-     * @param pathName name of the image
+     * @param pathName     name of the image
+     * @param originalSize the original size
      */
     public ImageComponent(String pathName, boolean originalSize) {
         this.setBaseImage(pathName);
@@ -108,15 +109,30 @@ public class ImageComponent extends JPanel {
         this(pathName, size, true);
     }
 
+    /**
+     * Instantiates a new Image component.
+     *
+     * @param pathName the path name
+     */
     protected ImageComponent(String pathName) {
         this(pathName, false);
     }
 
+    /**
+     * Load image.
+     *
+     * @param name the name
+     */
     public static void loadImage(String name) {
         ImageIcon imageIcon = new ImageIcon(ImageComponent.class.getResource(ImageComponent.pathPrefix + name));
         ImageComponent.images.put(name, imageIcon.getImage());
     }
 
+    /**
+     * Reset image.
+     *
+     * @param name the name
+     */
     public static void resetImage(String name) {
         ImageComponent.images.get(name).flush();
     }
@@ -143,10 +159,21 @@ public class ImageComponent extends JPanel {
         return bimage;
     }
 
+    /**
+     * Add on click.
+     *
+     * @param onClick the on click
+     */
     public void addOnClick(Runnable onClick) {
         this.addMouseListener(Graphic2DController.getImageOnClickListener(this, onClick));
     }
 
+    /**
+     * Sets custom size.
+     *
+     * @param width  the width
+     * @param height the height
+     */
     protected void setCustomSize(int width, int height) {
         this.setCustomSize(new Dimension(width, height));
     }
@@ -164,6 +191,11 @@ public class ImageComponent extends JPanel {
         }
     }
 
+    /**
+     * Sets base image.
+     *
+     * @param name the name
+     */
     public void setBaseImage(String name) {
         this.pathName = name;
         if (!ImageComponent.images.containsKey(name)) {
@@ -176,6 +208,11 @@ public class ImageComponent extends JPanel {
         }
     }
 
+    /**
+     * Sets custom size.
+     *
+     * @param dimension the dimension
+     */
     protected void setCustomSize(Dimension dimension) {
         this.setMinimumSize(dimension);
         this.setPreferredSize(dimension);
@@ -183,10 +220,20 @@ public class ImageComponent extends JPanel {
         this.setSize(dimension);
     }
 
+    /**
+     * Sets visible condition.
+     *
+     * @param visibleCondition the visible condition
+     */
     public void setVisibleCondition(BooleanSupplier visibleCondition) {
         this.visibleCondition = visibleCondition;
     }
 
+    /**
+     * Gets path name.
+     *
+     * @return the path name
+     */
     public String getPathName() {
         return this.pathName;
     }

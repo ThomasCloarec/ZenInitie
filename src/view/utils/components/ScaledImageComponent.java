@@ -4,13 +4,40 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.util.function.Supplier;
 
+/**
+ * The type Scaled image component.
+ */
 public class ScaledImageComponent extends ImageComponent {
+    /**
+     * The Height scalar.
+     */
     private final Supplier<Double> heightScalar;
+    /**
+     * The Keep ratio.
+     */
     private final boolean keepRatio;
+    /**
+     * The Reference component.
+     */
     private final Component referenceComponent;
+    /**
+     * The Width scalar.
+     */
     private final Supplier<Double> widthScalar;
+    /**
+     * The Squared.
+     */
     private boolean squared;
 
+    /**
+     * Instantiates a new Scaled image component.
+     *
+     * @param name               the name
+     * @param widthScalar        the width scalar
+     * @param heightScalar       the height scalar
+     * @param referenceComponent the reference component
+     * @param keepRatio          the keep ratio
+     */
     public ScaledImageComponent(String name, Supplier<Double> widthScalar, Supplier<Double> heightScalar, Component referenceComponent, boolean keepRatio) {
         super(name);
 
@@ -38,6 +65,14 @@ public class ScaledImageComponent extends ImageComponent {
         this(name, () -> widthScalar, () -> heightScalar, referenceComponent, keepRatio);
     }
 
+    /**
+     * Instantiates a new Scaled image component.
+     *
+     * @param name               the name
+     * @param widthScalar        the width scalar
+     * @param heightScalar       the height scalar
+     * @param referenceComponent the reference component
+     */
     public ScaledImageComponent(String name, Supplier<Double> widthScalar, Supplier<Double> heightScalar, Component referenceComponent) {
         this(name, widthScalar, heightScalar, referenceComponent, true);
     }
@@ -59,6 +94,14 @@ public class ScaledImageComponent extends ImageComponent {
         this(name, widthScalar, heightScalar, referenceComponent, true);
     }
 
+    /**
+     * Instantiates a new Scaled image component.
+     *
+     * @param name               the name
+     * @param sizeScalar         the size scalar
+     * @param referenceComponent the reference component
+     * @param keepRatio          the keep ratio
+     */
     public ScaledImageComponent(String name, Supplier<Double> sizeScalar, Component referenceComponent, boolean keepRatio) {
         this(name, sizeScalar, sizeScalar, referenceComponent, keepRatio);
         this.squared = true;
@@ -77,6 +120,13 @@ public class ScaledImageComponent extends ImageComponent {
         this.squared = true;
     }
 
+    /**
+     * Instantiates a new Scaled image component.
+     *
+     * @param name               the name
+     * @param sizeScalar         the size scalar
+     * @param referenceComponent the reference component
+     */
     public ScaledImageComponent(String name, Supplier<Double> sizeScalar, Component referenceComponent) {
         this(name, sizeScalar, referenceComponent, true);
     }
@@ -98,6 +148,7 @@ public class ScaledImageComponent extends ImageComponent {
      * @param name               name of the image
      * @param referenceComponent referenceComponent used to scale the image
      * @param keepRatio          keep the ratio of the image or not
+     * @param noBufferingResize  the no buffering resize
      */
     public ScaledImageComponent(String name, Component referenceComponent, boolean keepRatio, boolean noBufferingResize) {
         super(name);
@@ -119,6 +170,11 @@ public class ScaledImageComponent extends ImageComponent {
         this(name, referenceComponent, true, false);
     }
 
+    /**
+     * Paint component.
+     *
+     * @param graphics the graphics
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         int imageWidth;

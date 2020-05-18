@@ -4,11 +4,18 @@ import view.utils.components.ImageComponent;
 
 import javax.swing.Box;
 import javax.swing.JPanel;
-import java.awt.Rectangle;
 
+/**
+ * The type Cell.
+ */
 public class Cell extends JPanel {
     private ImageComponent imageComponent;
 
+    /**
+     * Sets image component.
+     *
+     * @param imageComponent the image component
+     */
     public void setImageComponent(ImageComponent imageComponent) {
         if (imageComponent == null) {
             this.imageComponent = null;

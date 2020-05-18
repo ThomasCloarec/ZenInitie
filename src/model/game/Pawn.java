@@ -2,12 +2,33 @@ package model.game;
 
 import model.game.team.TeamColor;
 
+/**
+ * The enum Pawn.
+ */
 public enum Pawn {
+    /**
+     * Empty pawn.
+     */
     EMPTY,
+    /**
+     * Red pawn.
+     */
     RED,
+    /**
+     * Blue pawn.
+     */
     BLUE,
+    /**
+     * Zen pawn.
+     */
     ZEN;
 
+    /**
+     * Gets pawn from team color.
+     *
+     * @param teamColor the team color
+     * @return the pawn from team color
+     */
     public static Pawn getPawnFromTeamColor(TeamColor teamColor) {
         Pawn pawn = null;
         if (Pawn.hasName(teamColor.name())) {
@@ -17,6 +38,12 @@ public enum Pawn {
         return pawn;
     }
 
+    /**
+     * Has name boolean.
+     *
+     * @param name the name
+     * @return the boolean
+     */
     private static boolean hasName(String name) {
         boolean ret = false;
 

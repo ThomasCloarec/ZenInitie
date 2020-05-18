@@ -17,10 +17,19 @@ import java.awt.Point;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+/**
+ * The type Game right section.
+ */
 public class GameRightSection extends Section<Graphic2DGameController> {
     private ImageComponent jumpingHand;
     private LightComponent playerLight;
 
+    /**
+     * Instantiates a new Game right section.
+     *
+     * @param gameController the game controller
+     * @param horizontalMode the horizontal mode
+     */
     public GameRightSection(Graphic2DGameController gameController, BooleanSupplier horizontalMode) {
         super(gameController, horizontalMode);
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -33,6 +42,11 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         blueLight.setVisibleCondition(this.horizontalMode);
     }
 
+    /**
+     * When the game starts
+     *
+     * @param game the game
+     */
     public void start(Game game) {
         String playerImagePath;
         if (game.isAiMode()) {
@@ -72,6 +86,11 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         this.updatePlayerTurn(game);
     }
 
+    /**
+     * Select pawn.
+     *
+     * @param game the game
+     */
     public void selectPawn(Game game) {
         this.updatePlayerTurn(game);
     }

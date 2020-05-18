@@ -12,9 +12,18 @@ import view.utils.text.AppText;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The type Textual view.
+ */
 public class TextualView implements View<MenuController, GameController> {
+    /**
+     * The Sounds.
+     */
     private final Collection<Sound> sounds = new ArrayList<>();
 
+    /**
+     * Instantiates a new Textual view.
+     */
     public TextualView() {
         System.out.println("███████╗███████╗███╗   ██╗    ██╗     ▄█╗██╗███╗   ██╗██╗████████╗██╗███████╗\n" +
                 "╚══███╔╝██╔════╝████╗  ██║    ██║     ╚═╝██║████╗  ██║██║╚══██╔══╝██║██╔════╝\n" +
@@ -30,11 +39,23 @@ public class TextualView implements View<MenuController, GameController> {
         System.out.println(AppText.preInformation + AppText.getTextFor("global.welcome"));
     }
 
+    /**
+     * Create game view game view.
+     *
+     * @param gameController the game controller
+     * @return the game view
+     */
     @Override
     public GameView createGameView(GameController gameController) {
         return new TextualGameView(gameController);
     }
 
+    /**
+     * Create menu view menu view.
+     *
+     * @param menuController the menu controller
+     * @return the menu view
+     */
     @Override
     public MenuView createMenuView(MenuController menuController) {
         Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
@@ -44,6 +65,9 @@ public class TextualView implements View<MenuController, GameController> {
         return new TextualMenuView(menuController);
     }
 
+    /**
+     * Close.
+     */
     @Override
     public void close() {
         this.sounds.forEach(Sound::stop);

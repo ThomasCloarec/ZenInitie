@@ -24,17 +24,30 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The type Graphical 2 d view.
+ */
 public class Graphical2DView extends JFrame implements View<Graphic2DMenuController, Graphic2DGameController> {
+    /**
+     * The constant graphicsDevice.
+     */
     private static final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    /**
+     * The Sounds.
+     */
     private final Collection<Sound> sounds = new ArrayList<>();
+    /**
+     * The Fullscreen mode activated.
+     */
     private boolean fullscreenModeActivated;
 
+    /**
+     * Instantiates a new Graphical 2 d view.
+     */
     public Graphical2DView() {
         SwingUtilities.invokeLater(() -> {
             // preload images
@@ -75,6 +88,9 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         });
     }
 
+    /**
+     * Toggle full screen.
+     */
     public void toggleFullScreen() {
         this.fullscreenModeActivated = !this.fullscreenModeActivated;
         this.dispose();
@@ -89,6 +105,9 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         this.setVisible(true);
     }
 
+    /**
+     * Go full screen.
+     */
     private void goFullScreen() {
         this.dispose();
         this.setUndecorated(true);
@@ -98,6 +117,9 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         this.repaint();
     }
 
+    /**
+     * Go windowed screen.
+     */
     private void goWindowedScreen() {
         this.dispose();
         Graphical2DView.graphicsDevice.setFullScreenWindow(null);
@@ -107,6 +129,12 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         this.repaint();
     }
 
+    /**
+     * Create game view game view.
+     *
+     * @param gameController the game controller
+     * @return the game view
+     */
     @Override
     public GameView createGameView(Graphic2DGameController gameController) {
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
@@ -133,6 +161,12 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         return graphical2DGameView;
     }
 
+    /**
+     * Create menu view menu view.
+     *
+     * @param menuController the menu controller
+     * @return the menu view
+     */
     @Override
     public MenuView createMenuView(Graphic2DMenuController menuController) {
         this.sounds.forEach(Sound::stop);
@@ -152,12 +186,20 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
         return graphical2DMenuView;
     }
 
+    /**
+     * Close.
+     */
     @Override
     public void close() {
         this.dispose();
         this.sounds.forEach(Sound::stop);
     }
 
+    /**
+     * Is fullscreen mode activated boolean.
+     *
+     * @return the boolean
+     */
     public boolean isFullscreenModeActivated() {
         return this.fullscreenModeActivated;
     }

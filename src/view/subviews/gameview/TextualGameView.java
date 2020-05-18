@@ -8,13 +8,26 @@ import model.game.Position;
 import view.utils.text.AppText;
 import view.utils.text.TextInput;
 
+/**
+ * The type Textual game view.
+ */
 public class TextualGameView implements GameView {
     private final GameController gameController;
 
+    /**
+     * Instantiates a new Textual game view.
+     *
+     * @param gameController the game controller
+     */
     public TextualGameView(GameController gameController) {
         this.gameController = gameController;
     }
 
+    /**
+     * Update board.
+     *
+     * @param board the board
+     */
     public static void updateBoard(Pawn[][] board) {
         for (int i = 0; i < board.length + 4; i++) {
             System.out.print("═\t");

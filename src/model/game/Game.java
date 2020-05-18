@@ -153,14 +153,23 @@ public class Game extends Observable<GameView> {
         this.notifyPawnMoved();
     }
 
+    /**
+     * Notify pawn moved.
+     */
     private void notifyPawnMoved() {
         this.forEachObserver(gameView -> gameView.pawnMoved(this));
     }
 
+    /**
+     * Notify pawn selected.
+     */
     private void notifyPawnSelected() {
         this.forEachObserver(gameView -> gameView.pawnSelected(this));
     }
 
+    /**
+     * Sets allowed moves.
+     */
     private void setAllowedMoves() {
         this.allowedMoves.clear();
 
@@ -171,6 +180,12 @@ public class Game extends Observable<GameView> {
         }
     }
 
+    /**
+     * Is move valid boolean.
+     *
+     * @param position the position
+     * @return the boolean
+     */
     private boolean isMoveValid(Position position) {
         boolean validMove = true;
 
@@ -198,6 +213,12 @@ public class Game extends Observable<GameView> {
         return validMove;
     }
 
+    /**
+     * Is team win boolean.
+     *
+     * @param teamColor the team color
+     * @return the boolean
+     */
     private boolean isTeamWin(TeamColor teamColor) {
         // Convert TeamColor to Pawn
         Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
@@ -333,11 +354,21 @@ public class Game extends Observable<GameView> {
         return this.movingPawn;
     }
 
-    private boolean isWin() {
-        return this.isTeamWin(this.getCurrentTeam().getTeamColor());
-    }
-
+    /**
+     * Is opponent win boolean.
+     *
+     * @return the boolean
+     */
     private boolean isOpponentWin() {
         return this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
+    }
+
+    /**
+     * Is win boolean.
+     *
+     * @return the boolean
+     */
+    private boolean isWin() {
+        return this.isTeamWin(this.getCurrentTeam().getTeamColor());
     }
 }

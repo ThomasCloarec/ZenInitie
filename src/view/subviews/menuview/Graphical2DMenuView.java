@@ -10,7 +10,15 @@ import view.subviews.menuview.viewsections.MenuRightSection;
 import javax.swing.SwingUtilities;
 import java.awt.Window;
 
+/**
+ * The type Graphical 2 d menu view.
+ */
 public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, MenuLeftSection, MenuContentSection, MenuRightSection> implements MenuView {
+    /**
+     * Instantiates a new Graphical 2 d menu view.
+     *
+     * @param controller the controller
+     */
     public Graphical2DMenuView(Graphic2DMenuController controller) {
         super(controller);
 

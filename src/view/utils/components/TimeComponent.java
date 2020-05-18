@@ -12,11 +12,26 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Map;
 
+/**
+ * The type Time component.
+ */
 public class TimeComponent extends JLabel {
+    /**
+     * The Minutes.
+     */
     private int minutes;
+    /**
+     * The Seconds.
+     */
     private int seconds;
+    /**
+     * The Timer.
+     */
     private Timer timer;
 
+    /**
+     * Instantiates a new Time component.
+     */
     public TimeComponent() {
         this.setHorizontalAlignment(SwingConstants.CENTER);
         this.setText("<html><center><h1>000m00s</h1></center></html>");
@@ -27,18 +42,29 @@ public class TimeComponent extends JLabel {
         this.setText("<html><center><h1>00s</h1></center></html>");
     }
 
+    /**
+     * Stop timer.
+     */
     public void stopTimer() {
         if (this.timer.isRunning()) {
             this.timer.stop();
         }
     }
 
+    /**
+     * Start timer.
+     */
     public void startTimer() {
         this.timer = new Timer(1000, Graphic2DGameController.getTimerTickListener(this));
         this.timer.setInitialDelay(8000);
         this.timer.start();
     }
 
+    /**
+     * Paint component.
+     *
+     * @param graphics the graphics
+     */
     @Override
     protected void paintComponent(Graphics graphics) {
         Map<Object, Object> qualityHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

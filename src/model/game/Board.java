@@ -5,7 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Board.
+ */
 public class Board {
+    /**
+     * The Board.
+     */
     private final Pawn[][] board = {
             {Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE},
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
@@ -20,6 +26,12 @@ public class Board {
             {Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED}
     };
 
+    /**
+     * Gets pawn count.
+     *
+     * @param pawnsToCount the pawns to count
+     * @return the pawn count
+     */
     int getPawnCount(Pawn... pawnsToCount) {
         int count = 0;
         for (Pawn[] pawns : this.board) {
@@ -35,6 +47,12 @@ public class Board {
         return count;
     }
 
+    /**
+     * Get pawn positions position [ ].
+     *
+     * @param pawnsToGet the pawns to get
+     * @return the position [ ]
+     */
     Position[] getPawnPositions(Pawn... pawnsToGet) {
         Position[] positions = new Position[this.getPawnCount(pawnsToGet)];
 
@@ -53,6 +71,12 @@ public class Board {
         return positions;
     }
 
+    /**
+     * Gets pawn positions around.
+     *
+     * @param pawnsToGetAround the pawns to get around
+     * @return the pawn positions around
+     */
     Map<Position, Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
         Map<Position, Position[]> pawnPositionsAround = new HashMap<>();
 
@@ -89,10 +113,22 @@ public class Board {
         return pawnPositionsAround;
     }
 
+    /**
+     * Gets pawn.
+     *
+     * @param position the position
+     * @return the pawn
+     */
     Pawn getPawn(Position position) {
         return this.board[position.getLine()][position.getColumn()];
     }
 
+    /**
+     * Gets first diagonal pawn count.
+     *
+     * @param position the position
+     * @return the first diagonal pawn count
+     */
     int getFirstDiagonalPawnCount(Position position) {
         int count = 0;
         int diagonalEdge = Math.min(position.getLine(), position.getColumn());
@@ -105,6 +141,12 @@ public class Board {
         return count;
     }
 
+    /**
+     * Gets horizontal pawn count.
+     *
+     * @param position the position
+     * @return the horizontal pawn count
+     */
     int getHorizontalPawnCount(Position position) {
         int count = 0;
         for (int column = 0; column < this.board.length; column++) {
@@ -116,6 +158,12 @@ public class Board {
         return count;
     }
 
+    /**
+     * Gets second diagonal pawn count.
+     *
+     * @param position the position
+     * @return the second diagonal pawn count
+     */
     int getSecondDiagonalPawnCount(Position position) {
         int count = 0;
         int diagonalEdge = Math.min(this.board.length - position.getLine() - 1, position.getColumn());
@@ -128,6 +176,12 @@ public class Board {
         return count;
     }
 
+    /**
+     * Gets vertical pawn count.
+     *
+     * @param position the position
+     * @return the vertical pawn count
+     */
     int getVerticalPawnCount(Position position) {
         int count = 0;
         for (Pawn[] pawns : this.board) {
@@ -139,6 +193,12 @@ public class Board {
         return count;
     }
 
+    /**
+     * Generate positions from position [ ].
+     *
+     * @param position the position
+     * @return the position [ ]
+     */
     Position[] generatePositionsFrom(Position position) {
         Position[] positions = new Position[8];
 
@@ -172,6 +232,11 @@ public class Board {
         return lineValid && columnValid;
     }
 
+    /**
+     * Get array pawn [ ] [ ].
+     *
+     * @return the pawn [ ] [ ]
+     */
     Pawn[][] getArray() {
         return this.board.clone();
     }

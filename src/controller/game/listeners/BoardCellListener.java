@@ -12,12 +12,35 @@ import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * The type Board cell listener.
+ */
 public class BoardCellListener extends MouseAdapter {
+    /**
+     * The Column.
+     */
     private final int column;
+    /**
+     * The Graphic 2 d game controller.
+     */
     private final Graphic2DGameController graphic2DGameController;
+    /**
+     * The Line.
+     */
     private final int line;
+    /**
+     * The Panel.
+     */
     private final JPanel panel;
 
+    /**
+     * Instantiates a new Board cell listener.
+     *
+     * @param graphic2DGameController the graphic 2 d game controller
+     * @param line                    the line
+     * @param column                  the column
+     * @param panel                   the panel
+     */
     public BoardCellListener(Graphic2DGameController graphic2DGameController, int line, int column, JPanel panel) {
         this.graphic2DGameController = graphic2DGameController;
         this.line = line;
@@ -25,6 +48,11 @@ public class BoardCellListener extends MouseAdapter {
         this.panel = panel;
     }
 
+    /**
+     * Mouse clicked.
+     *
+     * @param mouseEvent the mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         super.mouseClicked(mouseEvent);
@@ -36,6 +64,11 @@ public class BoardCellListener extends MouseAdapter {
         }
     }
 
+    /**
+     * Mouse entered.
+     *
+     * @param mouseEvent the mouse event
+     */
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
         super.mouseEntered(mouseEvent);
@@ -54,6 +87,11 @@ public class BoardCellListener extends MouseAdapter {
         }
     }
 
+    /**
+     * Mouse exited.
+     *
+     * @param mouseEvent the mouse event
+     */
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
         super.mouseExited(mouseEvent);

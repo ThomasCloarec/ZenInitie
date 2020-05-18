@@ -17,11 +17,21 @@ import java.awt.RenderingHints;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * The type Game toolbar.
+ */
 public class GameToolbar extends JPanel {
     private final Supplier<Integer> height;
     private final TimeComponent timeComponent;
     private final Supplier<Integer> width;
 
+    /**
+     * Instantiates a new Game toolbar.
+     *
+     * @param gameController the game controller
+     * @param width          the width
+     * @param height         the height
+     */
     GameToolbar(Graphic2DGameController gameController, Supplier<Integer> width, Supplier<Integer> height) {
         this.width = width;
         this.height = height;
@@ -51,6 +61,9 @@ public class GameToolbar extends JPanel {
         this.setOpaque(false);
     }
 
+    /**
+     * Start the timer
+     */
     public void start() {
         this.timeComponent.startTimer();
     }

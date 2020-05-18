@@ -4,7 +4,13 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 
+/**
+ * The type Game server.
+ */
 public class GameServer extends Server {
+    /**
+     * Instantiates a new Game server.
+     */
     public GameServer() {
         boolean tcpPortNotFound = true;
         this.start();

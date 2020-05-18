@@ -6,15 +6,36 @@ import model.game.team.TeamColor;
 
 import java.util.List;
 
+/**
+ * The type Game controller.
+ */
 public class GameController {
+    /**
+     * The Game.
+     */
     private final Game game;
+    /**
+     * The Go menu.
+     */
     private final Runnable goMenu;
 
+    /**
+     * Instantiates a new Game controller.
+     *
+     * @param game   the game
+     * @param goMenu the go menu
+     */
     public GameController(Game game, Runnable goMenu) {
         this.game = game;
         this.goMenu = goMenu;
     }
 
+    /**
+     * Move pawn response error.
+     *
+     * @param position the position
+     * @return the response error
+     */
     public ResponseError movePawn(Position position) {
         ResponseError responseError = null;
 
@@ -27,6 +48,12 @@ public class GameController {
         return responseError;
     }
 
+    /**
+     * Select pawn response error.
+     *
+     * @param position the position
+     * @return the response error
+     */
     public ResponseError selectPawn(Position position) {
         ResponseError responseError = null;
 
@@ -39,23 +66,48 @@ public class GameController {
         return responseError;
     }
 
+    /**
+     * Go menu.
+     */
     public void goMenu() {
         this.goMenu.run();
     }
 
-    public List<Position> getAllowedMoves() {
-        return this.game.getAllowedMoves();
-    }
-
-    public boolean isMovingPawn() {
-        return this.game.isMovingPawn();
-    }
-
+    /**
+     * Is current team pawn boolean.
+     *
+     * @param line   the line
+     * @param column the column
+     * @return the boolean
+     */
     public boolean isCurrentTeamPawn(int line, int column) {
         return this.game.isPawnSelectable(new Position(line, column));
     }
 
+    /**
+     * Gets allowed moves.
+     *
+     * @return the allowed moves
+     */
+    public List<Position> getAllowedMoves() {
+        return this.game.getAllowedMoves();
+    }
+
+    /**
+     * Gets current team color.
+     *
+     * @return the current team color
+     */
     public TeamColor getCurrentTeamColor() {
         return this.game.getCurrentTeam().getTeamColor();
+    }
+
+    /**
+     * Is moving pawn boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isMovingPawn() {
+        return this.game.isMovingPawn();
     }
 }

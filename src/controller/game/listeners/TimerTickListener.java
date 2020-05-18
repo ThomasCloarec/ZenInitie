@@ -5,13 +5,29 @@ import view.utils.components.TimeComponent;
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionListener;
 
+/**
+ * The type Timer tick listener.
+ */
 public class TimerTickListener {
+    /**
+     * The Time component.
+     */
     private final TimeComponent timeComponent;
 
+    /**
+     * Instantiates a new Timer tick listener.
+     *
+     * @param timeComponent the time component
+     */
     public TimerTickListener(TimeComponent timeComponent) {
         this.timeComponent = timeComponent;
     }
 
+    /**
+     * Invoke action listener.
+     *
+     * @return the action listener
+     */
     public ActionListener invoke() {
         return actionEvent -> {
             if (SwingUtilities.getWindowAncestor(this.timeComponent) == null || !SwingUtilities.getWindowAncestor(this.timeComponent).isVisible()) {

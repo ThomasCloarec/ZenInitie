@@ -6,10 +6,26 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.function.Supplier;
 
+/**
+ * The type Scroll pane component.
+ */
 public class ScrollPaneComponent extends JScrollPane {
+    /**
+     * The Height.
+     */
     private final Supplier<Integer> height;
+    /**
+     * The Width.
+     */
     private final Supplier<Integer> width;
 
+    /**
+     * Instantiates a new Scroll pane component.
+     *
+     * @param component the component
+     * @param width     the width
+     * @param height    the height
+     */
     public ScrollPaneComponent(JComponent component, Supplier<Integer> width, Supplier<Integer> height) {
         super(component);
         this.width = width;
@@ -19,6 +35,11 @@ public class ScrollPaneComponent extends JScrollPane {
         this.setBorder(null);
     }
 
+    /**
+     * Paint component.
+     *
+     * @param graphics the graphics
+     */
     @Override
     protected void paintComponent(Graphics graphics) {
         Dimension size = new Dimension(this.width.get(), this.height.get());

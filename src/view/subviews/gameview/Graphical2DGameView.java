@@ -9,7 +9,15 @@ import view.subviews.gameview.viewsections.GameRightSection;
 
 import javax.swing.SwingUtilities;
 
+/**
+ * The type Graphical 2 d game view.
+ */
 public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, GameLeftSection, GameContentSection, GameRightSection> implements GameView {
+    /**
+     * Instantiates a new Graphical 2 d game view.
+     *
+     * @param gameController the game controller
+     */
     public Graphical2DGameView(Graphic2DGameController gameController) {
         super(gameController);
 

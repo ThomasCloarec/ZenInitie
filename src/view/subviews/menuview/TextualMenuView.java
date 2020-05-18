@@ -5,9 +5,17 @@ import view.utils.text.AppText;
 import view.utils.text.Language;
 import view.utils.text.TextInput;
 
+/**
+ * The type Textual menu view.
+ */
 public class TextualMenuView implements MenuView {
     private final MenuController menuController;
 
+    /**
+     * Instantiates a new Textual menu view.
+     *
+     * @param menuController the menu controller
+     */
     public TextualMenuView(MenuController menuController) {
         this.menuController = menuController;
     }

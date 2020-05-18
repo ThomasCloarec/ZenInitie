@@ -12,7 +12,16 @@ import java.awt.Point;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+/**
+ * The type Menu right section.
+ */
 public class MenuRightSection extends Section<Graphic2DMenuController> {
+    /**
+     * Instantiates a new Menu right section.
+     *
+     * @param graphics2DMenuController the graphics 2 d menu controller
+     * @param horizontalMode           the horizontal mode
+     */
     public MenuRightSection(Graphic2DMenuController graphics2DMenuController, BooleanSupplier horizontalMode) {
         super(graphics2DMenuController, horizontalMode);
 

@@ -17,10 +17,19 @@ import java.awt.Point;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+/**
+ * The type Game left section.
+ */
 public class GameLeftSection extends Section<Graphic2DGameController> {
     private ImageComponent jumpingHand;
     private LightComponent playerLight;
 
+    /**
+     * Instantiates a new Game left section.
+     *
+     * @param gameController the game controller
+     * @param horizontalMode the horizontal mode
+     */
     public GameLeftSection(Graphic2DGameController gameController, BooleanSupplier horizontalMode) {
         super(gameController, horizontalMode);
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -32,6 +41,11 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
         this.lights.add(blueLight);
     }
 
+    /**
+     * When a new game starts
+     *
+     * @param game the game
+     */
     public void start(Game game) {
         String playerImagePath;
         if (game.isDuoMode()) {
@@ -70,6 +84,11 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
         this.updatePlayerTurn(game);
     }
 
+    /**
+     * Select pawn.
+     *
+     * @param game the game
+     */
     public void selectPawn(Game game) {
         this.updatePlayerTurn(game);
     }

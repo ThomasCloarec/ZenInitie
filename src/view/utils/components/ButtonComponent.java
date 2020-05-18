@@ -14,11 +14,30 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.BooleanSupplier;
 
+/**
+ * The type Button component.
+ */
 public class ButtonComponent extends JButton {
+    /**
+     * The Horizontal mode.
+     */
     private final BooleanSupplier horizontalMode;
+    /**
+     * The Reference component.
+     */
     private final JComponent referenceComponent;
+    /**
+     * The Font.
+     */
     private Font font;
 
+    /**
+     * Instantiates a new Button component.
+     *
+     * @param text               the text
+     * @param referenceComponent the reference component
+     * @param horizontalMode     the horizontal mode
+     */
     public ButtonComponent(String text, JComponent referenceComponent, BooleanSupplier horizontalMode) {
         super(text);
         this.referenceComponent = referenceComponent;
@@ -48,6 +67,9 @@ public class ButtonComponent extends JButton {
         this.setFocusable(false);
     }
 
+    /**
+     * Update buttons.
+     */
     public void updateButtons() {
         if (this.referenceComponent.getWidth() != 0) {
             int frameWidth = this.referenceComponent.getWidth();
@@ -75,6 +97,11 @@ public class ButtonComponent extends JButton {
         }
     }
 
+    /**
+     * Paint component.
+     *
+     * @param graphics the graphics
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);

@@ -10,16 +10,51 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
+/**
+ * The type Sound.
+ */
 public class Sound implements Runnable {
+    /**
+     * The constant byteChunkSize.
+     */
     private static final int byteChunkSize = 1024;//number of bytes to read at one time
+    /**
+     * The constant pathPrefix.
+     */
     private static final String pathPrefix = "/view/resources/sounds/";
+    /**
+     * The constant volume.
+     */
     private static SoundVolume volume = SoundVolume.LOW;
+    /**
+     * The File path.
+     */
     private final String filePath;
+    /**
+     * The Mute data.
+     */
     private final byte[] muteData;
-    private boolean running, mute, pause, loop, restart;
+    /**
+     * The Running.
+     */
+    private boolean running, /**
+     * The Mute.
+     */
+    mute, /**
+     * The Pause.
+     */
+    pause, /**
+     * The Loop.
+     */
+    loop, /**
+     * The Restart.
+     */
+    restart;
 
     /**
      * Declares default variable values.
+     *
+     * @param name the name
      */
     public Sound(String name) {
         this.filePath = Sound.pathPrefix + name;
@@ -31,10 +66,18 @@ public class Sound implements Runnable {
         this.muteData = Sound.setMuteData();
     }
 
+    /**
+     * Next volume tick.
+     */
     public static void nextVolumeTick() {
         Sound.volume = Sound.volume.nextVolumeTick();
     }
 
+    /**
+     * Gets volume.
+     *
+     * @return the volume
+     */
     public static SoundVolume getVolume() {
         return Sound.volume;
     }

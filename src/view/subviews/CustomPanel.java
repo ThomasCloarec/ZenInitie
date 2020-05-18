@@ -6,8 +6,6 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -76,9 +74,13 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
     protected void switchHorizontalMode() {
         this.removeAll();
         this.setLayout(new GridLayout(1, 3));
-        this.add(this.leftSection);
-        this.add(this.contentSection);
-        this.add(this.rightSection);
+        if (this.leftSection == null || this.contentSection == null || this.rightSection == null) {
+            System.err.println("this : " + this + ", left : " + this.leftSection + ", content : " + this.contentSection + ", right" + this.rightSection);
+        } else {
+            this.add(this.leftSection);
+            this.add(this.contentSection);
+            this.add(this.rightSection);
+        }
     }
 
     /**

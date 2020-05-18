@@ -9,9 +9,21 @@ import java.util.function.Predicate;
 
 import static view.utils.text.AppText.*;
 
+/**
+ * The type Text input.
+ */
 public class TextInput {
+    /**
+     * The constant sc.
+     */
     private static final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Gets answers count.
+     *
+     * @param question the question
+     * @return the answers count
+     */
     public static int getAnswersCount(String question) {
         int count = 0;
 
@@ -22,6 +34,13 @@ public class TextInput {
         return count;
     }
 
+    /**
+     * Gets int answer.
+     *
+     * @param question  the question
+     * @param condition the condition
+     * @return the int answer
+     */
     public static int getIntAnswer(String question, Predicate<Integer> condition) {
         int input = 0;
         int answerNumber = TextInput.getAnswersCount(question);
@@ -52,6 +71,13 @@ public class TextInput {
         return input;
     }
 
+    /**
+     * Gets char answer.
+     *
+     * @param question  the question
+     * @param condition the condition
+     * @return the char answer
+     */
     public static char getCharAnswer(String question, NamedPredicate<Character> condition) {
         char input = 0;
 
@@ -74,6 +100,12 @@ public class TextInput {
         return input;
     }
 
+    /**
+     * Gets menu answer.
+     *
+     * @param question the question
+     * @return the menu answer
+     */
     public static int getMenuAnswer(String question) {
         System.out.println(preInformation + getTextFor(question.substring(0, question.lastIndexOf("."))));
         int answerNumber = TextInput.getAnswersCount(question);
@@ -84,6 +116,12 @@ public class TextInput {
                         , input -> input >= 1 && input <= answerNumber));
     }
 
+    /**
+     * Gets move position answer.
+     *
+     * @param game the game
+     * @return the move position answer
+     */
     public static Position getMovePositionAnswer(Game game) {
         int line = TextInput.getIntAnswer(
                 "game.getMoveLine",
@@ -100,6 +138,12 @@ public class TextInput {
         return new Position(line, column);
     }
 
+    /**
+     * Gets select position answer.
+     *
+     * @param game the game
+     * @return the select position answer
+     */
     public static Position getSelectPositionAnswer(Game game) {
         int line = TextInput.getIntAnswer(
                 "game.getSelectLine",

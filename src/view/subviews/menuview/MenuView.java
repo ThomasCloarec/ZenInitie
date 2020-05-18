@@ -3,25 +3,60 @@ package view.subviews.menuview;
 import model.menu.MenuPage;
 import utils.observer.Observer;
 
+/**
+ * The interface Menu view.
+ */
 public interface MenuView extends Observer<MenuView> {
+    /**
+     * Go credits.
+     */
     void goCredits();
 
+    /**
+     * Change language.
+     */
     void changeLanguage();
 
+    /**
+     * Change settings.
+     */
     void changeSettings();
 
+    /**
+     * Exit.
+     */
     void exit();
 
+    /**
+     * Load game.
+     */
     void loadGame();
 
+    /**
+     * New game.
+     */
     void newGame();
 
+    /**
+     * Play offline.
+     */
     void playOffline();
 
+    /**
+     * Play online.
+     */
     void playOnline();
 
+    /**
+     * Go homepage.
+     */
     void goHomepage();
 
+    /**
+     * Update page.
+     *
+     * @param menuPage the menu page
+     */
     default void updatePage(MenuPage menuPage) {
         switch (menuPage) {
             case ROOT:

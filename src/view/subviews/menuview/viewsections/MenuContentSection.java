@@ -20,9 +20,18 @@ import java.awt.Point;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+/**
+ * The type Menu content section.
+ */
 public class MenuContentSection extends Section<Graphic2DMenuController> {
     private final ImageComponent logoZen;
 
+    /**
+     * Instantiates a new Menu content section.
+     *
+     * @param graphics2DMenuController the graphics 2 d menu controller
+     * @param horizontalMode           the horizontal mode
+     */
     public MenuContentSection(Graphic2DMenuController graphics2DMenuController, BooleanSupplier horizontalMode) {
         super(graphics2DMenuController, horizontalMode);
 
@@ -38,6 +47,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.goHomepage();
     }
 
+    /**
+     * Go credits.
+     */
     public void goCredits() {
         this.removeAll();
 
@@ -69,6 +81,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.repaint();
     }
 
+    /**
+     * Change language.
+     */
     public void changeLanguage() {
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.settings.language.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.settings.language.question1.answer2"), this, this.horizontalMode);
@@ -80,6 +95,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3);
     }
 
+    /**
+     * Change settings.
+     */
     public void changeSettings() {
         Graphical2DView frame = ((Graphical2DView) SwingUtilities.getWindowAncestor(this));
 
@@ -99,6 +117,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3, button4);
     }
 
+    /**
+     * Go homepage.
+     */
     public void goHomepage() {
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.question1.answer2"), this, this.horizontalMode);
@@ -112,6 +133,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3, button4);
     }
 
+    /**
+     * New game.
+     */
     public void newGame() {
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.offline.newGame.question1.answer2"), this, this.horizontalMode);
@@ -127,6 +151,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3, button4, button5);
     }
 
+    /**
+     * Play offline.
+     */
     public void playOffline() {
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.offline.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.offline.question1.answer2"), this, this.horizontalMode);
@@ -138,6 +165,11 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3);
     }
 
+    /**
+     * Update buttons.
+     *
+     * @param buttons the buttons
+     */
     public void updateButtons(JButton... buttons) {
         this.removeAll();
 
