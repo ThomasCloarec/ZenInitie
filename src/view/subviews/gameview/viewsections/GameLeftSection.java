@@ -121,7 +121,7 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
      * @param game the game
      */
     private void updatePlayerTurn(Game game) {
-        if (!game.isFinished()) {
+        if (game.isRunning()) {
             TeamColor teamColor = game.getCurrentTeam().getTeamColor();
             boolean visible = teamColor == TeamColor.BLUE;
             this.playerLight.setVisible(visible);

@@ -52,11 +52,10 @@ public final class TextualController extends Controller {
     /**
      * New game.
      *
-     * @param menu the menu
+     * @param game the menu
      */
     @Override
-    protected void newGame(Menu menu) {
-        Game game = new Game(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
+    protected void newGame(Game game) {
         GameController gameController = new GameController(game, this::newMenu);
         game.addObserver(this.view.createGameView(gameController));
     }

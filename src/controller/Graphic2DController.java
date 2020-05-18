@@ -124,11 +124,10 @@ public final class Graphic2DController extends Controller {
     /**
      * New game.
      *
-     * @param menu the menu
+     * @param game the game
      */
     @Override
-    protected void newGame(Menu menu) {
-        Game game = new Game(menu.isAiMode(), menu.isDuoMode(), menu.isOnlineMode());
+    protected void newGame(Game game) {
         Graphic2DGameController gameController = new Graphic2DGameController(game, this::newMenu);
         game.addObserver(this.view.createGameView(gameController));
     }

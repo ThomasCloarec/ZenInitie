@@ -23,9 +23,13 @@ public class Menu extends Observable<MenuView> {
      */
     private boolean duoMode;
     /**
-     * The Online mode.
+     * The Is online client.
      */
-    private boolean onlineMode;
+    private boolean isOnlineClient;
+    /**
+     * The Is online server.
+     */
+    private boolean isOnlineServer;
 
     /**
      * Instantiates a new Menu.
@@ -134,20 +138,46 @@ public class Menu extends Observable<MenuView> {
     }
 
     /**
-     * Is online mode boolean.
-     *
-     * @return the boolean
+     * Play offline.
      */
-    public boolean isOnlineMode() {
-        return this.onlineMode;
+    public void playOffline() {
+        this.isOnlineClient = false;
+        this.isOnlineServer = false;
     }
 
     /**
-     * Sets online mode.
+     * Is online client boolean.
      *
-     * @param onlineMode the online mode
+     * @return the boolean
      */
-    public void setOnlineMode(boolean onlineMode) {
-        this.onlineMode = onlineMode;
+    public boolean isOnlineClient() {
+        return this.isOnlineClient;
+    }
+
+    /**
+     * Sets online client.
+     *
+     * @param onlineClient the online client
+     */
+    public void setOnlineClient(boolean onlineClient) {
+        this.isOnlineClient = onlineClient;
+    }
+
+    /**
+     * Is online server boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isOnlineServer() {
+        return this.isOnlineServer;
+    }
+
+    /**
+     * Sets online server.
+     *
+     * @param onlineServer the online server
+     */
+    public void setOnlineServer(boolean onlineServer) {
+        this.isOnlineServer = onlineServer;
     }
 }

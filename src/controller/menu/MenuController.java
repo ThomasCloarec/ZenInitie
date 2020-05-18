@@ -77,7 +77,7 @@ public class MenuController {
      * Play offline.
      */
     public void playOffline() {
-        this.menu.setOnlineMode(false);
+        this.menu.playOffline();
         this.menu.addActualPage(MenuPage.PLAY_OFFLINE);
     }
 
@@ -103,7 +103,6 @@ public class MenuController {
      * Play online.
      */
     public void playOnline() {
-        this.menu.setOnlineMode(true);
         this.menu.addActualPage(MenuPage.PLAY_ONLINE);
     }
 

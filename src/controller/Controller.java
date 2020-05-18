@@ -1,5 +1,8 @@
 package controller;
 
+import model.game.Game;
+import model.game.GameClient;
+import model.game.GameServer;
 import model.menu.Menu;
 import view.ViewMode;
 
@@ -56,16 +59,33 @@ public abstract class Controller {
     }
 
     /**
-     * Create a new game and launch it using the previously collected information from the menu.
+     * Launch the new game.
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used during the game.
      *
-     * @param menu The menu containing the necessary information to launch the game.
+     * @param game The launched game.
      */
-    protected abstract void newGame(Menu menu);
+    protected abstract void newGame(Game game);
 
     /**
      * Create a new menu and collect information for the future game.
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
     protected abstract void newMenu();
+
+    /**
+     * Create a new game and launch it using the previously collected information from the menu.
+     * This method set up the MVC architectural pattern and the Observer behavioral pattern used during the game.
+     * Launch either online server, online client or offline mode depending on menu choices.
+     *
+     * @param menu The menu containing the necessary information to launch the game.
+     */
+    protected void newGame(Menu menu) {
+        if (menu.isOnlineServer()) {
+            this.newGame(new GameServer(menu.isAiMode(), menu.isDuoMode()));
+        } else if (menu.isOnlineClient()) {
+            this.newGame(new GameClient(menu.isAiMode(), menu.isDuoMode()));
+        } else {
+            this.newGame(new Game(menu.isAiMode(), menu.isDuoMode()));
+        }
+    }
 }

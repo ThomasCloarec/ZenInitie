@@ -18,21 +18,17 @@ import java.util.Map;
  */
 public class Game extends Observable<GameView> {
     /**
-     * The Finished.
-     */
-    private boolean finished;
-    /**
      * is the game in ai mode (against computer) ?
      */
-    protected final boolean aiMode;
+    public final boolean aiMode;
     /**
      * is the game in duo mode ?
      */
-    protected final boolean duoMode;
+    public final boolean duoMode;
     /**
-     * is the game in online mode ?
+     * The Finished.
      */
-    protected final boolean onlineMode;
+    private boolean running = true;
     /**
      * The allowed moves for the current selected pawn
      */
@@ -61,14 +57,12 @@ public class Game extends Observable<GameView> {
     /**
      * The Game constructor, add teams, players and start game
      *
-     * @param aiMode     is the game in ai mode (against computer) ?
-     * @param duoMode    is the game in duo mode ?
-     * @param onlineMode is the game in online mode ?
+     * @param aiMode  is the game in ai mode (against computer) ?
+     * @param duoMode is the game in duo mode ?
      */
-    public Game(boolean aiMode, boolean duoMode, boolean onlineMode) {
+    public Game(boolean aiMode, boolean duoMode) {
         this.aiMode = aiMode;
         this.duoMode = duoMode;
-        this.onlineMode = onlineMode;
 
         this.teams.add(new Team(TeamColor.BLUE));
         this.teams.add(new Team(TeamColor.RED));
@@ -140,16 +134,16 @@ public class Game extends Observable<GameView> {
         this.board.getArray()[position.getLine()][position.getColumn()] = this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()];
         this.board.getArray()[this.selectedPawn.getLine()][this.selectedPawn.getColumn()] = Pawn.EMPTY;
 
-        boolean win = this.isWin();
-        boolean opponentWin = this.isOpponentWin();
+        boolean win = this.isTeamWin(this.getCurrentTeam().getTeamColor());
+        boolean opponentWin = this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
         if (win && opponentWin) {
-            this.finished = true;
+            this.running = false;
             this.notifyGameWinner(null);
         } else if (win) {
-            this.finished = true;
+            this.running = false;
             this.notifyGameWinner(this.getCurrentTeam());
         } else if (opponentWin) {
-            this.finished = true;
+            this.running = false;
             this.notifyGameWinner(this.getOpponentTeam());
         }
 
@@ -384,25 +378,7 @@ public class Game extends Observable<GameView> {
      *
      * @return the boolean
      */
-    public boolean isFinished() {
-        return this.finished;
-    }
-
-    /**
-     * Is opponent win boolean.
-     *
-     * @return the boolean
-     */
-    private boolean isOpponentWin() {
-        return this.isTeamWin(this.getCurrentTeam().getOpponentTeamColor());
-    }
-
-    /**
-     * Is win boolean.
-     *
-     * @return the boolean
-     */
-    private boolean isWin() {
-        return this.isTeamWin(this.getCurrentTeam().getTeamColor());
+    public boolean isRunning() {
+        return this.running;
     }
 }
