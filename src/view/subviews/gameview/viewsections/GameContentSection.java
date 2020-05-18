@@ -3,6 +3,7 @@ package view.subviews.gameview.viewsections;
 import controller.game.Graphic2DGameController;
 import model.game.Game;
 import view.subviews.Section;
+import view.subviews.gameview.viewsections.board.BoardPanel;
 import view.utils.components.ScaledImageComponent;
 
 import javax.swing.Box;

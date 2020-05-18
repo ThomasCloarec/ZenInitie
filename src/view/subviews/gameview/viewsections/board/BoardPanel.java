@@ -1,4 +1,4 @@
-package view.subviews.gameview.viewsections;
+package view.subviews.gameview.viewsections.board;
 
 import controller.Graphic2DController;
 import controller.game.Graphic2DGameController;
@@ -41,7 +41,7 @@ public class BoardPanel extends JPanel {
      * @param gameController     the game controller
      * @param referenceComponent the reference component
      */
-    BoardPanel(Graphic2DGameController gameController, JComponent referenceComponent) {
+    public BoardPanel(Graphic2DGameController gameController, JComponent referenceComponent) {
         this.gameController = gameController;
         this.referenceComponent = referenceComponent;
 

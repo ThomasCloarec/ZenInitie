@@ -1,4 +1,4 @@
-package view.subviews.gameview.viewsections;
+package view.subviews.gameview.viewsections.board;
 
 import view.utils.components.ImageComponent;
 
