@@ -70,9 +70,7 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
 
     @Override
     public void playOnline() {
-        SwingUtilities.invokeLater(() -> {
-
-        });
+        SwingUtilities.invokeLater(() -> this.contentSection.playOnline());
     }
 
     @Override

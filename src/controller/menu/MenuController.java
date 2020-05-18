@@ -67,6 +67,24 @@ public class MenuController {
     }
 
     /**
+     * Host a game.
+     */
+    public void hostAGame() {
+        this.menu.setOnlineClient(false);
+        this.menu.setOnlineServer(true);
+        this.newGame.accept(this.menu);
+    }
+
+    /**
+     * Join a game.
+     */
+    public void joinAGame() {
+        this.menu.setOnlineClient(true);
+        this.menu.setOnlineServer(false);
+        this.newGame.accept(this.menu);
+    }
+
+    /**
      * New game.
      */
     public void newGame() {

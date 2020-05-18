@@ -156,6 +156,24 @@ public class Graphic2DMenuController extends MenuController {
     }
 
     /**
+     * Gets host a game listener.
+     *
+     * @return the host a game listener
+     */
+    public ActionListener getHostAGameListener() {
+        return actionEvent -> this.hostAGame();
+    }
+
+    /**
+     * Gets join a game listener.
+     *
+     * @return the join a game listener
+     */
+    public ActionListener getJoinAGameListener() {
+        return actionEvent -> this.joinAGame();
+    }
+
+    /**
      * Gets play online listener.
      *
      * @return the play online listener

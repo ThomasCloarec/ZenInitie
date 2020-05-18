@@ -166,6 +166,20 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
     }
 
     /**
+     * Play online.
+     */
+    public void playOnline() {
+        JButton button1 = new ButtonComponent(AppText.getTextFor("menu.online.question1.answer1"), this, this.horizontalMode);
+        JButton button2 = new ButtonComponent(AppText.getTextFor("menu.online.question1.answer2"), this, this.horizontalMode);
+        JButton button3 = new ButtonComponent(AppText.getTextFor("menu.online.question1.answer3"), this, this.horizontalMode);
+
+        button1.addActionListener(this.controller.getHostAGameListener());
+        button2.addActionListener(this.controller.getJoinAGameListener());
+
+        this.updateButtons(button1, button2, button3);
+    }
+
+    /**
      * Update buttons.
      *
      * @param buttons the buttons

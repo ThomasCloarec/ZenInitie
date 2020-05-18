@@ -9,6 +9,9 @@ import view.utils.text.TextInput;
  * The type Textual menu view.
  */
 public class TextualMenuView implements MenuView {
+    /**
+     * The Menu controller.
+     */
     private final MenuController menuController;
 
     /**
@@ -20,6 +23,9 @@ public class TextualMenuView implements MenuView {
         this.menuController = menuController;
     }
 
+    /**
+     * Go credits.
+     */
     @Override
     public void goCredits() {
         System.out.println(AppText.getTextFor("menu.credits"));
@@ -32,6 +38,9 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Change language.
+     */
     @Override
     public void changeLanguage() {
         int input = TextInput.getMenuAnswer("menu.settings.language.question1");
@@ -48,6 +57,9 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Change settings.
+     */
     @Override
     public void changeSettings() {
         int input = TextInput.getMenuAnswer("menu.settings.question1");
@@ -64,12 +76,18 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Exit.
+     */
     @Override
     public void exit() {
         System.out.println(AppText.preInformation + AppText.getTextFor("global.exit"));
         System.exit(0);
     }
 
+    /**
+     * Load game.
+     */
     @Override
     public void loadGame() {
         int input = TextInput.getMenuAnswer("menu.offline.loadGame.question1");
@@ -78,6 +96,9 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * New game.
+     */
     @Override
     public void newGame() {
         int input = TextInput.getMenuAnswer("menu.offline.newGame.question1");
@@ -100,6 +121,9 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Play offline.
+     */
     @Override
     public void playOffline() {
         int input = TextInput.getMenuAnswer("menu.offline.question1");
@@ -116,14 +140,28 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Play online.
+     */
     @Override
     public void playOnline() {
         int input = TextInput.getMenuAnswer("menu.online.question1");
-        if (input == 1) {
-            this.menuController.backPreviousPage();
+        switch (input) {
+            case 1:
+                this.menuController.hostAGame();
+                break;
+            case 2:
+                this.menuController.joinAGame();
+                break;
+            case 3:
+                this.menuController.backPreviousPage();
+                break;
         }
     }
 
+    /**
+     * Go homepage.
+     */
     @Override
     public void goHomepage() {
         int input = TextInput.getMenuAnswer("menu.question1");
