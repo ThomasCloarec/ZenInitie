@@ -5,6 +5,7 @@ import controller.game.ResponseError;
 import model.game.Game;
 import model.game.Pawn;
 import model.game.Position;
+import model.game.team.Team;
 import view.utils.text.AppText;
 import view.utils.text.TextInput;
 
@@ -12,6 +13,9 @@ import view.utils.text.TextInput;
  * The type Textual game view.
  */
 public class TextualGameView implements GameView {
+    /**
+     * The Game controller.
+     */
     private final GameController gameController;
 
     /**
@@ -64,6 +68,11 @@ public class TextualGameView implements GameView {
         System.out.println();
     }
 
+    /**
+     * Move pawn.
+     *
+     * @param game the game
+     */
     @Override
     public void movePawn(Game game) {
         System.out.println("Allowed moves : " + game.getAllowedMoves());
@@ -74,11 +83,21 @@ public class TextualGameView implements GameView {
         }
     }
 
+    /**
+     * Start.
+     *
+     * @param game the game
+     */
     @Override
     public void start(Game game) {
         this.selectPawn(game);
     }
 
+    /**
+     * Select pawn.
+     *
+     * @param game the game
+     */
     @Override
     public void selectPawn(Game game) {
         TextualGameView.updateBoard(game.getBoardArray());
@@ -88,5 +107,18 @@ public class TextualGameView implements GameView {
             System.out.println(AppText.preError + AppText.getTextFor("game.error.selectPawn"));
             this.selectPawn(game);
         }
+    }
+
+    /**
+     * Game winner.
+     *
+     * @param team the team
+     */
+    @Override
+    public void gameWinner(Team team) {
+        System.out.println("------------------------");
+        System.out.println(team == null ? AppText.getTextFor("game.draw") : team.getName() + AppText.getTextFor("game.win"));
+        System.out.println("------------------------");
+        this.gameController.goMenu();
     }
 }

@@ -22,8 +22,17 @@ import java.awt.GridLayout;
  * The type Board panel.
  */
 public class BoardPanel extends JPanel {
+    /**
+     * The Game controller.
+     */
     private final Graphic2DGameController gameController;
+    /**
+     * The Reference component.
+     */
     private final JComponent referenceComponent;
+    /**
+     * The Cells.
+     */
     private Cell[][] cells;
 
     /**
@@ -91,6 +100,11 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    /**
+     * Update board.
+     *
+     * @param game the game
+     */
     private void updateBoard(Game game) {
         Pawn[][] boardArray = game.getBoardArray();
 
@@ -117,6 +131,11 @@ public class BoardPanel extends JPanel {
         this.repaint();
     }
 
+    /**
+     * Paint.
+     *
+     * @param graphics the graphics
+     */
     @Override
     public void paint(Graphics graphics) {
         super.paint(graphics);

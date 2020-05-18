@@ -139,11 +139,11 @@ public class Game extends Observable<GameView> {
         boolean win = this.isWin();
         boolean opponentWin = this.isOpponentWin();
         if (win && opponentWin) {
-            System.out.println("DRAW");
+            this.notifyGameWinner(null);
         } else if (win) {
-            System.out.println("WIN OF " + this.getCurrentTeam().getTeamColor());
+            this.notifyGameWinner(this.getCurrentTeam());
         } else if (opponentWin) {
-            System.out.println("WIN OF " + this.getCurrentTeam().getOpponentTeamColor());
+            this.notifyGameWinner(this.getOpponentTeam());
         }
 
         Team currentTeam = this.getCurrentTeam();
@@ -259,6 +259,15 @@ public class Game extends Observable<GameView> {
     }
 
     /**
+     * Notify game winner.
+     *
+     * @param team the team
+     */
+    private void notifyGameWinner(Team team) {
+        this.forEachObserver(gameView -> gameView.gameWinner(team));
+    }
+
+    /**
      * Notify an observer about the whole state of the app.
      * This method should generally be used to initialize this observer.
      *
@@ -325,6 +334,15 @@ public class Game extends Observable<GameView> {
      */
     public Team getCurrentTeam() {
         return this.teams.get(this.currentTeamIndex);
+    }
+
+    /**
+     * Gets opponent team.
+     *
+     * @return the opponent team
+     */
+    private Team getOpponentTeam() {
+        return this.teams.get((this.currentTeamIndex + 1) % this.teams.size());
     }
 
     /**

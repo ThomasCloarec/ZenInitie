@@ -9,6 +9,9 @@ import javax.swing.JPanel;
  * The type Cell.
  */
 public class Cell extends JPanel {
+    /**
+     * The Image component.
+     */
     private ImageComponent imageComponent;
 
     /**

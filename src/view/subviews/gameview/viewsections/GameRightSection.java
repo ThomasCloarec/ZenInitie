@@ -2,6 +2,7 @@ package view.subviews.gameview.viewsections;
 
 import controller.game.Graphic2DGameController;
 import model.game.Game;
+import model.game.team.Team;
 import model.game.team.TeamColor;
 import view.subviews.Section;
 import view.utils.ExtendedColor;
@@ -21,7 +22,13 @@ import java.util.function.Supplier;
  * The type Game right section.
  */
 public class GameRightSection extends Section<Graphic2DGameController> {
-    private ImageComponent jumpingHand;
+    /**
+     * The Jumping hand.
+     */
+    private ImageComponent imageAbovePlayer;
+    /**
+     * The Player light.
+     */
     private LightComponent playerLight;
 
     /**
@@ -65,8 +72,8 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         playerPanel.setOpaque(false);
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
 
-        this.jumpingHand = new ImageComponent("red_jumper.gif", true);
-        playerPanel.add(this.jumpingHand);
+        this.imageAbovePlayer = new ImageComponent("red_jumper.gif", true);
+        playerPanel.add(this.imageAbovePlayer);
         playerPanel.add(Box.createVerticalStrut(10));
         ImageComponent redPlayer = new ScaledImageComponent(playerImagePath, 0.55, 0.55, this);
         redPlayer.setVisibleCondition(this.horizontalMode);
@@ -95,10 +102,32 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         this.updatePlayerTurn(game);
     }
 
+    /**
+     * Game winner.
+     *
+     * @param team the team
+     */
+    public void gameWinner(Team team) {
+        boolean redWinner = team == null || team.getTeamColor() == TeamColor.RED;
+        this.playerLight.setVisibleCondition(() -> redWinner);
+        if (redWinner) {
+            this.imageAbovePlayer.setBaseImage("crown.png", true);
+        }
+        this.imageAbovePlayer.setVisibleCondition(() -> redWinner);
+        this.doLayout();
+        this.revalidate();
+        this.repaint();
+    }
+
+    /**
+     * Update player turn.
+     *
+     * @param game the game
+     */
     private void updatePlayerTurn(Game game) {
         TeamColor teamColor = game.getCurrentTeam().getTeamColor();
         boolean visible = teamColor == TeamColor.RED;
         this.playerLight.setVisibleCondition(() -> visible);
-        this.jumpingHand.setVisible(visible);
+        this.imageAbovePlayer.setVisible(visible);
     }
 }

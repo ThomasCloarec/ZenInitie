@@ -23,6 +23,9 @@ public class ImageComponent extends JPanel {
      * The prefix of the path for the image. It directly goes into the images directory
      */
     static final String pathPrefix = "/view/resources/images/";
+    /**
+     * The constant images.
+     */
     private static final HashMap<String, Image> images = new HashMap<>();
     /**
      * The loaded image of the component
@@ -81,13 +84,9 @@ public class ImageComponent extends JPanel {
      * @param originalSize the original size
      */
     public ImageComponent(String pathName, boolean originalSize) {
-        this.setBaseImage(pathName);
+        this.setBaseImage(pathName, originalSize);
         this.setOpaque(false);
         this.noBufferingResize = originalSize;
-
-        if (originalSize) {
-            this.setCustomSize(this.baseImage.getWidth(this), this.baseImage.getHeight(this));
-        }
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -178,6 +177,32 @@ public class ImageComponent extends JPanel {
         this.setCustomSize(new Dimension(width, height));
     }
 
+    /**
+     * Sets base image.
+     *
+     * @param name the name
+     */
+    public void setBaseImage(String name, boolean originalSize) {
+        this.pathName = name;
+        if (!ImageComponent.images.containsKey(name)) {
+            ImageComponent.loadImage(name);
+        }
+        this.baseImage = ImageComponent.images.get(name);
+
+        if (!this.noBufferingResize) {
+            this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
+        }
+
+        if (originalSize) {
+            this.setCustomSize(this.baseImage.getWidth(this), this.baseImage.getHeight(this));
+        }
+    }
+
+    /**
+     * Paint component.
+     *
+     * @param graphics the graphics
+     */
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
@@ -188,23 +213,6 @@ public class ImageComponent extends JPanel {
             } else {
                 graphics.drawImage(this.resizedImage, 0, 0, this.getWidth(), this.getHeight(), this);
             }
-        }
-    }
-
-    /**
-     * Sets base image.
-     *
-     * @param name the name
-     */
-    public void setBaseImage(String name) {
-        this.pathName = name;
-        if (!ImageComponent.images.containsKey(name)) {
-            ImageComponent.loadImage(name);
-        }
-        this.baseImage = ImageComponent.images.get(name);
-
-        if (!this.noBufferingResize) {
-            this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
         }
     }
 

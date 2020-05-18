@@ -2,7 +2,9 @@ package view.subviews.gameview.viewsections;
 
 import controller.game.Graphic2DGameController;
 import model.game.Game;
+import model.game.team.Team;
 import view.subviews.Section;
+import view.utils.components.ScaledImageComponent;
 
 import javax.swing.Box;
 import java.util.function.BooleanSupplier;
@@ -12,6 +14,9 @@ import java.util.function.BooleanSupplier;
  */
 public class GameContentSection extends Section<Graphic2DGameController> {
     private final BoardPanel boardPanel;
+    /**
+     * The Game toolbar.
+     */
     private final GameToolbar gameToolbar;
 
     /**
@@ -59,5 +64,23 @@ public class GameContentSection extends Section<Graphic2DGameController> {
      */
     public void movePawn(Game game) {
         this.boardPanel.movePawn(game);
+    }
+
+    /**
+     * Game winner.
+     *
+     * @param team the team
+     */
+    public void gameWinner(Team team) {
+        this.removeAll();
+        this.add(Box.createVerticalGlue());
+        this.add(this.gameToolbar);
+        this.add(Box.createVerticalGlue());
+        this.add(new ScaledImageComponent("finish.png", 0.6, 0.6, this));
+        this.add(Box.createVerticalGlue());
+        this.add(Box.createVerticalGlue());
+        this.doLayout();
+        this.revalidate();
+        this.repaint();
     }
 }

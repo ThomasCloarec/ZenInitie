@@ -21,8 +21,17 @@ import java.util.function.Supplier;
  * The type Game toolbar.
  */
 public class GameToolbar extends JPanel {
+    /**
+     * The Height.
+     */
     private final Supplier<Integer> height;
+    /**
+     * The Time component.
+     */
     private final TimeComponent timeComponent;
+    /**
+     * The Width.
+     */
     private final Supplier<Integer> width;
 
     /**
@@ -44,7 +53,7 @@ public class GameToolbar extends JPanel {
         ScaledImageComponent volume = new ScaledImageComponent(SoundVolume.getIconPath(), exit);
         volume.addOnClick(() -> {
             Sound.nextVolumeTick();
-            volume.setBaseImage(SoundVolume.getIconPath());
+            volume.setBaseImage(SoundVolume.getIconPath(), false);
             volume.revalidate();
             volume.repaint();
         });
@@ -68,6 +77,11 @@ public class GameToolbar extends JPanel {
         this.timeComponent.startTimer();
     }
 
+    /**
+     * Paint component.
+     *
+     * @param graphics the graphics
+     */
     @Override
     protected void paintComponent(Graphics graphics) {
         Dimension size = new Dimension(this.width.get(), this.height.get());

@@ -1,6 +1,7 @@
 package view.subviews.gameview;
 
 import model.game.Game;
+import model.game.team.Team;
 import utils.observer.Observer;
 
 /**
@@ -27,6 +28,13 @@ public interface GameView extends Observer<GameView> {
      * @param game the game
      */
     void selectPawn(Game game);
+
+    /**
+     * Game winner.
+     *
+     * @param team the team
+     */
+    void gameWinner(Team team);
 
     /**
      * Pawn moved.

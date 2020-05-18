@@ -2,6 +2,7 @@ package view.subviews.gameview;
 
 import controller.game.Graphic2DGameController;
 import model.game.Game;
+import model.game.team.Team;
 import view.subviews.CustomPanel;
 import view.subviews.gameview.viewsections.GameContentSection;
 import view.subviews.gameview.viewsections.GameLeftSection;
@@ -28,11 +29,21 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
         });
     }
 
+    /**
+     * Move pawn.
+     *
+     * @param game the game
+     */
     @Override
     public void movePawn(Game game) {
         this.contentSection.movePawn(game);
     }
 
+    /**
+     * Start.
+     *
+     * @param game the game
+     */
     @Override
     public void start(Game game) {
         SwingUtilities.invokeLater(() -> {
@@ -42,6 +53,11 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
         });
     }
 
+    /**
+     * Select pawn.
+     *
+     * @param game the game
+     */
     @Override
     public void selectPawn(Game game) {
         SwingUtilities.invokeLater(() -> {
@@ -50,6 +66,20 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
             this.rightSection.selectPawn(game);
             this.revalidate();
             this.repaint();
+        });
+    }
+
+    /**
+     * Game winner.
+     *
+     * @param team the team
+     */
+    @Override
+    public void gameWinner(Team team) {
+        SwingUtilities.invokeLater(() -> {
+            this.leftSection.gameWinner(team);
+            this.contentSection.gameWinner(team);
+            this.rightSection.gameWinner(team);
         });
     }
 }
