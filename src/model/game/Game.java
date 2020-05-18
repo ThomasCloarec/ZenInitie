@@ -18,6 +18,10 @@ import java.util.Map;
  */
 public class Game extends Observable<GameView> {
     /**
+     * The Finished.
+     */
+    private boolean finished;
+    /**
      * is the game in ai mode (against computer) ?
      */
     protected final boolean aiMode;
@@ -139,10 +143,13 @@ public class Game extends Observable<GameView> {
         boolean win = this.isWin();
         boolean opponentWin = this.isOpponentWin();
         if (win && opponentWin) {
+            this.finished = true;
             this.notifyGameWinner(null);
         } else if (win) {
+            this.finished = true;
             this.notifyGameWinner(this.getCurrentTeam());
         } else if (opponentWin) {
+            this.finished = true;
             this.notifyGameWinner(this.getOpponentTeam());
         }
 
@@ -370,6 +377,15 @@ public class Game extends Observable<GameView> {
      */
     public boolean isMovingPawn() {
         return this.movingPawn;
+    }
+
+    /**
+     * Is finished boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isFinished() {
+        return this.finished;
     }
 
     /**

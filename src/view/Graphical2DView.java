@@ -61,6 +61,8 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
             ImageComponent.loadImage("icons/volume_high.png");
             ImageComponent.loadImage("left_baner.png");
             ImageComponent.loadImage("right_baner.png");
+            ImageComponent.loadImage("crown.png");
+            ImageComponent.loadImage("finish.png");
 
             try {
                 UIManager.setLookAndFeel(new DarculaLaf());

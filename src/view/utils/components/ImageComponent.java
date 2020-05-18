@@ -84,9 +84,13 @@ public class ImageComponent extends JPanel {
      * @param originalSize the original size
      */
     public ImageComponent(String pathName, boolean originalSize) {
-        this.setBaseImage(pathName, originalSize);
+        this.setBaseImage(pathName);
         this.setOpaque(false);
         this.noBufferingResize = originalSize;
+
+        if (originalSize) {
+            this.setCustomSize(this.baseImage.getWidth(this), this.baseImage.getHeight(this));
+        }
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -178,27 +182,6 @@ public class ImageComponent extends JPanel {
     }
 
     /**
-     * Sets base image.
-     *
-     * @param name the name
-     */
-    public void setBaseImage(String name, boolean originalSize) {
-        this.pathName = name;
-        if (!ImageComponent.images.containsKey(name)) {
-            ImageComponent.loadImage(name);
-        }
-        this.baseImage = ImageComponent.images.get(name);
-
-        if (!this.noBufferingResize) {
-            this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
-        }
-
-        if (originalSize) {
-            this.setCustomSize(this.baseImage.getWidth(this), this.baseImage.getHeight(this));
-        }
-    }
-
-    /**
      * Paint component.
      *
      * @param graphics the graphics
@@ -207,12 +190,29 @@ public class ImageComponent extends JPanel {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        if (this.visibleCondition.getAsBoolean()) {
+        if (this.isVisible() && this.visibleCondition.getAsBoolean()) {
             if (this.noBufferingResize) {
                 graphics.drawImage(this.baseImage, 0, 0, this.getWidth(), this.getHeight(), this);
             } else {
                 graphics.drawImage(this.resizedImage, 0, 0, this.getWidth(), this.getHeight(), this);
             }
+        }
+    }
+
+    /**
+     * Sets base image.
+     *
+     * @param name the name
+     */
+    public void setBaseImage(String name) {
+        this.pathName = name;
+        if (!ImageComponent.images.containsKey(name)) {
+            ImageComponent.loadImage(name);
+        }
+        this.baseImage = ImageComponent.images.get(name);
+
+        if (!this.noBufferingResize) {
+            this.resizedImage = ImageComponent.toBufferedImage(this.baseImage);
         }
     }
 

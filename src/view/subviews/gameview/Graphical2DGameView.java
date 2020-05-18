@@ -78,8 +78,10 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
     public void gameWinner(Team team) {
         SwingUtilities.invokeLater(() -> {
             this.leftSection.gameWinner(team);
-            this.contentSection.gameWinner(team);
+            this.contentSection.gameWinner();
             this.rightSection.gameWinner(team);
+            this.revalidate();
+            this.repaint();
         });
     }
 }

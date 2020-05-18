@@ -89,6 +89,7 @@ public class GameRightSection extends Section<Graphic2DGameController> {
         Supplier<Float> playerRadius = () -> redPlayer.getHeight() * 1.5f;
         this.playerLight = new LightComponent(playerCenter, playerRadius, Color.GRAY);
         this.lights.add(this.playerLight);
+        this.playerLight.setVisibleCondition(this.horizontalMode);
 
         this.updatePlayerTurn(game);
     }
@@ -109,14 +110,11 @@ public class GameRightSection extends Section<Graphic2DGameController> {
      */
     public void gameWinner(Team team) {
         boolean redWinner = team == null || team.getTeamColor() == TeamColor.RED;
-        this.playerLight.setVisibleCondition(() -> redWinner);
+        this.playerLight.setVisible(redWinner);
         if (redWinner) {
-            this.imageAbovePlayer.setBaseImage("crown.png", true);
+            this.imageAbovePlayer.setBaseImage("crown.png");
         }
-        this.imageAbovePlayer.setVisibleCondition(() -> redWinner);
-        this.doLayout();
-        this.revalidate();
-        this.repaint();
+        this.imageAbovePlayer.setVisible(redWinner);
     }
 
     /**
@@ -125,9 +123,11 @@ public class GameRightSection extends Section<Graphic2DGameController> {
      * @param game the game
      */
     private void updatePlayerTurn(Game game) {
-        TeamColor teamColor = game.getCurrentTeam().getTeamColor();
-        boolean visible = teamColor == TeamColor.RED;
-        this.playerLight.setVisibleCondition(() -> visible);
-        this.imageAbovePlayer.setVisible(visible);
+        if (!game.isFinished()) {
+            TeamColor teamColor = game.getCurrentTeam().getTeamColor();
+            boolean visible = teamColor == TeamColor.RED;
+            this.playerLight.setVisible(visible);
+            this.imageAbovePlayer.setVisible(visible);
+        }
     }
 }

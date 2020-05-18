@@ -27,6 +27,10 @@ public class LightComponent {
      */
     private final Supplier<Float> radius;
     /**
+     * The Visible.
+     */
+    private boolean visible = true;
+    /**
      * The condition that returns if the image has to be visible or not
      */
     private BooleanSupplier visibleCondition = () -> true;
@@ -61,7 +65,7 @@ public class LightComponent {
      * @param graphics2D the graphics 2 d
      */
     public void paintLight(Graphics2D graphics2D) {
-        if (this.visibleCondition.getAsBoolean()) {
+        if (this.visible && this.visibleCondition.getAsBoolean()) {
             RadialGradientPaint light = new RadialGradientPaint(this.center.get(), this.radius.get(), new float[]{0.0f, 1.0f}, new Color[]{this.color, ExtendedColor.TRANSPARENT});
 
             graphics2D.setPaint(light);
@@ -73,6 +77,15 @@ public class LightComponent {
                     (int) light.getRadius() * 2
             );
         }
+    }
+
+    /**
+     * Sets visible.
+     *
+     * @param value the value
+     */
+    public void setVisible(boolean value) {
+        this.visible = value;
     }
 
     /**

@@ -2,7 +2,6 @@ package view.subviews.gameview.viewsections;
 
 import controller.game.Graphic2DGameController;
 import model.game.Game;
-import model.game.team.Team;
 import view.subviews.Section;
 import view.utils.components.ScaledImageComponent;
 
@@ -68,10 +67,8 @@ public class GameContentSection extends Section<Graphic2DGameController> {
 
     /**
      * Game winner.
-     *
-     * @param team the team
      */
-    public void gameWinner(Team team) {
+    public void gameWinner() {
         this.removeAll();
         this.add(Box.createVerticalGlue());
         this.add(this.gameToolbar);
@@ -79,8 +76,5 @@ public class GameContentSection extends Section<Graphic2DGameController> {
         this.add(new ScaledImageComponent("finish.png", 0.6, 0.6, this));
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalGlue());
-        this.doLayout();
-        this.revalidate();
-        this.repaint();
     }
 }

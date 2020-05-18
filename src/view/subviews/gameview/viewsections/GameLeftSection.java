@@ -86,6 +86,7 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
         Supplier<Point> playerCenter = () -> new Point(playerPanel.getX() + bluePlayer.getX() + bluePlayer.getWidth() / 2, playerPanel.getY() + bluePlayer.getY() + bluePlayer.getHeight() / 2);
         Supplier<Float> playerRadius = () -> bluePlayer.getHeight() * 1.5f;
         this.playerLight = new LightComponent(playerCenter, playerRadius, Color.GRAY);
+        this.playerLight.setVisibleCondition(this.horizontalMode);
         this.lights.add(this.playerLight);
 
         this.updatePlayerTurn(game);
@@ -107,14 +108,11 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
      */
     public void gameWinner(Team team) {
         boolean blueWinner = team == null || team.getTeamColor() == TeamColor.BLUE;
-        this.playerLight.setVisibleCondition(() -> blueWinner);
+        this.playerLight.setVisible(blueWinner);
         if (blueWinner) {
-            this.imageAbovePlayer.setBaseImage("crown.png", true);
+            this.imageAbovePlayer.setBaseImage("crown.png");
         }
-        this.imageAbovePlayer.setVisibleCondition(() -> blueWinner);
-        this.doLayout();
-        this.revalidate();
-        this.repaint();
+        this.imageAbovePlayer.setVisible(blueWinner);
     }
 
     /**
@@ -123,9 +121,11 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
      * @param game the game
      */
     private void updatePlayerTurn(Game game) {
-        TeamColor teamColor = game.getCurrentTeam().getTeamColor();
-        boolean visible = teamColor == TeamColor.BLUE;
-        this.playerLight.setVisibleCondition(() -> visible);
-        this.imageAbovePlayer.setVisible(visible);
+        if (!game.isFinished()) {
+            TeamColor teamColor = game.getCurrentTeam().getTeamColor();
+            boolean visible = teamColor == TeamColor.BLUE;
+            this.playerLight.setVisible(visible);
+            this.imageAbovePlayer.setVisible(visible);
+        }
     }
 }

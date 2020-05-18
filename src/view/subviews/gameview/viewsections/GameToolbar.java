@@ -53,7 +53,7 @@ public class GameToolbar extends JPanel {
         ScaledImageComponent volume = new ScaledImageComponent(SoundVolume.getIconPath(), exit);
         volume.addOnClick(() -> {
             Sound.nextVolumeTick();
-            volume.setBaseImage(SoundVolume.getIconPath(), false);
+            volume.setBaseImage(SoundVolume.getIconPath());
             volume.revalidate();
             volume.repaint();
         });
