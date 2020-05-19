@@ -16,13 +16,13 @@ import java.util.Collection;
  */
 public abstract class Controller {
     /**
-     * The Game network launched.
-     */
-    private boolean gameNetworkLaunched;
-    /**
      * The Game network (only used in network mode)
      */
     private GameNetwork gameNetwork;
+    /**
+     * The Game network launched.
+     */
+    private boolean gameNetworkLaunched;
 
     /**
      * Instantiates a new Controller.
@@ -100,9 +100,9 @@ public abstract class Controller {
             menu.addActualPage(MenuPage.LOBBY);
 
             if (menu.isOnlineServer()) {
-                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu);
+                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu, this::isGameNetworkLaunched);
             } else if (menu.isOnlineClient()) {
-                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu);
+                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu, this::isGameNetworkLaunched);
             }
         } else {
             this.newGame(new Game(menu.isAiMode(), menu.isDuoMode()));
@@ -119,7 +119,7 @@ public abstract class Controller {
     /**
      * Launch game network.
      *
-     * @return the boolean
+     * @return the boolean has the game been launched just now
      */
     protected boolean launchGameNetwork() {
         boolean launchedNow = false;
@@ -129,5 +129,14 @@ public abstract class Controller {
             launchedNow = true;
         }
         return launchedNow;
+    }
+
+    /**
+     * Is game network launched boolean.
+     *
+     * @return the boolean
+     */
+    protected boolean isGameNetworkLaunched() {
+        return this.gameNetworkLaunched;
     }
 }

@@ -14,31 +14,39 @@ import java.util.function.Supplier;
  */
 public class GameServer extends GameNetwork {
     /**
+     * The Room size.
+     */
+    private final int roomSize;
+    /**
      * The Server.
      */
     private final ZenServer server;
+    /**
+     * The Already filled room.
+     */
+    private int alreadyFilledRoom = 1;
 
     /**
      * Instantiates a new Game server.
      *
-     * @param aiMode            the ai mode
-     * @param duoMode           the duo mode
-     * @param launchGameNetwork the launch game network
-     * @param goMenu            the go menu
+     * @param aiMode                the ai mode
+     * @param duoMode               the duo mode
+     * @param launchGameNetwork     the launch game network
+     * @param goMenu                the go menu
+     * @param isGameNetworkLaunched the is game network launched
      */
-    public GameServer(boolean aiMode, boolean duoMode, Supplier<Boolean> launchGameNetwork, Runnable goMenu) {
-        super(aiMode, duoMode, launchGameNetwork, goMenu);
+    public GameServer(boolean aiMode, boolean duoMode, Supplier<Boolean> launchGameNetwork, Runnable goMenu, Supplier<Boolean> isGameNetworkLaunched) {
+        super(aiMode, duoMode, launchGameNetwork, goMenu, isGameNetworkLaunched);
 
         this.playerID = new Network.PlayerID(0, 0);
 
-        int roomSize;
         if (duoMode) { // not ai mode but duo
-            roomSize = 4;
+            this.roomSize = 4;
         } else { // not ai mode and not duo OR ai mode and duo
-            roomSize = 2;
+            this.roomSize = 2;
         }
 
-        this.server = new ZenServer(roomSize);
+        this.server = new ZenServer();
         this.server.addListener(new ServerListener());
         this.server.launch();
     }
@@ -86,26 +94,35 @@ public class GameServer extends GameNetwork {
         public void connected(Connection connection) {
             super.connected(connection);
 
-            GameServer.this.server.incrementAlreadyFilledRoom();
-
-            // Give and send a PlayerID to the newly connected client
-            Network.PlayerID playerID = new Network.PlayerID();
-            if (GameServer.this.isAiMode() && GameServer.this.isDuoMode()) {
-                playerID.playerID = 1;
-                playerID.teamID = 0;
-            } else if (GameServer.this.isDuoMode()) {
-                playerID.playerID = GameServer.this.server.getAlreadyFilledRoom() % 2 == 0 ? 1 : 0;
-                playerID.teamID = GameServer.this.server.getAlreadyFilledRoom() <= 2 ? 0 : 1;
+            // If the server is full, refuse the new connection
+            if (GameServer.this.alreadyFilledRoom == GameServer.this.roomSize) {
+                GameServer.this.server.sendToTCP(connection.getID(), Network.Message.ROOM_IS_FULL);
+                connection.close();
             } else {
-                playerID.playerID = 0;
-                playerID.teamID = 1;
-            }
-            GameServer.this.server.sendToTCP(connection.getID(), playerID);
+                GameServer.this.server.addConnectionIDToList(connection.getID());
+                GameServer.this.alreadyFilledRoom++;
 
-            // When everyone is here, send them the gameData
-            if (GameServer.this.server.getAlreadyFilledRoom() == GameServer.this.server.getRoomSize()) {
-                GameServer.this.server.sendToAllTCP(GameServer.this.gameData);
-                GameServer.this.launchGameNetwork.get();
+                // Give and send a PlayerID to the newly connected client
+                Network.PlayerID playerID = new Network.PlayerID();
+                if (GameServer.this.isAiMode() && GameServer.this.isDuoMode()) {
+                    playerID.playerID = 1;
+                    playerID.teamID = 0;
+                } else if (GameServer.this.isDuoMode()) {
+                    playerID.playerID = GameServer.this.alreadyFilledRoom % 2 == 0 ? 1 : 0;
+                    playerID.teamID = GameServer.this.alreadyFilledRoom <= 2 ? 0 : 1;
+                } else {
+                    playerID.playerID = 0;
+                    playerID.teamID = 1;
+                }
+                GameServer.this.server.sendToTCP(connection.getID(), playerID);
+
+                // When everyone is here, send them the gameData
+                if (GameServer.this.alreadyFilledRoom == GameServer.this.roomSize) {
+                    GameServer.this.server.sendToAllTCP(GameServer.this.gameData);
+                    GameServer.this.launchGameNetwork.get();
+                }
+
+                System.out.println(GameServer.this.alreadyFilledRoom);
             }
         }
 
@@ -117,7 +134,9 @@ public class GameServer extends GameNetwork {
         @Override
         public void disconnected(Connection connection) {
             super.disconnected(connection);
-            GameServer.this.goMenu.run();
+            if (GameServer.this.server.getConnectionIDList().contains(connection.getID())) {
+                GameServer.this.goMenu.run();
+            }
         }
 
         /**

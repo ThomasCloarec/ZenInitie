@@ -21,13 +21,14 @@ public class GameClient extends GameNetwork {
     /**
      * Instantiates a new Game client.
      *
-     * @param aiMode            the ai mode
-     * @param duoMode           the duo mode
-     * @param launchGameNetwork the launch game network
-     * @param goMenu            the go menu
+     * @param aiMode                the ai mode
+     * @param duoMode               the duo mode
+     * @param launchGameNetwork     the launch game network
+     * @param goMenu                the go menu
+     * @param isGameNetworkLaunched the is game network launched
      */
-    public GameClient(boolean aiMode, boolean duoMode, Supplier<Boolean> launchGameNetwork, Runnable goMenu) {
-        super(aiMode, duoMode, launchGameNetwork, goMenu);
+    public GameClient(boolean aiMode, boolean duoMode, Supplier<Boolean> launchGameNetwork, Runnable goMenu, Supplier<Boolean> isGameNetworkLaunched) {
+        super(aiMode, duoMode, launchGameNetwork, goMenu, isGameNetworkLaunched);
 
         this.client = new ZenClient();
         this.client.addListener(new ClientListener());
@@ -77,8 +78,10 @@ public class GameClient extends GameNetwork {
          */
         @Override
         public void disconnected(Connection connection) {
-            super.disconnected(connection);
-            GameClient.this.goMenu.run();
+            System.out.println(connection.getID());
+            if (GameClient.this.isGameNetworkLaunched.get()) {
+                GameClient.this.goMenu.run();
+            }
         }
 
         /**

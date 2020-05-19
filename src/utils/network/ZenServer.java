@@ -1,31 +1,27 @@
 package utils.network;
 
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The type Zen server.
  */
 public class ZenServer extends Server {
     /**
-     * The Room size.
+     * The Connection id list.
      */
-    private final int roomSize;
-    /**
-     * The Already filled room.
-     */
-    private int alreadyFilledRoom = 1;
+    private final List<Integer> connectionIDList = new ArrayList<>();
 
     /**
      * Instantiates a new Zen server.
-     *
-     * @param roomSize the room size
      */
-    public ZenServer(int roomSize) {
-        this.roomSize = roomSize;
-
+    public ZenServer() {
         Log.set(Log.LEVEL_TRACE);
         this.start();
         Network.register(this);
@@ -53,13 +49,6 @@ public class ZenServer extends Server {
     }
 
     /**
-     * Increment already filled room.
-     */
-    public void incrementAlreadyFilledRoom() {
-        this.alreadyFilledRoom++;
-    }
-
-    /**
      * Stop.
      */
     @Override
@@ -69,20 +58,49 @@ public class ZenServer extends Server {
     }
 
     /**
-     * Gets already filled room.
+     * Add connection id to list.
      *
-     * @return the already filled room
+     * @param connectionID the connection id
      */
-    public int getAlreadyFilledRoom() {
-        return this.alreadyFilledRoom;
+    public void addConnectionIDToList(Integer connectionID) {
+        this.connectionIDList.add(connectionID);
     }
 
     /**
-     * Gets room size.
+     * Send to all tcp.
      *
-     * @return the room size
+     * @param o the o
      */
-    public int getRoomSize() {
-        return this.roomSize;
+    @Override
+    public void sendToAllTCP(Object o) {
+        for (Connection connection : this.getConnections()) {
+            if (this.connectionIDList.contains(connection.getID())) {
+                connection.sendTCP(o);
+            }
+        }
+    }
+
+    /**
+     * Send to all except tcp.
+     *
+     * @param i the
+     * @param o the o
+     */
+    @Override
+    public void sendToAllExceptTCP(int i, Object o) {
+        for (Connection connection : this.getConnections()) {
+            if (connection.getID() != i && this.connectionIDList.contains(connection.getID())) {
+                connection.sendTCP(o);
+            }
+        }
+    }
+
+    /**
+     * Gets connection id list.
+     *
+     * @return the connection id list
+     */
+    public List<Integer> getConnectionIDList() {
+        return Collections.unmodifiableList(this.connectionIDList);
     }
 }

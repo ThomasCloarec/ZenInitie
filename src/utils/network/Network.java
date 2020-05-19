@@ -64,6 +64,24 @@ public final class Network {
         kryo.register(Player.class);
         kryo.register(TeamColor.class);
         kryo.register(PlayerID.class);
+        kryo.register(Message.class);
+    }
+
+    /**
+     * The enum Message.
+     */
+    public enum Message {
+        /**
+         * Room is full message.
+         */
+        ROOM_IS_FULL;
+
+        /**
+         * Instantiates a new Message.
+         */
+        Message() {
+            // Used for kyro deserialization
+        }
     }
 
     /**
