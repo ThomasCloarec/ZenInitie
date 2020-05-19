@@ -18,8 +18,9 @@ public class Graphic2DMenuController extends MenuController {
     /**
      * Instantiates a new Graphic 2 d menu controller.
      *
-     * @param menu    the menu
-     * @param newGame the new game
+     * @param menu               the menu
+     * @param newGame            the new game
+     * @param cancelNetworkLobby the cancel network lobby
      */
     public Graphic2DMenuController(Menu menu, Consumer<? super Menu> newGame, Runnable cancelNetworkLobby) {
         super(menu, newGame, cancelNetworkLobby);
@@ -200,6 +201,11 @@ public class Graphic2DMenuController extends MenuController {
         return actionEvent -> this.playTwoVsTwo();
     }
 
+    /**
+     * Gets cancel network lobby listener.
+     *
+     * @return the cancel network lobby listener
+     */
     public ActionListener getCancelNetworkLobbyListener() {
         return actionEvent -> this.cancelNetworkLobby();
     }

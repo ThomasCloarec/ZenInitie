@@ -181,6 +181,9 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Host a game.
+     */
     @Override
     public void hostAGame() {
         int input = TextInput.getMenuAnswer("menu.offline.newGame.question1");
@@ -200,6 +203,9 @@ public class TextualMenuView implements MenuView {
         }
     }
 
+    /**
+     * Go lobby.
+     */
     @Override
     public void goLobby() {
 

@@ -97,6 +97,11 @@ public class LightComponent {
         this.visibleCondition = visibleCondition;
     }
 
+    /**
+     * Sets center.
+     *
+     * @param center the center
+     */
     public void setCenter(Supplier<? extends Point> center) {
         this.center = center;
     }

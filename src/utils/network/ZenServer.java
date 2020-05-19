@@ -5,13 +5,22 @@ import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 
+/**
+ * The type Zen server.
+ */
 public class ZenServer extends Server {
+    /**
+     * Instantiates a new Zen server.
+     */
     public ZenServer() {
         Log.set(Log.LEVEL_TRACE);
         this.start();
         Network.register(this);
     }
 
+    /**
+     * Launch.
+     */
     public void launch() {
         boolean tcpPortNotFound = true;
 

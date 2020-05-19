@@ -28,6 +28,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
      * The Logo zen.
      */
     private final ImageComponent logoZen;
+    /**
+     * The Top light.
+     */
     private final LightComponent topLight;
 
     /**
@@ -169,6 +172,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3);
     }
 
+    /**
+     * Go lobby.
+     */
     public void goLobby() {
         this.logoZen.setVisible(false);
 
@@ -230,6 +236,9 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.doLayout();
     }
 
+    /**
+     * Host a game.
+     */
     public void hostAGame() {
         JButton button1 = new ButtonComponent(AppText.getTextFor("menu.online.hostgame.question1.answer1"), this, this.horizontalMode);
         JButton button2 = new ButtonComponent(AppText.getTextFor("menu.online.hostgame.question1.answer2"), this, this.horizontalMode);

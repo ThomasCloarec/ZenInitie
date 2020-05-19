@@ -93,6 +93,9 @@ public abstract class Controller {
         }
     }
 
+    /**
+     * Cancel network lobby.
+     */
     protected void cancelNetworkLobby() {
 
     }

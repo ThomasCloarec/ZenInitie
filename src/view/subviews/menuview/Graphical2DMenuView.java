@@ -135,6 +135,9 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
         });
     }
 
+    /**
+     * Host a game.
+     */
     @Override
     public void hostAGame() {
         SwingUtilities.invokeLater(() -> {
@@ -144,6 +147,9 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
         });
     }
 
+    /**
+     * Go lobby.
+     */
     @Override
     public void goLobby() {
         SwingUtilities.invokeLater(() -> {

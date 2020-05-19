@@ -86,15 +86,33 @@ public final class Network {
             // Used for kyro deserialization
         }
 
+        /**
+         * Instantiates a new Player id.
+         *
+         * @param teamID   the team id
+         * @param playerID the player id
+         */
         public PlayerID(int teamID, int playerID) {
             this.teamID = teamID;
             this.playerID = playerID;
         }
 
+        /**
+         * Equals boolean.
+         *
+         * @param teamID   the team id
+         * @param playerID the player id
+         * @return the boolean
+         */
         public boolean equals(int teamID, int playerID) {
             return this.teamID == teamID && this.playerID == playerID;
         }
 
+        /**
+         * To string string.
+         *
+         * @return the string
+         */
         @Override
         public String toString() {
             return "PlayerID{" +

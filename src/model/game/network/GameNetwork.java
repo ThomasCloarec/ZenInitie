@@ -3,6 +3,9 @@ package model.game.network;
 import model.game.Game;
 import utils.network.Network;
 
+/**
+ * The type Game network.
+ */
 public abstract class GameNetwork extends Game {
     /**
      * The Player id.

@@ -47,7 +47,15 @@ public class GameServer extends GameNetwork {
         this.server.launch();
     }
 
+    /**
+     * The type Server listener.
+     */
     private class ServerListener extends Listener {
+        /**
+         * Connected.
+         *
+         * @param connection the connection
+         */
         @Override
         public void connected(Connection connection) {
             super.connected(connection);
@@ -73,6 +81,12 @@ public class GameServer extends GameNetwork {
             }
         }
 
+        /**
+         * Received.
+         *
+         * @param connection the connection
+         * @param object     the object
+         */
         @Override
         public void received(Connection connection, Object object) {
             if (object instanceof GameData) {

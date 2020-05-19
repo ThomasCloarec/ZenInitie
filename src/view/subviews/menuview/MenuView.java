@@ -52,8 +52,14 @@ public interface MenuView extends Observer<MenuView> {
      */
     void goHomepage();
 
+    /**
+     * Host a game.
+     */
     void hostAGame();
 
+    /**
+     * Go lobby.
+     */
     void goLobby();
 
     /**

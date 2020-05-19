@@ -31,7 +31,16 @@ public class GameClient extends GameNetwork {
         this.client.sendTCP("HEY");
     }
 
+    /**
+     * The type Client listener.
+     */
     private class ClientListener extends Listener {
+        /**
+         * Received.
+         *
+         * @param connection the connection
+         * @param o          the o
+         */
         @Override
         public void received(Connection connection, Object o) {
             if (o instanceof Network.PlayerID) {

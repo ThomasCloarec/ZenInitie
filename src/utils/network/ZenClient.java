@@ -7,13 +7,22 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 
+/**
+ * The type Zen client.
+ */
 public class ZenClient extends Client {
+    /**
+     * Instantiates a new Zen client.
+     */
     public ZenClient() {
         Log.set(Log.LEVEL_TRACE);
         this.start();
         Network.register(this);
     }
 
+    /**
+     * Launch.
+     */
     public void launch() {
         InetAddress serverIP = null;
         int i = 0;

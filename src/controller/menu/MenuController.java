@@ -19,13 +19,17 @@ public class MenuController {
      * The New game.
      */
     private final Consumer<? super Menu> newGame;
+    /**
+     * The Cancel network lobby.
+     */
     private final Runnable cancelNetworkLobby;
 
     /**
      * Instantiates a new Menu controller.
      *
-     * @param menu    the menu
-     * @param newGame the new game
+     * @param menu               the menu
+     * @param newGame            the new game
+     * @param cancelNetworkLobby the cancel network lobby
      */
     public MenuController(Menu menu, Consumer<? super Menu> newGame, Runnable cancelNetworkLobby) {
         this.menu = menu;
@@ -154,6 +158,9 @@ public class MenuController {
         this.menu.backPreviousPage();
     }
 
+    /**
+     * Cancel network lobby.
+     */
     public void cancelNetworkLobby() {
         this.cancelNetworkLobby.run();
         this.menu.backPreviousPage();
