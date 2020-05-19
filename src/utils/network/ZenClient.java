@@ -24,19 +24,31 @@ public class ZenClient extends Client {
      * Launch.
      */
     public void launch() {
-        InetAddress serverIP = null;
-        int i = 0;
-        while (serverIP == null && i + Network.BASE_UDP_PORT <= Network.MAX_UDP_PORT) {
-            List<InetAddress> serversIP = this.discoverHosts(i + Network.BASE_UDP_PORT, 1000);
-            if (!serversIP.isEmpty() && serversIP.get(0) != null) {
-                try {
-                    serverIP = serversIP.get(0);
-                    this.connect(5000, serverIP, i + Network.BASE_TCP_PORT, i + Network.BASE_UDP_PORT);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+        new Thread(() -> {
+            InetAddress serverIP = null;
+            int i = 0;
+            while (serverIP == null) {
+                if (i + Network.BASE_UDP_PORT > Network.MAX_UDP_PORT) { // Reset search
+                    i = 0;
                 }
+
+                List<InetAddress> serversIP = this.discoverHosts(i + Network.BASE_UDP_PORT, 1000);
+                if (!serversIP.isEmpty() && serversIP.get(0) != null) {
+                    try {
+                        serverIP = serversIP.get(0);
+                        this.connect(5000, serverIP, i + Network.BASE_TCP_PORT, i + Network.BASE_UDP_PORT);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+                i++;
             }
-            i++;
-        }
+        }).start();
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        System.out.println("Client stopped");
     }
 }

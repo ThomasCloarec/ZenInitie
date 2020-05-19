@@ -28,7 +28,7 @@ public final class Network {
     /**
      * The Port search range.
      */
-    public static final int PORT_SEARCH_RANGE = 10;
+    public static final int PORT_SEARCH_RANGE = 3;
     /**
      * The Max tcp port.
      */

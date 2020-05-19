@@ -21,14 +21,19 @@ public class GameClient extends GameNetwork {
      * @param aiMode  the ai mode
      * @param duoMode the duo mode
      */
-    public GameClient(boolean aiMode, boolean duoMode) {
-        super(aiMode, duoMode);
+    public GameClient(boolean aiMode, boolean duoMode, Runnable launchGameNetwork) {
+        super(aiMode, duoMode, launchGameNetwork);
 
         this.client = new ZenClient();
         this.client.addListener(new ClientListener());
         this.client.launch();
 
         this.client.sendTCP("HEY");
+    }
+
+    @Override
+    public void stop() {
+        this.client.stop();
     }
 
     /**
@@ -50,6 +55,7 @@ public class GameClient extends GameNetwork {
                 GameData gameData = (GameData) o;
                 GameClient.this.setGameData(gameData);
                 System.out.println(GameClient.this.gameData);
+                GameClient.this.launchGameNetwork.run();
             }
         }
     }

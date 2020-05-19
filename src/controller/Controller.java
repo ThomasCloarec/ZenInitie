@@ -1,6 +1,9 @@
 package controller;
 
 import model.game.Game;
+import model.game.network.GameClient;
+import model.game.network.GameNetwork;
+import model.game.network.GameServer;
 import model.menu.Menu;
 import model.menu.MenuPage;
 import view.ViewMode;
@@ -12,6 +15,11 @@ import java.util.Collection;
  * The type Controller.
  */
 public abstract class Controller {
+    /**
+     * The Game network (only used in network mode)
+     */
+    private GameNetwork gameNetwork;
+
     /**
      * Instantiates a new Controller.
      */
@@ -82,12 +90,11 @@ public abstract class Controller {
         if (menu.isOnlineClient() || menu.isOnlineServer()) {
             menu.addActualPage(MenuPage.LOBBY);
 
-           /* // TODO add a "tell me when ready in the GameNetwork, it will call back the newGame with newGame(this)"
             if (menu.isOnlineServer()) {
-                this.newGame(new GameServer(menu.isAiMode(), menu.isDuoMode()));
+                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork);
             } else if (menu.isOnlineClient()) {
-                this.newGame(new GameClient(menu.isAiMode(), menu.isDuoMode()));
-            }*/
+                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork);
+            }
         } else {
             this.newGame(new Game(menu.isAiMode(), menu.isDuoMode()));
         }
@@ -97,6 +104,13 @@ public abstract class Controller {
      * Cancel network lobby.
      */
     protected void cancelNetworkLobby() {
+        this.gameNetwork.stop();
+    }
 
+    /**
+     * The Launch.
+     */
+    protected void launchGameNetwork() {
+        this.newGame(this.gameNetwork);
     }
 }

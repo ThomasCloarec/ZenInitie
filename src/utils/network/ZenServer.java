@@ -38,4 +38,10 @@ public class ZenServer extends Server {
             }
         }
     }
+
+    @Override
+    public void stop() {
+        super.stop();
+        System.out.println("Client stopped");
+    }
 }

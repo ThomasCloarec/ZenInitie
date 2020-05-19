@@ -29,8 +29,8 @@ public class GameServer extends GameNetwork {
      * @param aiMode  the ai mode
      * @param duoMode the duo mode
      */
-    public GameServer(boolean aiMode, boolean duoMode) {
-        super(aiMode, duoMode);
+    public GameServer(boolean aiMode, boolean duoMode, Runnable launchGameNetwork) {
+        super(aiMode, duoMode, launchGameNetwork);
 
         this.playerID = new Network.PlayerID(0, 0);
 
@@ -45,6 +45,11 @@ public class GameServer extends GameNetwork {
         this.server = new ZenServer();
         this.server.addListener(new ServerListener());
         this.server.launch();
+    }
+
+    @Override
+    public void stop() {
+        this.server.stop();
     }
 
     /**
@@ -78,6 +83,7 @@ public class GameServer extends GameNetwork {
             // When everyone is here, send them the gameData
             if (GameServer.this.alreadyFilledRoom == GameServer.this.roomSize) {
                 GameServer.this.server.sendToAllTCP(GameServer.this.gameData);
+                GameServer.this.launchGameNetwork.run();
             }
         }
 
