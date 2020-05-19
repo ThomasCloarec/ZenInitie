@@ -109,9 +109,11 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
             this.switchVerticalMode();
         }
 
-        Graphics2D graphics2D = (Graphics2D) graphics;
-        this.leftSection.paintLights(graphics2D);
-        this.contentSection.paintLights(graphics2D);
-        this.rightSection.paintLights(graphics2D);
+        if (this.leftSection != null && this.contentSection != null && this.rightSection != null) {
+            Graphics2D graphics2D = (Graphics2D) graphics;
+            this.leftSection.paintLights(graphics2D);
+            this.contentSection.paintLights(graphics2D);
+            this.rightSection.paintLights(graphics2D);
+        }
     }
 }

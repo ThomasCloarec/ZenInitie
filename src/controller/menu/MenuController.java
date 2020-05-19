@@ -19,6 +19,7 @@ public class MenuController {
      * The New game.
      */
     private final Consumer<? super Menu> newGame;
+    private final Runnable cancelNetworkLobby;
 
     /**
      * Instantiates a new Menu controller.
@@ -26,9 +27,10 @@ public class MenuController {
      * @param menu    the menu
      * @param newGame the new game
      */
-    public MenuController(Menu menu, Consumer<? super Menu> newGame) {
+    public MenuController(Menu menu, Consumer<? super Menu> newGame, Runnable cancelNetworkLobby) {
         this.menu = menu;
         this.newGame = newGame;
+        this.cancelNetworkLobby = cancelNetworkLobby;
     }
 
     /**
@@ -149,6 +151,11 @@ public class MenuController {
      */
     public void setLanguage(Language language) {
         AppText.setAppLanguage(language);
+        this.menu.backPreviousPage();
+    }
+
+    public void cancelNetworkLobby() {
+        this.cancelNetworkLobby.run();
         this.menu.backPreviousPage();
     }
 }

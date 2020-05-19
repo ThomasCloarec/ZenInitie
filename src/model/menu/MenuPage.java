@@ -13,6 +13,7 @@ public enum MenuPage {
      */
     PLAY_ONLINE,
     HOST_A_GAME,
+    LOBBY,
     /**
      * Load game menu page.
      */

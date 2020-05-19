@@ -199,4 +199,9 @@ public class TextualMenuView implements MenuView {
                 break;
         }
     }
+
+    @Override
+    public void goLobby() {
+
+    }
 }

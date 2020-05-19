@@ -21,8 +21,8 @@ public class Graphic2DMenuController extends MenuController {
      * @param menu    the menu
      * @param newGame the new game
      */
-    public Graphic2DMenuController(Menu menu, Consumer<? super Menu> newGame) {
-        super(menu, newGame);
+    public Graphic2DMenuController(Menu menu, Consumer<? super Menu> newGame, Runnable cancelNetworkLobby) {
+        super(menu, newGame, cancelNetworkLobby);
     }
 
     /**
@@ -198,5 +198,9 @@ public class Graphic2DMenuController extends MenuController {
      */
     public ActionListener getTwoVsTwoListener() {
         return actionEvent -> this.playTwoVsTwo();
+    }
+
+    public ActionListener getCancelNetworkLobbyListener() {
+        return actionEvent -> this.cancelNetworkLobby();
     }
 }

@@ -2,7 +2,6 @@ package model.game.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import model.game.Game;
 import model.game.GameData;
 import utils.network.Network;
 import utils.network.ZenServer;
@@ -10,11 +9,7 @@ import utils.network.ZenServer;
 /**
  * The type Game server.
  */
-public class GameServer extends Game {
-    /**
-     * The Player id.
-     */
-    private final Network.PlayerID playerID = new Network.PlayerID(0, 0);
+public class GameServer extends GameNetwork {
     /**
      * The Room size.
      */
@@ -36,6 +31,8 @@ public class GameServer extends Game {
      */
     public GameServer(boolean aiMode, boolean duoMode) {
         super(aiMode, duoMode);
+
+        this.playerID = new Network.PlayerID(0, 0);
 
         if (aiMode && duoMode) { // ai mode and duo
             this.roomSize = 2;

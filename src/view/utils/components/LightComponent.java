@@ -17,7 +17,7 @@ public class LightComponent {
     /**
      * The Center.
      */
-    private final Supplier<? extends Point> center;
+    private Supplier<? extends Point> center;
     /**
      * The Color.
      */
@@ -95,5 +95,9 @@ public class LightComponent {
      */
     public void setVisibleCondition(BooleanSupplier visibleCondition) {
         this.visibleCondition = visibleCondition;
+    }
+
+    public void setCenter(Supplier<? extends Point> center) {
+        this.center = center;
     }
 }

@@ -28,6 +28,7 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
      * The Logo zen.
      */
     private final ImageComponent logoZen;
+    private final LightComponent topLight;
 
     /**
      * Instantiates a new Menu content section.
@@ -44,8 +45,8 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
                 this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
                 this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2);
         Supplier<Float> radius = () -> this.getWidth() * 1.5f;
-        LightComponent logoLight = new LightComponent(center, radius, ExtendedColor.CUSTOM_LIGHT_GREY);
-        this.lights.add(logoLight);
+        this.topLight = new LightComponent(center, radius, ExtendedColor.CUSTOM_LIGHT_GREY);
+        this.lights.add(this.topLight);
 
         this.goHomepage();
     }
@@ -168,6 +169,26 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
         this.updateButtons(button1, button2, button3);
     }
 
+    public void goLobby() {
+        this.logoZen.setVisible(false);
+
+        this.removeAll();
+
+        this.add(Box.createVerticalGlue());
+        ImageComponent rocketImage = new ImageComponent("rocket.gif", true);
+        this.add(rocketImage);
+        this.topLight.setCenter(() -> new Point(
+                this.getX() + rocketImage.getX() + rocketImage.getWidth() / 2,
+                this.getY() + rocketImage.getY() + rocketImage.getHeight() / 2));
+        this.add(Box.createVerticalGlue());
+        ButtonComponent cancelButton = new ButtonComponent(AppText.getTextFor("menu.online.lobby.cancel"), this, this.horizontalMode);
+        cancelButton.addActionListener(this.controller.getCancelNetworkLobbyListener());
+        this.add(cancelButton);
+        this.add(Box.createVerticalGlue());
+
+        this.doLayout();
+    }
+
     /**
      * Play online.
      */
@@ -188,6 +209,11 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
      * @param buttons the buttons
      */
     public void updateButtons(JButton... buttons) {
+        this.logoZen.setVisible(true);
+        this.topLight.setCenter(() -> new Point(
+                this.getX() + this.logoZen.getX() + this.logoZen.getWidth() / 2,
+                this.getY() + this.logoZen.getY() + this.logoZen.getHeight() / 2));
+
         this.removeAll();
 
         this.add(Box.createVerticalGlue());
@@ -201,8 +227,7 @@ public class MenuContentSection extends Section<Graphic2DMenuController> {
 
         buttons[buttons.length - 1].addActionListener(this.controller.getBackPreviousPageListener());
 
-        this.revalidate();
-        this.repaint();
+        this.doLayout();
     }
 
     public void hostAGame() {

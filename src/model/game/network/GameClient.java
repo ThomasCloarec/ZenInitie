@@ -2,7 +2,6 @@ package model.game.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import model.game.Game;
 import model.game.GameData;
 import utils.network.Network;
 import utils.network.ZenClient;
@@ -10,15 +9,11 @@ import utils.network.ZenClient;
 /**
  * The type Game client.
  */
-public class GameClient extends Game {
+public class GameClient extends GameNetwork {
     /**
      * The Client.
      */
     private final ZenClient client;
-    /**
-     * The Player id.
-     */
-    private Network.PlayerID playerID;
 
     /**
      * Instantiates a new Game client.

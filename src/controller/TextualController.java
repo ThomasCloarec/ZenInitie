@@ -66,7 +66,7 @@ public final class TextualController extends Controller {
     @Override
     protected void newMenu() {
         Menu menu = new Menu();
-        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame);
+        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::cancelNetworkLobby);
         menu.addObserver(this.view.createMenuView(menuController));
     }
 }

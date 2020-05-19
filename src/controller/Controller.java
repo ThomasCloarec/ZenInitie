@@ -1,9 +1,8 @@
 package controller;
 
 import model.game.Game;
-import model.game.network.GameClient;
-import model.game.network.GameServer;
 import model.menu.Menu;
+import model.menu.MenuPage;
 import view.ViewMode;
 
 import java.util.ArrayList;
@@ -80,12 +79,21 @@ public abstract class Controller {
      * @param menu The menu containing the necessary information to launch the game.
      */
     protected void newGame(Menu menu) {
-        if (menu.isOnlineServer()) {
-            this.newGame(new GameServer(menu.isAiMode(), menu.isDuoMode()));
-        } else if (menu.isOnlineClient()) {
-            this.newGame(new GameClient(menu.isAiMode(), menu.isDuoMode()));
+        if (menu.isOnlineClient() || menu.isOnlineServer()) {
+            menu.addActualPage(MenuPage.LOBBY);
+
+           /* // TODO add a "tell me when ready in the GameNetwork, it will call back the newGame with newGame(this)"
+            if (menu.isOnlineServer()) {
+                this.newGame(new GameServer(menu.isAiMode(), menu.isDuoMode()));
+            } else if (menu.isOnlineClient()) {
+                this.newGame(new GameClient(menu.isAiMode(), menu.isDuoMode()));
+            }*/
         } else {
             this.newGame(new Game(menu.isAiMode(), menu.isDuoMode()));
         }
+    }
+
+    protected void cancelNetworkLobby() {
+
     }
 }

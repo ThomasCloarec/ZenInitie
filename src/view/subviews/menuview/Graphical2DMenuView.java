@@ -26,6 +26,8 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
             this.rightSection = new MenuRightSection(this.controller, this.isHorizontalMode);
             this.contentSection = new MenuContentSection(this.controller, this.isHorizontalMode);
             this.leftSection = new MenuLeftSection(this.controller, this.isHorizontalMode);
+            this.revalidate();
+            this.repaint();
         });
     }
 
@@ -34,7 +36,11 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void goCredits() {
-        SwingUtilities.invokeLater(() -> this.contentSection.goCredits());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.goCredits();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     /**
@@ -42,7 +48,11 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void changeLanguage() {
-        SwingUtilities.invokeLater(() -> this.contentSection.changeLanguage());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.changeLanguage();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     /**
@@ -50,7 +60,11 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void changeSettings() {
-        SwingUtilities.invokeLater(() -> this.contentSection.changeSettings());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.changeSettings();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     /**
@@ -78,7 +92,11 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void newGame() {
-        SwingUtilities.invokeLater(() -> this.contentSection.newGame());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.newGame();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     /**
@@ -86,7 +104,11 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void playOffline() {
-        SwingUtilities.invokeLater(() -> this.contentSection.playOffline());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.playOffline();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     /**
@@ -94,7 +116,11 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void playOnline() {
-        SwingUtilities.invokeLater(() -> this.contentSection.playOnline());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.playOnline();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     /**
@@ -102,11 +128,28 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
      */
     @Override
     public void goHomepage() {
-        SwingUtilities.invokeLater(() -> this.contentSection.goHomepage());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.goHomepage();
+            this.revalidate();
+            this.repaint();
+        });
     }
 
     @Override
     public void hostAGame() {
-        SwingUtilities.invokeLater(() -> this.contentSection.hostAGame());
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.hostAGame();
+            this.revalidate();
+            this.repaint();
+        });
+    }
+
+    @Override
+    public void goLobby() {
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.goLobby();
+            this.revalidate();
+            this.repaint();
+        });
     }
 }
