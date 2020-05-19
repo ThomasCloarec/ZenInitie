@@ -180,4 +180,23 @@ public class TextualMenuView implements MenuView {
                 break;
         }
     }
+
+    @Override
+    public void hostAGame() {
+        int input = TextInput.getMenuAnswer("menu.offline.newGame.question1");
+        switch (input) {
+            case 1:
+                this.menuController.playOneVsOne();
+                break;
+            case 2:
+                this.menuController.playTwoVsTwo();
+                break;
+            case 3:
+                this.menuController.playTwoVSAI();
+                break;
+            case 4:
+                this.menuController.backPreviousPage();
+                break;
+        }
+    }
 }

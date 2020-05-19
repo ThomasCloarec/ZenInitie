@@ -104,4 +104,9 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
     public void goHomepage() {
         SwingUtilities.invokeLater(() -> this.contentSection.goHomepage());
     }
+
+    @Override
+    public void hostAGame() {
+        SwingUtilities.invokeLater(() -> this.contentSection.hostAGame());
+    }
 }

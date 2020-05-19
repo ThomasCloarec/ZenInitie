@@ -72,7 +72,7 @@ public class MenuController {
     public void hostAGame() {
         this.menu.setOnlineClient(false);
         this.menu.setOnlineServer(true);
-        this.newGame.accept(this.menu);
+        this.menu.addActualPage(MenuPage.HOST_A_GAME);
     }
 
     /**

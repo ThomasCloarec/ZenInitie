@@ -94,5 +94,13 @@ public final class Network {
         public boolean equals(int teamID, int playerID) {
             return this.teamID == teamID && this.playerID == playerID;
         }
+
+        @Override
+        public String toString() {
+            return "PlayerID{" +
+                    "playerID=" + this.playerID +
+                    ", teamID=" + this.teamID +
+                    '}';
+        }
     }
 }

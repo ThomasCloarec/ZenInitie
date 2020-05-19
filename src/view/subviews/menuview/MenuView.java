@@ -52,6 +52,8 @@ public interface MenuView extends Observer<MenuView> {
      */
     void goHomepage();
 
+    void hostAGame();
+
     /**
      * Update page.
      *
@@ -67,6 +69,9 @@ public interface MenuView extends Observer<MenuView> {
                 break;
             case PLAY_OFFLINE:
                 this.playOffline();
+                break;
+            case HOST_A_GAME:
+                this.hostAGame();
                 break;
             case NEW_GAME:
                 this.newGame();
