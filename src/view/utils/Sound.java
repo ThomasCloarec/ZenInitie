@@ -52,6 +52,9 @@ public class Sound implements Runnable {
      * The Restart.
      */
     restart;
+    /**
+     * The Specific volume.
+     */
     private double specificVolume = 1;
 
     /**
@@ -183,6 +186,11 @@ public class Sound implements Runnable {
         this.loop = !this.loop;
     }
 
+    /**
+     * Fade transition to.
+     *
+     * @param nextSound the next sound
+     */
     public void fadeTransitionTo(Sound nextSound) {
         nextSound.specificVolume = 0;
 

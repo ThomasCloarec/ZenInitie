@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import model.game.GameData;
 import model.game.Position;
+import model.game.team.Team;
 import utils.network.Network;
 import utils.network.ZenClient;
 
@@ -15,6 +16,9 @@ public class GameClient extends GameNetwork {
      * The Client.
      */
     private final ZenClient client;
+    /**
+     * The Player connected.
+     */
     private boolean playerConnected;
 
     /**
@@ -49,6 +53,17 @@ public class GameClient extends GameNetwork {
     @Override
     public void moveSelectedPawn(Position position) {
         super.moveSelectedPawn(position);
+        this.client.sendTCP(this.gameData);
+    }
+
+    /**
+     * Notify game winner.
+     *
+     * @param team the team
+     */
+    @Override
+    protected void notifyGameWinner(Team team) {
+        super.notifyGameWinner(team);
         this.client.sendTCP(this.gameData);
     }
 

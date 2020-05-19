@@ -71,6 +71,13 @@ public class GameToolbar extends JPanel {
     }
 
     /**
+     * Stop timer.
+     */
+    public void stopTimer() {
+        this.timeComponent.stopTimer();
+    }
+
+    /**
      * Start the timer
      */
     public void start() {

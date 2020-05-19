@@ -137,6 +137,8 @@ public class GameRightSection extends Section<Graphic2DGameController> {
             boolean visible = teamColor == TeamColor.RED;
             this.playerLight.setVisible(visible);
             this.imageAbovePlayer.setVisible(visible);
+        } else {
+            this.gameWinner(game.getWinner());
         }
     }
 }

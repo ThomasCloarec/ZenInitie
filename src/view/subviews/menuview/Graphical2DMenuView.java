@@ -1,14 +1,19 @@
 package view.subviews.menuview;
 
 import controller.menu.Graphic2DMenuController;
+import model.game.GameData;
 import view.Graphical2DView;
 import view.subviews.CustomPanel;
 import view.subviews.menuview.viewsections.MenuContentSection;
 import view.subviews.menuview.viewsections.MenuLeftSection;
 import view.subviews.menuview.viewsections.MenuRightSection;
+import view.utils.text.AppText;
 
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 import java.awt.Window;
+import java.io.File;
 
 /**
  * The type Graphical 2 d menu view.
@@ -83,7 +88,52 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
     @Override
     public void loadGame() {
         SwingUtilities.invokeLater(() -> {
+            // Create a new file chooser
+            JFileChooser jFileChooser = new JFileChooser();
 
+            // set the default directory to the current one
+            File workingDirectory = new File(System.getProperty("user.dir"));
+            jFileChooser.setCurrentDirectory(workingDirectory);
+
+            // Set a filter to only accept txt files
+            jFileChooser.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    boolean ret = false;
+
+                    int i = file.getAbsolutePath().lastIndexOf('.');
+                    String extension = "";
+                    if (i >= 0) {
+                        extension = file.getAbsolutePath().substring(i + 1);
+                    }
+
+                    if (file.isDirectory() || "json".equals(extension)) {
+                        ret = true;
+                    }
+                    return ret;
+                }
+
+                @Override
+                public String getDescription() {
+                    return AppText.getTextFor("menu.loadgame.description");
+                }
+            });
+
+            String path = null;
+            boolean keepAsking = true;
+            // Keep asking the user the file to use until he gives it or asks to cancel
+            while (path == null && keepAsking) {
+                int fileChooserValue = jFileChooser.showDialog(null, AppText.getTextFor("menu.loadgame.title"));
+                if (fileChooserValue == JFileChooser.APPROVE_OPTION) {
+                    path = jFileChooser.getSelectedFile().getAbsolutePath();
+                } else if (fileChooserValue == JFileChooser.CANCEL_OPTION) {
+                    keepAsking = false;
+                }
+            }
+
+            if (path != null) {
+                this.controller.playLoadedGame(GameData.load(path));
+            }
         });
     }
 

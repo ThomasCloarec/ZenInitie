@@ -34,6 +34,9 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
      * The constant graphicsDevice.
      */
     private static final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    /**
+     * The Music.
+     */
     private Sound music;
     /**
      * The Fullscreen mode activated.

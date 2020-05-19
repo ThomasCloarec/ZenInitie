@@ -11,7 +11,6 @@ public abstract class GameNetwork extends Game {
      * The Go menu.
      */
     protected final Runnable goMenu;
-
     /**
      * The Launch game network.
      */
@@ -39,4 +38,14 @@ public abstract class GameNetwork extends Game {
      * Stop.
      */
     public abstract void stop();
+
+    /**
+     * Is human user turn boolean.
+     *
+     * @return the boolean
+     */
+    @Override
+    public boolean isHumanUserTurn() {
+        return super.isHumanUserTurn() && this.playerID.equals(this.gameData.getCurrentTeamIndex(), this.getCurrentTeam().getCurrentPlayerIndex());
+    }
 }

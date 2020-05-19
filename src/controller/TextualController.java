@@ -1,9 +1,11 @@
 package controller;
 
 import controller.game.GameController;
+import controller.game.Graphic2DGameController;
 import controller.menu.Graphic2DMenuController;
 import controller.menu.MenuController;
 import model.game.Game;
+import model.game.GameData;
 import model.menu.Menu;
 import view.TextualView;
 import view.View;
@@ -52,6 +54,18 @@ public final class TextualController extends Controller {
     /**
      * New game.
      *
+     * @param gameData the game data
+     */
+    private void newGame(GameData gameData) {
+        Game game = new Game(gameData.aiMode, gameData.duoMode);
+        game.setGameData(gameData);
+        Graphic2DGameController gameController = new Graphic2DGameController(game, this::newMenu);
+        game.addObserver(this.view.createGameView(gameController));
+    }
+
+    /**
+     * New game.
+     *
      * @param game the menu
      */
     @Override
@@ -67,7 +81,7 @@ public final class TextualController extends Controller {
     protected void newMenu() {
         super.newMenu();
         Menu menu = new Menu();
-        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::stopGameServer);
+        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::newGame, this::stopGameServer);
         menu.addObserver(this.view.createMenuView(menuController));
     }
 }

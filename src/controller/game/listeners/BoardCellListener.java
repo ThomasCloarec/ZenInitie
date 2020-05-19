@@ -56,11 +56,13 @@ public class BoardCellListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         super.mouseClicked(mouseEvent);
-        if (this.graphic2DGameController.isMovingPawn() && !this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column)) {
-            this.graphic2DGameController.movePawn(new Position(this.line, this.column));
-        } else {
-            this.graphic2DGameController.selectPawn(new Position(this.line, this.column));
-            this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
+        if (this.graphic2DGameController.isHumanUserTurn()) {
+            if (this.graphic2DGameController.isMovingPawn() && !this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column)) {
+                this.graphic2DGameController.movePawn(new Position(this.line, this.column));
+            } else {
+                this.graphic2DGameController.selectPawn(new Position(this.line, this.column));
+                this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
+            }
         }
     }
 
@@ -72,18 +74,20 @@ public class BoardCellListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
         super.mouseEntered(mouseEvent);
-        if (this.graphic2DGameController.isMovingPawn()) {
-            for (Position position : this.graphic2DGameController.getAllowedMoves()) {
-                if (position.getLine() == this.line && position.getColumn() == this.column) {
+        if (this.graphic2DGameController.isHumanUserTurn()) {
+            if (this.graphic2DGameController.isMovingPawn()) {
+                for (Position position : this.graphic2DGameController.getAllowedMoves()) {
+                    if (position.getLine() == this.line && position.getColumn() == this.column) {
+                        this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                    }
+                }
+                if (this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column)) {
                     this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 }
-            }
-            if (this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column)) {
+            } else {
+                this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
                 this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
-        } else {
-            this.panel.setBorder(BorderFactory.createLineBorder(ExtendedColor.CUSTOM_GREEN, 3));
-            this.panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
     }
 
@@ -95,10 +99,12 @@ public class BoardCellListener extends MouseAdapter {
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
         super.mouseExited(mouseEvent);
-        if (!this.graphic2DGameController.isMovingPawn()) {
-            Color borderColor = this.graphic2DGameController.getCurrentTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
-            this.panel.setBorder(this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column) ? BorderFactory.createLineBorder(borderColor, 2) : null);
+        if (this.graphic2DGameController.isHumanUserTurn()) {
+            if (!this.graphic2DGameController.isMovingPawn()) {
+                Color borderColor = this.graphic2DGameController.getCurrentTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
+                this.panel.setBorder(this.graphic2DGameController.isCurrentTeamPawn(this.line, this.column) ? BorderFactory.createLineBorder(borderColor, 2) : null);
+            }
+            this.panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
-        this.panel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }

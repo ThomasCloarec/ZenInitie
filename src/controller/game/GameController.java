@@ -70,6 +70,9 @@ public class GameController {
      * Go menu.
      */
     public void goMenu() {
+        if (this.game.isRunning()) {
+            this.game.save();
+        }
         this.goMenu.run();
     }
 
@@ -109,5 +112,14 @@ public class GameController {
      */
     public boolean isMovingPawn() {
         return this.game.isMovingPawn();
+    }
+
+    /**
+     * Is human user turn boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isHumanUserTurn() {
+        return this.game.isHumanUserTurn();
     }
 }

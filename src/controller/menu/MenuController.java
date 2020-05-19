@@ -1,5 +1,6 @@
 package controller.menu;
 
+import model.game.GameData;
 import model.menu.Menu;
 import model.menu.MenuPage;
 import view.utils.text.AppText;
@@ -23,17 +24,23 @@ public class MenuController {
      * The Cancel network lobby.
      */
     private final Runnable cancelNetworkLobby;
+    /**
+     * The Play loaded game.
+     */
+    private final Consumer<GameData> playLoadedGame;
 
     /**
      * Instantiates a new Menu controller.
      *
      * @param menu               the menu
      * @param newGame            the new game
+     * @param playLoadedGame     the play loaded game
      * @param cancelNetworkLobby the cancel network lobby
      */
-    public MenuController(Menu menu, Consumer<? super Menu> newGame, Runnable cancelNetworkLobby) {
+    public MenuController(Menu menu, Consumer<? super Menu> newGame, Consumer<GameData> playLoadedGame, Runnable cancelNetworkLobby) {
         this.menu = menu;
         this.newGame = newGame;
+        this.playLoadedGame = playLoadedGame;
         this.cancelNetworkLobby = cancelNetworkLobby;
     }
 
@@ -164,5 +171,14 @@ public class MenuController {
     public void cancelNetworkLobby() {
         this.cancelNetworkLobby.run();
         this.menu.backPreviousPage();
+    }
+
+    /**
+     * Play loaded game.
+     *
+     * @param gameData the game data
+     */
+    public void playLoadedGame(GameData gameData) {
+        this.playLoadedGame.accept(gameData);
     }
 }

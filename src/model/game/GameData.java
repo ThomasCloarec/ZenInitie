@@ -1,19 +1,24 @@
 package model.game;
 
+import com.google.gson.Gson;
 import model.game.board.Board;
 import model.game.team.Team;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * The type Game data.
  */
 @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
 public class GameData {
-    /**
-     * The list of teams playing this game
-     */
-    protected final Team[] teams = new Team[2];
     /**
      * The allowed moves for the current selected pawn
      */
@@ -22,6 +27,10 @@ public class GameData {
      * The board of the game
      */
     private final Board board = new Board();
+    /**
+     * The list of teams playing this game
+     */
+    private final Team[] teams = new Team[2];
     /**
      * is the game in ai mode (against computer) ?
      */
@@ -46,6 +55,45 @@ public class GameData {
      * The currently selectedPawn (or last one)
      */
     private Position selectedPawn;
+    /**
+     * The Winner.
+     */
+    private Team winner;
+
+    /**
+     * Load game data.
+     *
+     * @param path the path
+     * @return the game data
+     */
+    public static GameData load(String path) {
+        GameData gameData = null;
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(path));
+            //convert the json string back to object
+            gameData = new Gson().fromJson(br, GameData.class);
+        } catch (FileNotFoundException notFoundException) {
+            notFoundException.printStackTrace();
+        }
+
+        return gameData;
+    }
+
+    /**
+     * Save.
+     */
+    public void save() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+
+        try (Writer writer = new FileWriter("zen_game_" + dateFormat.format(Calendar.getInstance().getTime()) + ".json")) {
+            // Convert the object to json string
+            new Gson().toJson(this, writer);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
 
     /**
      * To string string.
@@ -128,6 +176,24 @@ public class GameData {
      */
     public Team[] getTeams() {
         return this.teams;
+    }
+
+    /**
+     * Gets winner.
+     *
+     * @return the winner
+     */
+    public Team getWinner() {
+        return this.winner;
+    }
+
+    /**
+     * Sets winner.
+     *
+     * @param winner the winner
+     */
+    public void setWinner(Team winner) {
+        this.winner = winner;
     }
 
     /**

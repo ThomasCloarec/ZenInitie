@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import model.game.GameData;
 import model.game.Position;
+import model.game.team.Team;
 import utils.network.Network;
 import utils.network.ZenServer;
 
@@ -64,6 +65,17 @@ public class GameServer extends GameNetwork {
     @Override
     public void moveSelectedPawn(Position position) {
         super.moveSelectedPawn(position);
+        this.server.sendToAllTCP(this.gameData);
+    }
+
+    /**
+     * Notify game winner.
+     *
+     * @param team the team
+     */
+    @Override
+    protected void notifyGameWinner(Team team) {
+        super.notifyGameWinner(team);
         this.server.sendToAllTCP(this.gameData);
     }
 
@@ -146,20 +158,7 @@ public class GameServer extends GameNetwork {
                 GameServer.this.setGameData((GameData) o);
                 GameServer.this.server.sendToAllExceptTCP(connection.getID(), GameServer.this.gameData);
                 GameServer.this.notifyUpdateEverything();
-                /*int teamIndex = GameServer.this.gameData.getCurrentTeamIndex();
-                int playerIndex = GameServer.this.gameData.getTeams().get(GameServer.this.gameData.getCurrentTeamIndex()).getCurrentPlayerIndex();
-
-                if (GameServer.this.playerID.equals(teamIndex, playerIndex)) {
-                    GameServer.this.server.sendToTCP(connection.getID(), GameServer.this.gameData);
-                }*/
             }
-            /*if (object instanceof GameInit) {
-                GameInit gameInit = (GameInit) object;
-                System.out.println("server received : " + gameInit);
-                SomeResponse response = new SomeResponse();
-                response.text = "Thanks";
-                connection.sendTCP(response);
-            }*/
         }
     }
 }

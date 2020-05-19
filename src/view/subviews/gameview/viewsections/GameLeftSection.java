@@ -135,6 +135,8 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
             boolean visible = teamColor == TeamColor.BLUE;
             this.playerLight.setVisible(visible);
             this.imageAbovePlayer.setVisible(visible);
+        } else {
+            this.gameWinner(game.getWinner());
         }
     }
 }

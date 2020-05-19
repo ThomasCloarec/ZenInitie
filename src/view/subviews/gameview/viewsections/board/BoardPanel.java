@@ -123,7 +123,7 @@ public class BoardPanel extends JPanel {
                     Cell cell = this.cells[line][column];
                     Pawn pawn = boardArray[line][column];
                     Color borderColor = game.getCurrentTeam().getTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
-                    cell.setBorder(game.isPawnSelectable(pawn) ? BorderFactory.createLineBorder(borderColor, 2) : null);
+                    cell.setBorder(game.isPawnSelectable(pawn) && game.isHumanUserTurn() ? BorderFactory.createLineBorder(borderColor, 2) : null);
 
                     if (pawn == Pawn.ZEN) {
                         cell.setImageComponent(new ScaledImageComponent("pawns/zen.png", 0.85, cell));

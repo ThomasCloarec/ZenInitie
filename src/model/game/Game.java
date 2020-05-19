@@ -88,9 +88,11 @@ public class Game extends Observable<GameView> {
             this.gameData.setRunning(false);
             this.notifyGameWinner(null);
         } else if (win) {
+            this.gameData.setWinner(this.getCurrentTeam());
             this.gameData.setRunning(false);
             this.notifyGameWinner(this.getCurrentTeam());
         } else if (opponentWin) {
+            this.gameData.setWinner(this.getOpponentTeam());
             this.gameData.setRunning(false);
             this.notifyGameWinner(this.getOpponentTeam());
         }
@@ -100,6 +102,13 @@ public class Game extends Observable<GameView> {
             this.gameData.setCurrentTeamIndex((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().length);
         }
         this.notifyPawnMoved();
+    }
+
+    /**
+     * Save.
+     */
+    public void save() {
+        this.gameData.save();
     }
 
     /**
@@ -113,8 +122,13 @@ public class Game extends Observable<GameView> {
         return currentTeam.controlPawn(pawn);
     }
 
-    public void isHumanPlayerTurn() {
-
+    /**
+     * Notify game winner.
+     *
+     * @param team the team
+     */
+    protected void notifyGameWinner(Team team) {
+        this.forEachObserver(gameView -> gameView.gameWinner(team));
     }
 
     /**
@@ -129,6 +143,15 @@ public class Game extends Observable<GameView> {
      */
     private void notifyPawnSelected() {
         this.forEachObserver(gameView -> gameView.pawnSelected(this));
+    }
+
+    /**
+     * Gets winner.
+     *
+     * @return the winner
+     */
+    public Team getWinner() {
+        return this.gameData.getWinner();
     }
 
     /**
@@ -223,12 +246,12 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Notify game winner.
+     * Is human user turn boolean.
      *
-     * @param team the team
+     * @return the boolean
      */
-    private void notifyGameWinner(Team team) {
-        this.forEachObserver(gameView -> gameView.gameWinner(team));
+    public boolean isHumanUserTurn() {
+        return this.getCurrentTeam().getCurrentPlayer().isHumanPlayer();
     }
 
     /**

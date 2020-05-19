@@ -4,6 +4,7 @@ import controller.game.Graphic2DGameController;
 import controller.listeners.ImageOnClickListener;
 import controller.menu.Graphic2DMenuController;
 import model.game.Game;
+import model.game.GameData;
 import model.menu.Menu;
 import view.Graphical2DView;
 import view.View;
@@ -134,13 +135,25 @@ public final class Graphic2DController extends Controller {
     }
 
     /**
+     * New game.
+     *
+     * @param gameData the game data
+     */
+    private void newGame(GameData gameData) {
+        Game game = new Game(gameData.aiMode, gameData.duoMode);
+        game.setGameData(gameData);
+        Graphic2DGameController gameController = new Graphic2DGameController(game, this::newMenu);
+        game.addObserver(this.view.createGameView(gameController));
+    }
+
+    /**
      * New menu.
      */
     @Override
     protected void newMenu() {
         super.newMenu();
         Menu menu = new Menu();
-        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::stopGameServer);
+        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::newGame, this::stopGameServer);
         menu.addObserver(this.view.createMenuView(menuController));
     }
 }

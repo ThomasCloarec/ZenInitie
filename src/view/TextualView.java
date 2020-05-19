@@ -13,6 +13,9 @@ import view.utils.text.AppText;
  * The type Textual view.
  */
 public class TextualView implements View<MenuController, GameController> {
+    /**
+     * The Music.
+     */
     private Sound music;
 
     /**

@@ -4,12 +4,14 @@ import controller.game.Graphic2DGameController;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.util.Map;
 
 /**
@@ -48,6 +50,20 @@ public class TimeComponent extends JLabel {
     public void stopTimer() {
         if (this.timer.isRunning()) {
             this.timer.stop();
+            new Thread(() -> {
+                try {
+                    Window window = SwingUtilities.getWindowAncestor(this);
+                    for (int i = 0; i < 100; i++) { // when swing refuses to repaint after 1 hour of debugging, well... here is my wildcard
+                        Thread.sleep(15);
+                        if (window != null) {
+                            window.revalidate();
+                            window.repaint();
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 

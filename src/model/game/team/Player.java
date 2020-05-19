@@ -45,4 +45,13 @@ public class Player {
                 "name='" + this.name + '\'' +
                 '}';
     }
+
+    /**
+     * Is human player boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isHumanPlayer() {
+        return true;
+    }
 }

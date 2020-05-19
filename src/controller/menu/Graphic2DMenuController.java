@@ -1,5 +1,6 @@
 package controller.menu;
 
+import model.game.GameData;
 import model.menu.Menu;
 import view.Graphical2DView;
 import view.utils.text.AppText;
@@ -20,10 +21,11 @@ public class Graphic2DMenuController extends MenuController {
      *
      * @param menu               the menu
      * @param newGame            the new game
+     * @param playLoadedGame     the play loaded game
      * @param cancelNetworkLobby the cancel network lobby
      */
-    public Graphic2DMenuController(Menu menu, Consumer<? super Menu> newGame, Runnable cancelNetworkLobby) {
-        super(menu, newGame, cancelNetworkLobby);
+    public Graphic2DMenuController(Menu menu, Consumer<? super Menu> newGame, Consumer<GameData> playLoadedGame, Runnable cancelNetworkLobby) {
+        super(menu, newGame, playLoadedGame, cancelNetworkLobby);
     }
 
     /**
@@ -64,6 +66,15 @@ public class Graphic2DMenuController extends MenuController {
      */
     public ActionListener getBackPreviousPageListener() {
         return actionEvent -> this.backPreviousPage();
+    }
+
+    /**
+     * Gets cancel network lobby listener.
+     *
+     * @return the cancel network lobby listener
+     */
+    public ActionListener getCancelNetworkLobbyListener() {
+        return actionEvent -> this.cancelNetworkLobby();
     }
 
     /**
@@ -112,6 +123,24 @@ public class Graphic2DMenuController extends MenuController {
     }
 
     /**
+     * Gets host a game listener.
+     *
+     * @return the host a game listener
+     */
+    public ActionListener getHostAGameListener() {
+        return actionEvent -> this.hostAGame();
+    }
+
+    /**
+     * Gets join a game listener.
+     *
+     * @return the join a game listener
+     */
+    public ActionListener getJoinAGameListener() {
+        return actionEvent -> this.joinAGame();
+    }
+
+    /**
      * Gets load game listener.
      *
      * @return the load game listener
@@ -157,24 +186,6 @@ public class Graphic2DMenuController extends MenuController {
     }
 
     /**
-     * Gets host a game listener.
-     *
-     * @return the host a game listener
-     */
-    public ActionListener getHostAGameListener() {
-        return actionEvent -> this.hostAGame();
-    }
-
-    /**
-     * Gets join a game listener.
-     *
-     * @return the join a game listener
-     */
-    public ActionListener getJoinAGameListener() {
-        return actionEvent -> this.joinAGame();
-    }
-
-    /**
      * Gets play online listener.
      *
      * @return the play online listener
@@ -199,14 +210,5 @@ public class Graphic2DMenuController extends MenuController {
      */
     public ActionListener getTwoVsTwoListener() {
         return actionEvent -> this.playTwoVsTwo();
-    }
-
-    /**
-     * Gets cancel network lobby listener.
-     *
-     * @return the cancel network lobby listener
-     */
-    public ActionListener getCancelNetworkLobbyListener() {
-        return actionEvent -> this.cancelNetworkLobby();
     }
 }

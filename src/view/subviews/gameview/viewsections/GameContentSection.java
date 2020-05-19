@@ -66,7 +66,11 @@ public class GameContentSection extends Section<Graphic2DGameController> {
      * @param game the game
      */
     public void updateGame(Game game) {
-        this.boardPanel.updateGame(game);
+        if (game.isRunning()) {
+            this.boardPanel.updateGame(game);
+        } else {
+            this.gameWinner();
+        }
     }
 
     /**
@@ -82,6 +86,7 @@ public class GameContentSection extends Section<Graphic2DGameController> {
      * Game winner.
      */
     public void gameWinner() {
+        this.gameToolbar.stopTimer();
         this.removeAll();
         this.add(Box.createVerticalGlue());
         this.add(this.gameToolbar);
@@ -89,5 +94,6 @@ public class GameContentSection extends Section<Graphic2DGameController> {
         this.add(new ScaledImageComponent("finish.png", 0.6, 0.6, this));
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalGlue());
+        this.doLayout();
     }
 }

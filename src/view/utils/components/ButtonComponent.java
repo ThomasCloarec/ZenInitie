@@ -63,14 +63,14 @@ public class ButtonComponent extends JButton {
             }
         });
 
-        this.updateButtons();
+        this.updateButton();
         this.setFocusable(false);
     }
 
     /**
      * Update buttons.
      */
-    public void updateButtons() {
+    public void updateButton() {
         if (this.referenceComponent.getWidth() != 0) {
             int frameWidth = this.referenceComponent.getWidth();
             int frameHeight = this.referenceComponent.getHeight();
@@ -105,6 +105,6 @@ public class ButtonComponent extends JButton {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        this.updateButtons();
+        this.updateButton();
     }
 }
