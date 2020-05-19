@@ -50,7 +50,7 @@ public final class Network {
      *
      * @param endPoint the end point
      */
-    public static void register(EndPoint endPoint) {
+    static void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(GameData.class);
         kryo.register(ArrayList.class);
@@ -63,5 +63,36 @@ public final class Network {
         kryo.register(Pawn[][].class);
         kryo.register(Player.class);
         kryo.register(TeamColor.class);
+        kryo.register(PlayerID.class);
+    }
+
+    /**
+     * The type Player id.
+     */
+    public static class PlayerID {
+        /**
+         * The Player id.
+         */
+        public int playerID;
+        /**
+         * The Team id.
+         */
+        public int teamID;
+
+        /**
+         * Instantiates a new Player id.
+         */
+        public PlayerID() {
+            // Used for kyro deserialization
+        }
+
+        public PlayerID(int teamID, int playerID) {
+            this.teamID = teamID;
+            this.playerID = playerID;
+        }
+
+        public boolean equals(int teamID, int playerID) {
+            return this.teamID == teamID && this.playerID == playerID;
+        }
     }
 }

@@ -107,6 +107,10 @@ public class Team {
         return currentPlayer.getName();
     }
 
+    public int getCurrentPlayerIndex() {
+        return this.currentPlayerIndex;
+    }
+
     /**
      * Gets name.
      *

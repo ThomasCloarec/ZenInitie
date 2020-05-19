@@ -2,25 +2,27 @@ package model.game.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.kryonet.Server;
-import com.esotericsoftware.minlog.Log;
 import model.game.Game;
+import model.game.GameData;
 import utils.network.Network;
-
-import java.io.IOException;
+import utils.network.ZenServer;
 
 /**
  * The type Game server.
  */
 public class GameServer extends Game {
     /**
-     * The Server.
+     * The Player id.
      */
-    private final Server server;
+    private final Network.PlayerID playerID = new Network.PlayerID(0, 0);
     /**
      * The Room size.
      */
     private final int roomSize;
+    /**
+     * The Server.
+     */
+    private final ZenServer server;
     /**
      * The Already filled room.
      */
@@ -37,57 +39,59 @@ public class GameServer extends Game {
 
         if (aiMode && duoMode) { // ai mode and duo
             this.roomSize = 2;
-        } else if (aiMode) { // ai mode but not duo TODO why one player would like a network ?
-            this.roomSize = 1;
         } else if (duoMode) { // not ai mode but duo
             this.roomSize = 4;
         } else { // not ai mode and not duo
             this.roomSize = 2;
         }
 
-        Log.set(Log.LEVEL_TRACE);
-        boolean tcpPortNotFound = true;
-        this.server = new Server();
+        this.server = new ZenServer();
+        this.server.addListener(new ServerListener());
+        this.server.launch();
+    }
 
-        this.server.start();
+    private class ServerListener extends Listener {
+        @Override
+        public void connected(Connection connection) {
+            super.connected(connection);
+            GameServer.this.alreadyFilledRoom++;
 
-        Network.register(this.server);
+            // Give and send a PlayerID to the newly connected client
+            Network.PlayerID playerID = new Network.PlayerID();
+            if (GameServer.this.isAiMode() && GameServer.this.isDuoMode()) {
+                playerID.playerID = 1;
+                playerID.teamID = 0;
+            } else if (GameServer.this.isDuoMode()) {
+                playerID.playerID = GameServer.this.alreadyFilledRoom % 2 == 0 ? 1 : 0;
+                playerID.teamID = GameServer.this.alreadyFilledRoom <= 2 ? 0 : 1;
+            } else {
+                playerID.playerID = 0;
+                playerID.teamID = 1;
+            }
+            GameServer.this.server.sendToTCP(connection.getID(), playerID);
 
-        int tcpPort = Network.BASE_TCP_PORT;
-        int udpPort = Network.BASE_UDP_PORT;
-
-        while (tcpPortNotFound && tcpPort <= Network.MAX_TCP_PORT && udpPort <= Network.MAX_UDP_PORT) {
-            try {
-                this.server.bind(tcpPort, udpPort);
-                System.out.println("Server created of port TCP : " + tcpPort + " and UDP : " + udpPort);
-                tcpPortNotFound = false;
-            } catch (IOException ioException) {
-                tcpPort++;
-                udpPort++;
+            // When everyone is here, send them the gameData
+            if (GameServer.this.alreadyFilledRoom == GameServer.this.roomSize) {
+                GameServer.this.server.sendToAllTCP(GameServer.this.gameData);
             }
         }
 
-        this.server.addListener(new Listener() {
-            @Override
-            public void connected(Connection connection) {
-                super.connected(connection);
-                GameServer.this.server.sendToTCP(connection.getID(), GameServer.this.gameData);
-                GameServer.this.alreadyFilledRoom++;
-            }
-
-            @Override
-            public void received(Connection connection, Object object) {
-                if (object instanceof String) {
-                    System.out.println((String) object);
+        @Override
+        public void received(Connection connection, Object object) {
+            if (object instanceof GameData) {
+                int teamIndex = GameServer.this.gameData.getCurrentTeamIndex();
+                int playerIndex = GameServer.this.gameData.getTeams().get(GameServer.this.gameData.getCurrentTeamIndex()).getCurrentPlayerIndex();
+                if (GameServer.this.playerID.equals(teamIndex, playerIndex)) {
+                    GameServer.this.server.sendToTCP(connection.getID(), GameServer.this.gameData);
                 }
-                /*if (object instanceof GameInit) {
-                    GameInit gameInit = (GameInit) object;
-                    System.out.println("server received : " + gameInit);
-                    SomeResponse response = new SomeResponse();
-                    response.text = "Thanks";
-                    connection.sendTCP(response);
-                }*/
             }
-        });
+            /*if (object instanceof GameInit) {
+                GameInit gameInit = (GameInit) object;
+                System.out.println("server received : " + gameInit);
+                SomeResponse response = new SomeResponse();
+                response.text = "Thanks";
+                connection.sendTCP(response);
+            }*/
+        }
     }
 }

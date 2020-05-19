@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zeninitie" default="all">
-    <!-- Compiler options & files to ignore at build time -->
+
+
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
     <property name="compiler.debug" value="on"/>
     <property name="compiler.generate.no.warnings" value="off"/>
     <property name="compiler.args" value=""/>
@@ -44,15 +52,22 @@
         <exclude name="**/?*.aj"/>
     </patternset>
 
+
     <!-- Project Libraries -->
+
     <path id="library.libs.classpath">
         <fileset dir="${basedir}/libs">
             <patternset refid="library.patterns"/>
         </fileset>
     </path>
 
+    <!-- Modules -->
+
+
     <!-- Module ZenInitie -->
+
     <dirname property="module.zeninitie.basedir" file="${ant.file}"/>
+
 
     <property name="compiler.args.zeninitie" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
 
@@ -60,6 +75,10 @@
     <property name="zeninitie.testoutput.dir" value="${module.zeninitie.basedir}/out/test/ZenInitie"/>
 
     <property name="zeninitiedocs.docs.dir" value="${module.zeninitie.basedir}/ZenInitieDocs"/>
+
+    <path id="zeninitie.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
 
     <path id="zeninitie.module.production.classpath">
         <path refid="library.libs.classpath"/>
@@ -96,7 +115,8 @@
         </dirset>
     </path>
 
-    <target name="compile.module.zeninitie" depends="compile.module.zeninitie.production"
+
+    <target name="compile.module.zeninitie" depends="compile.module.zeninitie.production,compile.module.zeninitie.tests"
             description="Compile module ZenInitie"/>
 
     <target name="compile.module.zeninitie.production" description="Compile module ZenInitie; production classes">
@@ -105,6 +125,7 @@
                nowarn="${compiler.generate.no.warnings}"
                memorymaximumsize="${compiler.max.memory}" fork="true">
             <compilerarg line="${compiler.args.zeninitie}"/>
+            <bootclasspath refid="zeninitie.module.bootclasspath"/>
             <classpath refid="zeninitie.module.production.classpath"/>
             <src refid="zeninitie.module.sourcepath"/>
             <patternset refid="excluded.from.compilation.zeninitie"/>
@@ -118,16 +139,22 @@
         </copy>
     </target>
 
+    <target name="compile.module.zeninitie.tests" depends="compile.module.zeninitie.production"
+            description="compile module ZenInitie; test classes" unless="skip.tests"/>
+
     <target name="clean.module.zeninitie" description="cleanup module">
         <delete dir="${zeninitie.output.dir}"/>
         <delete dir="${zeninitie.testoutput.dir}"/>
     </target>
 
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
     <target name="clean" depends="clean.module.zeninitie" description="cleanup all"/>
 
-    <target name="build.modules" depends="clean, compile.module.zeninitie" description="build all modules"/>
+    <target name="build.modules" depends="init, clean, compile.module.zeninitie" description="build all modules"/>
 
-    <!-- Prepare to build jars -->
     <target name="init.artifacts">
         <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
         <property name="artifact.output.zeninitie:jar" value="${basedir}/releases"/>
@@ -135,14 +162,13 @@
         <property name="temp.jar.path.ZenInitie.jar" value="${artifacts.temp.dir}/ZenInitie.jar"/>
     </target>
 
-    <!-- Build jars -->
     <target name="artifact.zeninitie:jar" depends="init.artifacts, compile.module.zeninitie"
             description="Build &#39;ZenInitie:jar&#39; artifact">
         <property name="artifact.temp.output.zeninitie:jar" value="${artifacts.temp.dir}/ZenInitie_jar"/>
         <mkdir dir="${artifact.temp.output.zeninitie:jar}"/>
         <jar destfile="${temp.jar.path.ZenInitie.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="main.Main-Class" value="Main"/>
+                <attribute name="Main-Class" value="Main"/>
             </manifest>
             <zipfileset dir="${zeninitie.output.dir}"/>
             <zipfileset src="${basedir}/libs/darcula.jar"/>
@@ -150,13 +176,10 @@
             <zipfileset src="${basedir}/libs/jlayer-1.0.1-2.jar"/>
             <zipfileset src="${basedir}/libs/tritonus-share-0.3.7-3.jar"/>
             <zipfileset src="${basedir}/libs/mp3spi-1.9.5-2.jar"/>
-            <zipfileset src="${basedir}/libs/junit-4.12.jar"/>
-            <zipfileset src="${basedir}/libs/hamcrest-core-1.3.jar"/>
         </jar>
         <copy file="${temp.jar.path.ZenInitie.jar}" tofile="${artifact.temp.output.zeninitie:jar}/ZenInitie.jar"/>
     </target>
 
-    <!-- Finish to build jars and copy to target location -->
     <target name="build.all.artifacts" depends="artifact.zeninitie:jar" description="Build all artifacts">
         <mkdir dir="${artifact.output.zeninitie:jar}"/>
         <copy todir="${artifact.output.zeninitie:jar}">
@@ -169,7 +192,7 @@
     </target>
 
     <!-- Generate javadoc -->
-    <target name="javadoc" description="generate documentation">
+    <target name="javadoc" depends="init" description="generate documentation">
         <javadoc sourcepath="${module.zeninitie.basedir}/src" destdir="${zeninitiedocs.docs.dir}/docs">
             <classpath>
                 <fileset dir="${module.zeninitie.basedir}/src/">
@@ -182,34 +205,5 @@
         </javadoc>
     </target>
 
-    <!-- Generate JUnit4 tests -->
-    <target name="tests" description="generate tests">
-        <mkdir dir="${zeninitie.output.dir}/test"/>
-        <junit printsummary="true" haltonfailure="false" fork="true">
-            <classpath>
-                <pathelement location="${zeninitie.output.dir}/production"/>
-                <pathelement path="${module.zeninitie.basedir}/libs/junit-4.12.jar"/>
-                <pathelement path="${module.zeninitie.basedir}/libs/junit-4.12.jar"/>
-                <pathelement path="${java.class.path}"/>
-            </classpath>
-
-            <formatter type="plain"/>
-            <formatter type="xml"/>
-
-            <batchtest todir="${zeninitie.output.dir}/test">
-                <fileset dir="${module.zeninitie.basedir}/src/test">
-                    <include name="*Test*.java"/>
-                </fileset>
-            </batchtest>
-        </junit>
-        <junitreport todir=".">
-            <fileset dir="${zeninitie.output.dir}/test">
-                <include name="**/*Test*.java"/>
-            </fileset>
-            <report format="frames" todir="${zeninitie.output.dir}/test"/>
-        </junitreport>
-    </target>
-
-    <!-- Build everything (jars, javadoc and tests) -->
-    <target name="all" depends="build.modules, build.all.artifacts, javadoc, tests" description="build all"/>
+    <target name="all" depends="build.modules, build.all.artifacts, javadoc" description="build all"/>
 </project>
