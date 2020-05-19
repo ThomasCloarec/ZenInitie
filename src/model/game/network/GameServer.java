@@ -17,7 +17,13 @@ public class GameServer extends Game {
      * The Server.
      */
     private final Server server;
+    /**
+     * The Room size.
+     */
     private final int roomSize;
+    /**
+     * The Already filled room.
+     */
     private int alreadyFilledRoom = 1;
 
     /**

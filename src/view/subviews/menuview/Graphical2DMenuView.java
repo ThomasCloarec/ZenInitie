@@ -29,21 +29,33 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
         });
     }
 
+    /**
+     * Go credits.
+     */
     @Override
     public void goCredits() {
         SwingUtilities.invokeLater(() -> this.contentSection.goCredits());
     }
 
+    /**
+     * Change language.
+     */
     @Override
     public void changeLanguage() {
         SwingUtilities.invokeLater(() -> this.contentSection.changeLanguage());
     }
 
+    /**
+     * Change settings.
+     */
     @Override
     public void changeSettings() {
         SwingUtilities.invokeLater(() -> this.contentSection.changeSettings());
     }
 
+    /**
+     * Exit.
+     */
     @Override
     public void exit() {
         Window windowAncestor = SwingUtilities.getWindowAncestor(this);
@@ -51,6 +63,9 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
         ((Graphical2DView) windowAncestor).close();
     }
 
+    /**
+     * Load game.
+     */
     @Override
     public void loadGame() {
         SwingUtilities.invokeLater(() -> {
@@ -58,21 +73,33 @@ public class Graphical2DMenuView extends CustomPanel<Graphic2DMenuController, Me
         });
     }
 
+    /**
+     * New game.
+     */
     @Override
     public void newGame() {
         SwingUtilities.invokeLater(() -> this.contentSection.newGame());
     }
 
+    /**
+     * Play offline.
+     */
     @Override
     public void playOffline() {
         SwingUtilities.invokeLater(() -> this.contentSection.playOffline());
     }
 
+    /**
+     * Play online.
+     */
     @Override
     public void playOnline() {
         SwingUtilities.invokeLater(() -> this.contentSection.playOnline());
     }
 
+    /**
+     * Go homepage.
+     */
     @Override
     public void goHomepage() {
         SwingUtilities.invokeLater(() -> this.contentSection.goHomepage());

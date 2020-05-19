@@ -13,6 +13,9 @@ import java.util.function.BooleanSupplier;
  * The type Game content section.
  */
 public class GameContentSection extends Section<Graphic2DGameController> {
+    /**
+     * The Board panel.
+     */
     private final BoardPanel boardPanel;
     /**
      * The Game toolbar.

@@ -376,6 +376,11 @@ public class Game extends Observable<GameView> {
         return this.gameData.isRunning();
     }
 
+    /**
+     * Sets game data.
+     *
+     * @param gameData the game data
+     */
     public void setGameData(GameData gameData) {
         this.gameData = gameData;
     }

@@ -244,6 +244,11 @@ public class Board {
         return this.board.clone();
     }
 
+    /**
+     * To string string.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         return "Board{" +

@@ -24,6 +24,9 @@ import java.util.function.Supplier;
  * The type Menu content section.
  */
 public class MenuContentSection extends Section<Graphic2DMenuController> {
+    /**
+     * The Logo zen.
+     */
     private final ImageComponent logoZen;
 
     /**
