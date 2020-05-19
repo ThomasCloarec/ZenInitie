@@ -42,7 +42,6 @@ public abstract class Observable<T extends Observer<T>> {
      */
     public void addObserver(T observer) {
         this.observers.add(observer);
-        this.notifyUpdateEverything(observer);
     }
 
     /**
@@ -73,7 +72,7 @@ public abstract class Observable<T extends Observer<T>> {
      *
      * @param consumer the iterator consumer
      */
-    protected void forEachObserver(Consumer<T> consumer) {
+    protected void forEachObserver(Consumer<? super T> consumer) {
         this.observers.forEach(consumer);
     }
 }

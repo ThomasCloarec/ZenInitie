@@ -75,6 +75,15 @@ public class BoardPanel extends JPanel {
     }
 
     /**
+     * Update game.
+     *
+     * @param game the game
+     */
+    public void updateGame(Game game) {
+        this.updateBoard(game);
+    }
+
+    /**
      * Select pawn.
      *
      * @param game the game
@@ -106,29 +115,31 @@ public class BoardPanel extends JPanel {
      * @param game the game
      */
     private void updateBoard(Game game) {
-        Pawn[][] boardArray = game.getBoardArray();
+        if (this.cells != null) {
+            Pawn[][] boardArray = game.getBoardArray();
 
-        for (int line = 0; line < this.cells.length; line++) {
-            for (int column = 0; column < this.cells[0].length; column++) {
-                Cell cell = this.cells[line][column];
-                Pawn pawn = boardArray[line][column];
-                Color borderColor = game.getCurrentTeam().getTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
-                cell.setBorder(game.isPawnSelectable(pawn) ? BorderFactory.createLineBorder(borderColor, 2) : null);
+            for (int line = 0; line < this.cells.length; line++) {
+                for (int column = 0; column < this.cells[0].length; column++) {
+                    Cell cell = this.cells[line][column];
+                    Pawn pawn = boardArray[line][column];
+                    Color borderColor = game.getCurrentTeam().getTeamColor() == TeamColor.BLUE ? Color.BLUE : Color.RED;
+                    cell.setBorder(game.isPawnSelectable(pawn) ? BorderFactory.createLineBorder(borderColor, 2) : null);
 
-                if (pawn == Pawn.ZEN) {
-                    cell.setImageComponent(new ScaledImageComponent("pawns/zen.png", 0.85, cell));
-                } else if (pawn == Pawn.BLUE) {
-                    cell.setImageComponent(new ScaledImageComponent("pawns/blue.png", 0.85, cell));
-                } else if (pawn == Pawn.RED) {
-                    cell.setImageComponent(new ScaledImageComponent("pawns/red.png", 0.85, cell));
-                } else {
-                    cell.setImageComponent(null);
+                    if (pawn == Pawn.ZEN) {
+                        cell.setImageComponent(new ScaledImageComponent("pawns/zen.png", 0.85, cell));
+                    } else if (pawn == Pawn.BLUE) {
+                        cell.setImageComponent(new ScaledImageComponent("pawns/blue.png", 0.85, cell));
+                    } else if (pawn == Pawn.RED) {
+                        cell.setImageComponent(new ScaledImageComponent("pawns/red.png", 0.85, cell));
+                    } else {
+                        cell.setImageComponent(null);
+                    }
                 }
             }
-        }
 
-        this.revalidate();
-        this.repaint();
+            this.revalidate();
+            this.repaint();
+        }
     }
 
     /**

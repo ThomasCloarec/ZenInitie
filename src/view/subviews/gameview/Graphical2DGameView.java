@@ -54,6 +54,22 @@ public class Graphical2DGameView extends CustomPanel<Graphic2DGameController, Ga
     }
 
     /**
+     * Update game.
+     *
+     * @param game the game
+     */
+    @Override
+    public void updateGame(Game game) {
+        SwingUtilities.invokeLater(() -> {
+            this.contentSection.updateGame(game);
+            this.leftSection.updateGame(game);
+            this.rightSection.updateGame(game);
+            this.revalidate();
+            this.repaint();
+        });
+    }
+
+    /**
      * Select pawn.
      *
      * @param game the game

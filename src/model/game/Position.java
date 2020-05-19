@@ -7,11 +7,11 @@ public class Position {
     /**
      * The Column.
      */
-    private final int column;
+    private int column;
     /**
      * The Line.
      */
-    private final int line;
+    private int line;
 
     /**
      * Instantiates a new Position.
@@ -22,6 +22,13 @@ public class Position {
     public Position(int line, int column) {
         this.line = line;
         this.column = column;
+    }
+
+    /**
+     * Instantiates a new Position.
+     */
+    public Position() {
+        // Used for kryo deserialization.
     }
 
     /**

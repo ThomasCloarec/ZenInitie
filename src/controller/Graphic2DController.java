@@ -39,7 +39,7 @@ public final class Graphic2DController extends Controller {
      * Instantiates a new Graphic 2 d controller.
      */
     private Graphic2DController() {
-        this.view = new Graphical2DView();
+        this.view = new Graphical2DView(this);
         this.newMenu();
     }
 
@@ -82,12 +82,13 @@ public final class Graphic2DController extends Controller {
      * @param graphical2DView the graphical 2 d view
      * @return the exit click listener
      */
-    public static WindowAdapter getExitClickListener(View<Graphic2DMenuController, Graphic2DGameController> graphical2DView) {
+    public WindowAdapter getExitClickListener(View<Graphic2DMenuController, Graphic2DGameController> graphical2DView) {
         return new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 super.windowClosing(windowEvent);
                 graphical2DView.close();
+                Graphic2DController.this.stopGameServer();
             }
         };
     }
@@ -137,8 +138,9 @@ public final class Graphic2DController extends Controller {
      */
     @Override
     protected void newMenu() {
+        super.newMenu();
         Menu menu = new Menu();
-        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::cancelNetworkLobby);
+        Graphic2DMenuController menuController = new Graphic2DMenuController(menu, this::newGame, this::stopGameServer);
         menu.addObserver(this.view.createMenuView(menuController));
     }
 }

@@ -93,6 +93,15 @@ public class GameLeftSection extends Section<Graphic2DGameController> {
     }
 
     /**
+     * Update game.
+     *
+     * @param game the game
+     */
+    public void updateGame(Game game) {
+        this.updatePlayerTurn(game);
+    }
+
+    /**
      * Select pawn.
      *
      * @param game the game

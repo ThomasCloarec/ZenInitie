@@ -23,6 +23,13 @@ public interface GameView extends Observer<GameView> {
     void start(Game game);
 
     /**
+     * Update game.
+     *
+     * @param game the game
+     */
+    void updateGame(Game game);
+
+    /**
      * Select pawn.
      *
      * @param game the game

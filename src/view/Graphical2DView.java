@@ -47,8 +47,10 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
 
     /**
      * Instantiates a new Graphical 2 d view.
+     *
+     * @param graphic2DController the graphic 2 d controller
      */
-    public Graphical2DView() {
+    public Graphical2DView(Graphic2DController graphic2DController) {
         SwingUtilities.invokeLater(() -> {
             // preload images
             ImageComponent.loadImage("logo_zen.png");
@@ -85,7 +87,7 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
             this.setFocusable(true);
 
             this.addKeyListener(Graphic2DController.getViewKeyListener(this));
-            this.addWindowListener(Graphic2DController.getExitClickListener(this));
+            this.addWindowListener(graphic2DController.getExitClickListener(this));
             this.addComponentListener(Graphic2DController.getResizeListener(this));
         });
     }

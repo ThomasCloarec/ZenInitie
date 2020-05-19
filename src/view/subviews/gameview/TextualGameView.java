@@ -94,6 +94,16 @@ public class TextualGameView implements GameView {
     }
 
     /**
+     * Update game.
+     *
+     * @param game the game
+     */
+    @Override
+    public void updateGame(Game game) {
+
+    }
+
+    /**
      * Select pawn.
      *
      * @param game the game

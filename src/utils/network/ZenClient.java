@@ -36,7 +36,7 @@ public class ZenClient extends Client {
                 if (!serversIP.isEmpty() && serversIP.get(0) != null) {
                     try {
                         serverIP = serversIP.get(0);
-                        this.connect(5000, serverIP, i + Network.BASE_TCP_PORT, i + Network.BASE_UDP_PORT);
+                        this.connect(10000, serverIP, i + Network.BASE_TCP_PORT, i + Network.BASE_UDP_PORT);
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -46,6 +46,9 @@ public class ZenClient extends Client {
         }).start();
     }
 
+    /**
+     * Stop.
+     */
     @Override
     public void stop() {
         super.stop();

@@ -74,9 +74,7 @@ public abstract class CustomPanel<ControllerT, LeftSectionT extends Section<Cont
     protected void switchHorizontalMode() {
         this.removeAll();
         this.setLayout(new GridLayout(1, 3));
-        if (this.leftSection == null || this.contentSection == null || this.rightSection == null) {
-            System.err.println("this : " + this + ", left : " + this.leftSection + ", content : " + this.contentSection + ", right" + this.rightSection);
-        } else {
+        if (this.leftSection != null && this.contentSection != null && this.rightSection != null) {
             this.add(this.leftSection);
             this.add(this.contentSection);
             this.add(this.rightSection);

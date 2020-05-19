@@ -10,9 +10,22 @@ import java.io.IOException;
  */
 public class ZenServer extends Server {
     /**
-     * Instantiates a new Zen server.
+     * The Room size.
      */
-    public ZenServer() {
+    private final int roomSize;
+    /**
+     * The Already filled room.
+     */
+    private int alreadyFilledRoom = 1;
+
+    /**
+     * Instantiates a new Zen server.
+     *
+     * @param roomSize the room size
+     */
+    public ZenServer(int roomSize) {
+        this.roomSize = roomSize;
+
         Log.set(Log.LEVEL_TRACE);
         this.start();
         Network.register(this);
@@ -39,9 +52,37 @@ public class ZenServer extends Server {
         }
     }
 
+    /**
+     * Increment already filled room.
+     */
+    public void incrementAlreadyFilledRoom() {
+        this.alreadyFilledRoom++;
+    }
+
+    /**
+     * Stop.
+     */
     @Override
     public void stop() {
         super.stop();
-        System.out.println("Client stopped");
+        System.out.println("Server stopped");
+    }
+
+    /**
+     * Gets already filled room.
+     *
+     * @return the already filled room
+     */
+    public int getAlreadyFilledRoom() {
+        return this.alreadyFilledRoom;
+    }
+
+    /**
+     * Gets room size.
+     *
+     * @return the room size
+     */
+    public int getRoomSize() {
+        return this.roomSize;
     }
 }

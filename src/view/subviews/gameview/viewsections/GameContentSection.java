@@ -61,6 +61,15 @@ public class GameContentSection extends Section<Graphic2DGameController> {
     }
 
     /**
+     * Update game.
+     *
+     * @param game the game
+     */
+    public void updateGame(Game game) {
+        this.boardPanel.updateGame(game);
+    }
+
+    /**
      * Move pawn.
      *
      * @param game the game

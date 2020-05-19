@@ -16,6 +16,10 @@ import java.util.Collection;
  */
 public abstract class Controller {
     /**
+     * The Game network launched.
+     */
+    private boolean gameNetworkLaunched;
+    /**
      * The Game network (only used in network mode)
      */
     private GameNetwork gameNetwork;
@@ -77,7 +81,12 @@ public abstract class Controller {
      * Create a new menu and collect information for the future game.
      * This method set up the MVC architectural pattern and the Observer behavioral pattern used for the menu.
      */
-    protected abstract void newMenu();
+    protected void newMenu() {
+        if (this.gameNetwork != null) {
+            this.gameNetwork.stop();
+        }
+        this.gameNetworkLaunched = false;
+    }
 
     /**
      * Create a new game and launch it using the previously collected information from the menu.
@@ -91,9 +100,9 @@ public abstract class Controller {
             menu.addActualPage(MenuPage.LOBBY);
 
             if (menu.isOnlineServer()) {
-                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork);
+                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu);
             } else if (menu.isOnlineClient()) {
-                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork);
+                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu);
             }
         } else {
             this.newGame(new Game(menu.isAiMode(), menu.isDuoMode()));
@@ -101,16 +110,24 @@ public abstract class Controller {
     }
 
     /**
-     * Cancel network lobby.
+     * Stop game server.
      */
-    protected void cancelNetworkLobby() {
+    protected void stopGameServer() {
         this.gameNetwork.stop();
     }
 
     /**
-     * The Launch.
+     * Launch game network.
+     *
+     * @return the boolean
      */
-    protected void launchGameNetwork() {
-        this.newGame(this.gameNetwork);
+    protected boolean launchGameNetwork() {
+        boolean launchedNow = false;
+        if (!this.gameNetworkLaunched) {
+            this.newGame(this.gameNetwork);
+            this.gameNetworkLaunched = true;
+            launchedNow = true;
+        }
+        return launchedNow;
     }
 }
