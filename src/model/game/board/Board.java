@@ -15,7 +15,7 @@ public class Board {
     /**
      * The Board.
      */
-/* private final Pawn[][] board = {
+    private final Pawn[][] board = {
             {Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE},
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
@@ -27,20 +27,88 @@ public class Board {
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
             {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
             {Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED}
-    };*/
-    private final Pawn[][] board = {
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY},
-            {Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.RED}
     };
+
+    /**
+     * Gets pawn positions around.
+     *
+     * @param pawnsToGetAround the pawns to get around
+     * @return the pawn positions around
+     */
+    public Map<Position, Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
+        Map<Position, Position[]> pawnPositionsAround = new HashMap<>();
+
+        for (Position position : this.getPawnPositions(pawnsToGetAround)) {
+            // 8 columns to check if there is one connected around
+            Position[] testPositions = {
+                    new Position(position.getLine() - 1, position.getColumn()),
+                    new Position(position.getLine() + 1, position.getColumn()),
+                    new Position(position.getLine(), position.getColumn() - 1),
+                    new Position(position.getLine(), position.getColumn() + 1),
+                    new Position(position.getLine() - 1, position.getColumn() - 1),
+                    new Position(position.getLine() - 1, position.getColumn() + 1),
+                    new Position(position.getLine() + 1, position.getColumn() - 1),
+                    new Position(position.getLine() + 1, position.getColumn() + 1)
+            };
+
+            // Filter valid positions by using a List<Position>
+            List<Position> positionList = new ArrayList<>();
+            for (Position testPosition : testPositions) {
+                if (this.isPositionValid(testPosition)) {
+                    positionList.add(testPosition);
+                }
+            }
+
+            // Convert back to Position[]
+            Position[] positions = new Position[positionList.size()];
+            for (int i = 0; i < positions.length; i++) {
+                positions[i] = positionList.get(i);
+            }
+
+            pawnPositionsAround.put(position, positions);
+        }
+
+        return pawnPositionsAround;
+    }
+
+    /**
+     * Generate positions from position [ ].
+     *
+     * @param position the position
+     * @return the position [ ]
+     */
+    public Position[] generatePositionsFrom(Position position) {
+        Position[] positions = new Position[8];
+
+        int verticalPawnCount = this.getVerticalPawnCount(position);
+        positions[0] = new Position(position.getLine() - verticalPawnCount, position.getColumn()); // top
+        positions[1] = new Position(position.getLine() + verticalPawnCount, position.getColumn()); // bottom
+
+        int horizontalPawnCount = this.getHorizontalPawnCount(position);
+        positions[2] = new Position(position.getLine(), position.getColumn() - horizontalPawnCount); // left
+        positions[3] = new Position(position.getLine(), position.getColumn() + horizontalPawnCount); // right
+
+        int diagonal1PawnCount = this.getFirstDiagonalPawnCount(position);
+        positions[4] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() - diagonal1PawnCount); // top left
+        positions[5] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() + diagonal1PawnCount); // top right
+
+        int diagonal2PawnCount = this.getSecondDiagonalPawnCount(position);
+        positions[6] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() - diagonal2PawnCount); // bottom left
+        positions[7] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() + diagonal2PawnCount); // bottom right
+        return positions;
+    }
+
+    /**
+     * Check if the position is on the board
+     *
+     * @param position the position to check
+     * @return is position on board
+     */
+    public boolean isPositionValid(Position position) {
+        boolean lineValid = position.getLine() >= 0 && position.getLine() < this.board.length;
+        boolean columnValid = position.getColumn() >= 0 && position.getColumn() < this.board[0].length;
+        return lineValid && columnValid;
+    }
 
     /**
      * Gets pawn count.
@@ -85,48 +153,6 @@ public class Board {
         }
 
         return positions;
-    }
-
-    /**
-     * Gets pawn positions around.
-     *
-     * @param pawnsToGetAround the pawns to get around
-     * @return the pawn positions around
-     */
-    public Map<Position, Position[]> getPawnPositionsAround(Pawn... pawnsToGetAround) {
-        Map<Position, Position[]> pawnPositionsAround = new HashMap<>();
-
-        for (Position position : this.getPawnPositions(pawnsToGetAround)) {
-            // 8 columns to check if there is one connected around
-            Position[] testPositions = {
-                    new Position(position.getLine() - 1, position.getColumn()),
-                    new Position(position.getLine() + 1, position.getColumn()),
-                    new Position(position.getLine(), position.getColumn() - 1),
-                    new Position(position.getLine(), position.getColumn() + 1),
-                    new Position(position.getLine() - 1, position.getColumn() - 1),
-                    new Position(position.getLine() - 1, position.getColumn() + 1),
-                    new Position(position.getLine() + 1, position.getColumn() - 1),
-                    new Position(position.getLine() + 1, position.getColumn() + 1)
-            };
-
-            // Filter valid positions by using a List<Position>
-            List<Position> positionList = new ArrayList<>();
-            for (Position testPosition : testPositions) {
-                if (this.isPositionValid(testPosition)) {
-                    positionList.add(testPosition);
-                }
-            }
-
-            // Convert back to Position[]
-            Position[] positions = new Position[positionList.size()];
-            for (int i = 0; i < positions.length; i++) {
-                positions[i] = positionList.get(i);
-            }
-
-            pawnPositionsAround.put(position, positions);
-        }
-
-        return pawnPositionsAround;
     }
 
     /**
@@ -210,54 +236,6 @@ public class Board {
     }
 
     /**
-     * Generate positions from position [ ].
-     *
-     * @param position the position
-     * @return the position [ ]
-     */
-    public Position[] generatePositionsFrom(Position position) {
-        Position[] positions = new Position[8];
-
-        int verticalPawnCount = this.getVerticalPawnCount(position);
-        positions[0] = new Position(position.getLine() - verticalPawnCount, position.getColumn()); // top
-        positions[1] = new Position(position.getLine() + verticalPawnCount, position.getColumn()); // bottom
-
-        int horizontalPawnCount = this.getHorizontalPawnCount(position);
-        positions[2] = new Position(position.getLine(), position.getColumn() - horizontalPawnCount); // left
-        positions[3] = new Position(position.getLine(), position.getColumn() + horizontalPawnCount); // right
-
-        int diagonal1PawnCount = this.getFirstDiagonalPawnCount(position);
-        positions[4] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() - diagonal1PawnCount); // top left
-        positions[5] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() + diagonal1PawnCount); // top right
-
-        int diagonal2PawnCount = this.getSecondDiagonalPawnCount(position);
-        positions[6] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() - diagonal2PawnCount); // bottom left
-        positions[7] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() + diagonal2PawnCount); // bottom right
-        return positions;
-    }
-
-    /**
-     * Check if the position is on the board
-     *
-     * @param position the position to check
-     * @return is position on board
-     */
-    public boolean isPositionValid(Position position) {
-        boolean lineValid = position.getLine() >= 0 && position.getLine() < this.board.length;
-        boolean columnValid = position.getColumn() >= 0 && position.getColumn() < this.board[0].length;
-        return lineValid && columnValid;
-    }
-
-    /**
-     * Get array pawn [ ] [ ].
-     *
-     * @return the pawn [ ] [ ]
-     */
-    public Pawn[][] getArray() {
-        return this.board.clone();
-    }
-
-    /**
      * To string string.
      *
      * @return the string
@@ -267,5 +245,14 @@ public class Board {
         return "Board{" +
                 "board=" + Arrays.toString(this.board) +
                 '}';
+    }
+
+    /**
+     * Get array pawn [ ] [ ].
+     *
+     * @return the pawn [ ] [ ]
+     */
+    public Pawn[][] getArray() {
+        return this.board.clone();
     }
 }
