@@ -7,8 +7,6 @@ import model.game.Position;
 import utils.network.Network;
 import utils.network.ZenServer;
 
-import java.util.function.Supplier;
-
 /**
  * The type Game server.
  */
@@ -29,14 +27,13 @@ public class GameServer extends GameNetwork {
     /**
      * Instantiates a new Game server.
      *
-     * @param aiMode                the ai mode
-     * @param duoMode               the duo mode
-     * @param launchGameNetwork     the launch game network
-     * @param goMenu                the go menu
-     * @param isGameNetworkLaunched the is game network launched
+     * @param aiMode            the ai mode
+     * @param duoMode           the duo mode
+     * @param launchGameNetwork the launch game network
+     * @param goMenu            the go menu
      */
-    public GameServer(boolean aiMode, boolean duoMode, Supplier<Boolean> launchGameNetwork, Runnable goMenu, Supplier<Boolean> isGameNetworkLaunched) {
-        super(aiMode, duoMode, launchGameNetwork, goMenu, isGameNetworkLaunched);
+    public GameServer(boolean aiMode, boolean duoMode, Runnable launchGameNetwork, Runnable goMenu) {
+        super(aiMode, duoMode, launchGameNetwork, goMenu);
 
         this.playerID = new Network.PlayerID(0, 0);
 
@@ -119,10 +116,8 @@ public class GameServer extends GameNetwork {
                 // When everyone is here, send them the gameData
                 if (GameServer.this.alreadyFilledRoom == GameServer.this.roomSize) {
                     GameServer.this.server.sendToAllTCP(GameServer.this.gameData);
-                    GameServer.this.launchGameNetwork.get();
+                    GameServer.this.launchGameNetwork.run();
                 }
-
-                System.out.println(GameServer.this.alreadyFilledRoom);
             }
         }
 

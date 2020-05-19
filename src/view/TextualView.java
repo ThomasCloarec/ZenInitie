@@ -9,17 +9,11 @@ import view.subviews.menuview.TextualMenuView;
 import view.utils.Sound;
 import view.utils.text.AppText;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * The type Textual view.
  */
 public class TextualView implements View<MenuController, GameController> {
-    /**
-     * The Sounds.
-     */
-    private final Collection<Sound> sounds = new ArrayList<>();
+    private Sound music;
 
     /**
      * Instantiates a new Textual view.
@@ -47,6 +41,15 @@ public class TextualView implements View<MenuController, GameController> {
      */
     @Override
     public GameView createGameView(GameController gameController) {
+        Sound sound = new Sound("tami-levant-du-printemps.mp3");
+        if (this.music != null) {
+            this.music.fadeTransitionTo(sound);
+        } else {
+            sound.play();
+            sound.loop();
+        }
+        this.music = sound;
+
         return new TextualGameView(gameController);
     }
 
@@ -58,10 +61,15 @@ public class TextualView implements View<MenuController, GameController> {
      */
     @Override
     public MenuView createMenuView(MenuController menuController) {
-        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
-        sound.play();
-        sound.loop();
-        this.sounds.add(sound);
+        Sound sound = new Sound("lotus-du-printemps-tombant.mp3");
+        if (this.music != null) {
+            this.music.fadeTransitionTo(sound);
+        } else {
+            sound.play();
+            sound.loop();
+        }
+        this.music = sound;
+
         return new TextualMenuView(menuController);
     }
 
@@ -70,6 +78,6 @@ public class TextualView implements View<MenuController, GameController> {
      */
     @Override
     public void close() {
-        this.sounds.forEach(Sound::stop);
+        this.music.stop();
     }
 }

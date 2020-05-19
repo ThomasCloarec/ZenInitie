@@ -25,8 +25,6 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * The type Graphical 2 d view.
@@ -36,10 +34,7 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
      * The constant graphicsDevice.
      */
     private static final GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    /**
-     * The Sounds.
-     */
-    private final Collection<Sound> sounds = new ArrayList<>();
+    private Sound music;
     /**
      * The Fullscreen mode activated.
      */
@@ -141,6 +136,15 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
      */
     @Override
     public GameView createGameView(Graphic2DGameController gameController) {
+        Sound sound = new Sound("tami-levant-du-printemps.mp3");
+        if (this.music != null) {
+            this.music.fadeTransitionTo(sound);
+        } else {
+            sound.play();
+            sound.loop();
+        }
+        this.music = sound;
+
         Graphical2DGameView graphical2DGameView = new Graphical2DGameView(gameController);
 
         new Thread(() -> {
@@ -173,11 +177,14 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
      */
     @Override
     public MenuView createMenuView(Graphic2DMenuController menuController) {
-        this.sounds.forEach(Sound::stop);
-        Sound sound = new Sound("lotus_du_printemps_tombant.mp3");
-        sound.play();
-        sound.loop();
-        this.sounds.add(sound);
+        Sound sound = new Sound("lotus-du-printemps-tombant.mp3");
+        if (this.music != null) {
+            this.music.fadeTransitionTo(sound);
+        } else {
+            sound.play();
+            sound.loop();
+        }
+        this.music = sound;
 
         Graphical2DMenuView graphical2DMenuView = new Graphical2DMenuView(menuController);
         this.setContentPane(graphical2DMenuView);
@@ -196,7 +203,7 @@ public class Graphical2DView extends JFrame implements View<Graphic2DMenuControl
     @Override
     public void close() {
         this.dispose();
-        this.sounds.forEach(Sound::stop);
+        this.music.stop();
     }
 
     /**

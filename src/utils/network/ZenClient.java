@@ -39,7 +39,6 @@ public class ZenClient extends Client {
                 if (o instanceof Network.Message) {
                     Network.Message message = (Network.Message) o;
                     if (message == Network.Message.ROOM_IS_FULL) {
-                        System.out.println(ZenClient.this.connectionIndexBlackList);
                         ZenClient.this.connectionIndexBlackList.add(ZenClient.this.connectionTryIndex);
                         ZenClient.this.launch();
                     }
@@ -65,7 +64,8 @@ public class ZenClient extends Client {
                         serverIP = serversIP.get(0);
                         this.connect(Integer.MAX_VALUE, serverIP, this.connectionTryIndex + Network.BASE_TCP_PORT, this.connectionTryIndex + Network.BASE_UDP_PORT);
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        this.launch();
+                        System.out.println("EH");
                     }
                 } else {
                     this.connectionTryIndex++;
@@ -81,14 +81,5 @@ public class ZenClient extends Client {
      */
     public Collection<Integer> getConnectionIndexBlackList() {
         return Collections.unmodifiableCollection(this.connectionIndexBlackList);
-    }
-
-    /**
-     * Stop.
-     */
-    @Override
-    public void stop() {
-        super.stop();
-        System.out.println("Client stopped");
     }
 }

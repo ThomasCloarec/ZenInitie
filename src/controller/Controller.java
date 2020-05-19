@@ -100,9 +100,9 @@ public abstract class Controller {
             menu.addActualPage(MenuPage.LOBBY);
 
             if (menu.isOnlineServer()) {
-                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu, this::isGameNetworkLaunched);
+                this.gameNetwork = new GameServer(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu);
             } else if (menu.isOnlineClient()) {
-                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu, this::isGameNetworkLaunched);
+                this.gameNetwork = new GameClient(menu.isAiMode(), menu.isDuoMode(), this::launchGameNetwork, this::newMenu);
             }
         } else {
             this.newGame(new Game(menu.isAiMode(), menu.isDuoMode()));
@@ -113,30 +113,18 @@ public abstract class Controller {
      * Stop game server.
      */
     protected void stopGameServer() {
-        this.gameNetwork.stop();
+        if (this.gameNetwork != null) {
+            this.gameNetwork.stop();
+        }
     }
 
     /**
      * Launch game network.
-     *
-     * @return the boolean has the game been launched just now
      */
-    protected boolean launchGameNetwork() {
-        boolean launchedNow = false;
+    protected void launchGameNetwork() {
         if (!this.gameNetworkLaunched) {
             this.newGame(this.gameNetwork);
             this.gameNetworkLaunched = true;
-            launchedNow = true;
         }
-        return launchedNow;
-    }
-
-    /**
-     * Is game network launched boolean.
-     *
-     * @return the boolean
-     */
-    protected boolean isGameNetworkLaunched() {
-        return this.gameNetworkLaunched;
     }
 }

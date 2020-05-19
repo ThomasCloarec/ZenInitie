@@ -7,8 +7,6 @@ import model.game.Position;
 import utils.network.Network;
 import utils.network.ZenClient;
 
-import java.util.function.Supplier;
-
 /**
  * The type Game client.
  */
@@ -17,24 +15,22 @@ public class GameClient extends GameNetwork {
      * The Client.
      */
     private final ZenClient client;
+    private boolean playerConnected;
 
     /**
      * Instantiates a new Game client.
      *
-     * @param aiMode                the ai mode
-     * @param duoMode               the duo mode
-     * @param launchGameNetwork     the launch game network
-     * @param goMenu                the go menu
-     * @param isGameNetworkLaunched the is game network launched
+     * @param aiMode            the ai mode
+     * @param duoMode           the duo mode
+     * @param launchGameNetwork the launch game network
+     * @param goMenu            the go menu
      */
-    public GameClient(boolean aiMode, boolean duoMode, Supplier<Boolean> launchGameNetwork, Runnable goMenu, Supplier<Boolean> isGameNetworkLaunched) {
-        super(aiMode, duoMode, launchGameNetwork, goMenu, isGameNetworkLaunched);
+    public GameClient(boolean aiMode, boolean duoMode, Runnable launchGameNetwork, Runnable goMenu) {
+        super(aiMode, duoMode, launchGameNetwork, goMenu);
 
         this.client = new ZenClient();
         this.client.addListener(new ClientListener());
         this.client.launch();
-
-        this.client.sendTCP("HEY");
     }
 
     /**
@@ -78,8 +74,7 @@ public class GameClient extends GameNetwork {
          */
         @Override
         public void disconnected(Connection connection) {
-            System.out.println(connection.getID());
-            if (GameClient.this.isGameNetworkLaunched.get()) {
+            if (GameClient.this.playerConnected) {
                 GameClient.this.goMenu.run();
             }
         }
@@ -94,12 +89,13 @@ public class GameClient extends GameNetwork {
         public void received(Connection connection, Object o) {
             if (o instanceof Network.PlayerID) {
                 GameClient.this.playerID = (Network.PlayerID) o;
-                System.out.println(GameClient.this.playerID);
+                GameClient.this.playerConnected = true;
             } else if (o instanceof GameData) {
                 GameData gameData = (GameData) o;
                 GameClient.this.setGameData(gameData);
 
-                if (!GameClient.this.launchGameNetwork.get()) {
+                if (GameClient.this.playerConnected) {
+                    GameClient.this.launchGameNetwork.run();
                     GameClient.this.notifyUpdateEverything();
                 }
             }

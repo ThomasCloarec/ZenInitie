@@ -39,22 +39,12 @@ public class ZenServer extends Server {
         while (tcpPortNotFound && tcpPort <= Network.MAX_TCP_PORT && udpPort <= Network.MAX_UDP_PORT) {
             try {
                 this.bind(tcpPort, udpPort);
-                System.out.println("Server created of port TCP : " + tcpPort + " and UDP : " + udpPort);
                 tcpPortNotFound = false;
             } catch (IOException ioException) {
                 tcpPort++;
                 udpPort++;
             }
         }
-    }
-
-    /**
-     * Stop.
-     */
-    @Override
-    public void stop() {
-        super.stop();
-        System.out.println("Server stopped");
     }
 
     /**

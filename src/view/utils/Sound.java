@@ -8,7 +8,9 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Timer;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The type Sound.
@@ -50,6 +52,7 @@ public class Sound implements Runnable {
      * The Restart.
      */
     restart;
+    private double specificVolume = 1;
 
     /**
      * Declares default variable values.
@@ -180,6 +183,30 @@ public class Sound implements Runnable {
         this.loop = !this.loop;
     }
 
+    public void fadeTransitionTo(Sound nextSound) {
+        nextSound.specificVolume = 0;
+
+        new Thread(() -> {
+            nextSound.play();
+            nextSound.loop();
+
+            Timer[] timer = new Timer[1];
+            AtomicInteger transitionDegree = new AtomicInteger();
+            timer[0] = new Timer(200, actionEvent -> {
+                transitionDegree.incrementAndGet();
+
+                if (transitionDegree.get() > 20) {
+                    timer[0].stop();
+                    this.stop();
+                } else {
+                    this.specificVolume = Math.max(0, this.specificVolume - 0.05);
+                    nextSound.specificVolume = Math.min(1, nextSound.specificVolume + 0.05);
+                }
+            });
+            timer[0].start();
+        }).start();
+    }
+
     /**
      * Small sections of audio bytes are read off, watching for a call to stop, pause, restart, or mute the audio.
      *
@@ -202,7 +229,7 @@ public class Sound implements Runnable {
                 int nBytesRead = 0;
                 while (nBytesRead != -1 && this.running && !this.restart) {
                     if (gainControl != null) {
-                        double volume = Sound.volume.getValue();
+                        double volume = Sound.volume.getValue() * this.specificVolume;
                         if (gainControl.getType().equals(FloatControl.Type.VOLUME)) {
                             gainControl.setValue((float) ((gainControl.getMaximum() - gainControl.getMinimum()) * volume + gainControl.getMinimum()));
                         } else if (gainControl.getType().equals(FloatControl.Type.MASTER_GAIN)) {
