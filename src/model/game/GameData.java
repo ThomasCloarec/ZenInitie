@@ -4,7 +4,6 @@ import model.game.board.Board;
 import model.game.team.Team;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The type Game data.
@@ -14,7 +13,7 @@ public class GameData {
     /**
      * The list of teams playing this game
      */
-    protected final List<Team> teams = new ArrayList<>(2);
+    protected final Team[] teams = new Team[2];
     /**
      * The allowed moves for the current selected pawn
      */
@@ -127,7 +126,7 @@ public class GameData {
      *
      * @return the teams
      */
-    public List<Team> getTeams() {
+    public Team[] getTeams() {
         return this.teams;
     }
 

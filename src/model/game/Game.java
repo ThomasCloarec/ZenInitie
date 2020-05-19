@@ -1,6 +1,7 @@
 package model.game;
 
 import model.game.board.Pawn;
+import model.game.team.ArtificialPlayer;
 import model.game.team.Player;
 import model.game.team.Team;
 import model.game.team.TeamColor;
@@ -35,7 +36,7 @@ public class Game extends Observable<GameView> {
 
         this.initializeTeams();
 
-        this.gameData.setCurrentTeamIndex((int) (Math.random() * this.gameData.getTeams().size()));
+        this.gameData.setCurrentTeamIndex((int) (Math.random() * this.gameData.getTeams().length));
     }
 
     /**
@@ -96,7 +97,7 @@ public class Game extends Observable<GameView> {
 
         Team currentTeam = this.getCurrentTeam();
         if (!currentTeam.nextPlayerPlay()) {
-            this.gameData.setCurrentTeamIndex((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().size());
+            this.gameData.setCurrentTeamIndex((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().length);
         }
         this.notifyPawnMoved();
     }
@@ -112,22 +113,8 @@ public class Game extends Observable<GameView> {
         return currentTeam.controlPawn(pawn);
     }
 
-    /**
-     * Initialize teams.
-     */
-    protected void initializeTeams() {
-        this.gameData.getTeams().add(new Team(TeamColor.BLUE));
-        this.gameData.getTeams().add(new Team(TeamColor.RED));
-        if (this.gameData.isDuoMode()) {
-            for (Team team : this.gameData.getTeams()) {
-                team.addPlayer(new Player("Player 1"));
-                team.addPlayer(new Player("Player 2"));
-            }
-        } else {
-            for (Team team : this.gameData.getTeams()) {
-                team.addPlayer(new Player("Player 1"));
-            }
-        }
+    public void isHumanPlayerTurn() {
+
     }
 
     /**
@@ -297,21 +284,36 @@ public class Game extends Observable<GameView> {
     }
 
     /**
+     * Initialize teams.
+     */
+    protected void initializeTeams() {
+        this.gameData.getTeams()[0] = new Team(TeamColor.BLUE);
+        this.gameData.getTeams()[1] = new Team(TeamColor.RED);
+
+        this.gameData.getTeams()[0].addPlayer(new Player("Player 1"));
+        if (this.gameData.isAiMode()) {
+            this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 1"));
+        } else {
+            this.gameData.getTeams()[1].addPlayer(new Player("Player 1"));
+        }
+
+        if (this.gameData.isDuoMode()) {
+            this.gameData.getTeams()[0].addPlayer(new Player("Player 2"));
+            if (this.gameData.isAiMode()) {
+                this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 2"));
+            } else {
+                this.gameData.getTeams()[1].addPlayer(new Player("Player 2"));
+            }
+        }
+    }
+
+    /**
      * Get the team playing during this turn
      *
      * @return the team
      */
     public Team getCurrentTeam() {
-        return this.gameData.getTeams().get(this.gameData.getCurrentTeamIndex());
-    }
-
-    /**
-     * Gets opponent team.
-     *
-     * @return the opponent team
-     */
-    private Team getOpponentTeam() {
-        return this.gameData.getTeams().get((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().size());
+        return this.gameData.getTeams()[this.gameData.getCurrentTeamIndex()];
     }
 
     /**
@@ -394,5 +396,14 @@ public class Game extends Observable<GameView> {
      */
     public void setGameData(GameData gameData) {
         this.gameData = gameData;
+    }
+
+    /**
+     * Gets opponent team.
+     *
+     * @return the opponent team
+     */
+    private Team getOpponentTeam() {
+        return this.gameData.getTeams()[(this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().length];
     }
 }
