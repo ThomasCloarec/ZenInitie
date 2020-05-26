@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The global Game class, it handles a whole game of Zen l'Initié from the start to the end.
+ * The global Game class, it handles a whole game of PawnTest l'Initié from the start to the end.
  */
 public class Game extends Observable<GameView> {
     /**
-     * The Game data.
+     * The Game data (contains all the data of a game instance)
      */
     protected GameData gameData = new GameData();
 
     /**
-     * The Game constructor, add teams, players and start game
+     * The Game constructor, add teams, players and start the game
      *
      * @param aiMode  is the game in ai mode (against computer) ?
      * @param duoMode is the game in duo mode ?
@@ -67,9 +67,19 @@ public class Game extends Observable<GameView> {
      * @return is the position selectable
      */
     public boolean isPawnSelectable(Position position) {
-        Pawn pawn = this.gameData.getBoard().getArray()[position.getLine()][position.getColumn()];
-        Team currentTeam = this.getCurrentTeam();
-        return currentTeam.controlPawn(pawn);
+        boolean ret;
+        ret = position.getLine() >= 0 && position.getColumn() >= 0;
+
+        if (ret) {
+            ret = position.getLine() < this.getBoardSize() && position.getColumn() < this.getBoardSize();
+        }
+
+        if (ret) {
+            Pawn pawn = this.gameData.getBoard().getArray()[position.getLine()][position.getColumn()];
+            Team currentTeam = this.getCurrentTeam();
+            ret = currentTeam.controlPawn(pawn);
+        }
+        return ret;
     }
 
     /**
@@ -105,7 +115,7 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Save.
+     * Save the game data to a json file
      */
     public void save() {
         this.gameData.save();
@@ -123,7 +133,7 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Notify game winner.
+     * Notify observers that there is a game winner (and transmit the winning team)
      *
      * @param team the team
      */
@@ -132,30 +142,45 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Notify pawn moved.
+     * Initialize teams and add players into them
+     */
+    protected void initializeTeams() {
+        this.gameData.getTeams()[0] = new Team(TeamColor.BLUE);
+        this.gameData.getTeams()[1] = new Team(TeamColor.RED);
+
+        this.gameData.getTeams()[0].addPlayer(new Player("Player 1"));
+        if (this.gameData.isAiMode()) {
+            this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 1"));
+        } else {
+            this.gameData.getTeams()[1].addPlayer(new Player("Player 1"));
+        }
+
+        if (this.gameData.isDuoMode()) {
+            this.gameData.getTeams()[0].addPlayer(new Player("Player 2"));
+            if (this.gameData.isAiMode()) {
+                this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 2"));
+            } else {
+                this.gameData.getTeams()[1].addPlayer(new Player("Player 2"));
+            }
+        }
+    }
+
+    /**
+     * Notify observers that a pawn moved.
      */
     private void notifyPawnMoved() {
         this.forEachObserver(gameView -> gameView.pawnMoved(this));
     }
 
     /**
-     * Notify pawn selected.
+     * Notify observers that a pawn has been selected.
      */
     private void notifyPawnSelected() {
         this.forEachObserver(gameView -> gameView.pawnSelected(this));
     }
 
     /**
-     * Gets winner.
-     *
-     * @return the winner
-     */
-    public Team getWinner() {
-        return this.gameData.getWinner();
-    }
-
-    /**
-     * Sets allowed moves.
+     * Sets allowed moves (calculate all possible positions where the currently selected pawn can move)
      */
     private void setAllowedMoves() {
         this.gameData.getAllowedMoves().clear();
@@ -168,7 +193,7 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Is move valid boolean.
+     * Check if a particular position is a valid move for the currently selected pawn
      *
      * @param position the position
      * @return the boolean
@@ -201,7 +226,7 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Is team win boolean.
+     * Check if a particular team won the game (by searching chains of its team color on the board)
      *
      * @param teamColor the team color
      * @return the boolean
@@ -246,15 +271,6 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Is human user turn boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isHumanUserTurn() {
-        return this.getCurrentTeam().getCurrentPlayer().isHumanPlayer();
-    }
-
-    /**
      * Notify an observer about the whole state of the app.
      * This method should generally be used to initialize this observer.
      *
@@ -274,6 +290,15 @@ public class Game extends Observable<GameView> {
     public void addObserver(GameView observer) {
         super.addObserver(observer);
         observer.start(this);
+    }
+
+    /**
+     * Sets game data.
+     *
+     * @param gameData the game data
+     */
+    public void setGameData(GameData gameData) {
+        this.gameData = gameData;
     }
 
     /**
@@ -307,39 +332,6 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Initialize teams.
-     */
-    protected void initializeTeams() {
-        this.gameData.getTeams()[0] = new Team(TeamColor.BLUE);
-        this.gameData.getTeams()[1] = new Team(TeamColor.RED);
-
-        this.gameData.getTeams()[0].addPlayer(new Player("Player 1"));
-        if (this.gameData.isAiMode()) {
-            this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 1"));
-        } else {
-            this.gameData.getTeams()[1].addPlayer(new Player("Player 1"));
-        }
-
-        if (this.gameData.isDuoMode()) {
-            this.gameData.getTeams()[0].addPlayer(new Player("Player 2"));
-            if (this.gameData.isAiMode()) {
-                this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 2"));
-            } else {
-                this.gameData.getTeams()[1].addPlayer(new Player("Player 2"));
-            }
-        }
-    }
-
-    /**
-     * Get the team playing during this turn
-     *
-     * @return the team
-     */
-    public Team getCurrentTeam() {
-        return this.gameData.getTeams()[this.gameData.getCurrentTeamIndex()];
-    }
-
-    /**
      * Get the game board array size
      *
      * @return the game board array size
@@ -356,6 +348,33 @@ public class Game extends Observable<GameView> {
     public String getCurrentPlayerName() {
         Team currentTeam = this.getCurrentTeam();
         return currentTeam.getCurrentPlayerName();
+    }
+
+    /**
+     * Get the team playing during this turn
+     *
+     * @return the team
+     */
+    public Team getCurrentTeam() {
+        return this.gameData.getTeams()[this.gameData.getCurrentTeamIndex()];
+    }
+
+    /**
+     * Gets opponent team.
+     *
+     * @return the opponent team
+     */
+    private Team getOpponentTeam() {
+        return this.gameData.getTeams()[(this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().length];
+    }
+
+    /**
+     * Gets the team who won the game (if the game is finished).
+     *
+     * @return the winner
+     */
+    public Team getWinner() {
+        return this.gameData.getWinner();
     }
 
     /**
@@ -395,6 +414,15 @@ public class Game extends Observable<GameView> {
     }
 
     /**
+     * Is human user turn
+     *
+     * @return the boolean
+     */
+    public boolean isHumanUserTurn() {
+        return this.getCurrentTeam().getCurrentPlayer().isHumanPlayer();
+    }
+
+    /**
      * Gets Is the pawn moving ? so if true we are selecting a target location for it, if false we are selecting a pawn to move.
      *
      * @return Value of Is the pawn moving ? so if true we are selecting a target location for it, if false we are selecting a pawn to move.
@@ -404,29 +432,20 @@ public class Game extends Observable<GameView> {
     }
 
     /**
+     * Is online boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isOnline() {
+        return false;
+    }
+
+    /**
      * Is finished boolean.
      *
      * @return the boolean
      */
     public boolean isRunning() {
         return this.gameData.isRunning();
-    }
-
-    /**
-     * Sets game data.
-     *
-     * @param gameData the game data
-     */
-    public void setGameData(GameData gameData) {
-        this.gameData = gameData;
-    }
-
-    /**
-     * Gets opponent team.
-     *
-     * @return the opponent team
-     */
-    private Team getOpponentTeam() {
-        return this.gameData.getTeams()[(this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().length];
     }
 }

@@ -13,7 +13,7 @@ public class Menu extends Observable<MenuView> {
     /**
      * The Pages breadcrumb.
      */
-    private final List<MenuPage> pagesBreadcrumb = new ArrayList<>();
+    private final List<MenuPage> pagesBreadcrumb;
     /**
      * The Ai mode.
      */
@@ -35,6 +35,7 @@ public class Menu extends Observable<MenuView> {
      * Instantiates a new Menu.
      */
     public Menu() {
+        this.pagesBreadcrumb = new ArrayList<>();
         this.pagesBreadcrumb.add(MenuPage.ROOT);
     }
 
@@ -58,6 +59,14 @@ public class Menu extends Observable<MenuView> {
             this.pagesBreadcrumb.remove(this.pagesBreadcrumb.size() - 1);
             this.notifyUpdatePage();
         }
+    }
+
+    /**
+     * Play offline.
+     */
+    public void playOffline() {
+        this.isOnlineClient = false;
+        this.isOnlineServer = false;
     }
 
     /**
@@ -135,14 +144,6 @@ public class Menu extends Observable<MenuView> {
      */
     public void setDuoMode(boolean duoMode) {
         this.duoMode = duoMode;
-    }
-
-    /**
-     * Play offline.
-     */
-    public void playOffline() {
-        this.isOnlineClient = false;
-        this.isOnlineServer = false;
     }
 
     /**

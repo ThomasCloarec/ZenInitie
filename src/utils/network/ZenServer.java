@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The type Zen server.
+ * The type PawnTest server.
  */
 public class ZenServer extends Server {
     /**
@@ -19,7 +19,7 @@ public class ZenServer extends Server {
     private final List<Integer> connectionIDList = new ArrayList<>();
 
     /**
-     * Instantiates a new Zen server.
+     * Instantiates a new PawnTest server.
      */
     public ZenServer() {
         Log.set(Log.LEVEL_TRACE);

@@ -9,11 +9,11 @@ import utils.network.Network;
 import utils.network.ZenServer;
 
 /**
- * The type Game server.
+ * The type Game server (it receives and communicates all information from clients to clients)
  */
 public class GameServer extends GameNetwork {
     /**
-     * The Room size.
+     * The Room size (number of clients required to start the game)
      */
     private final int roomSize;
     /**
@@ -21,7 +21,7 @@ public class GameServer extends GameNetwork {
      */
     private final ZenServer server;
     /**
-     * The Already filled room.
+     * The number of clients already connected to the server.
      */
     private int alreadyFilledRoom = 1;
 
@@ -50,7 +50,7 @@ public class GameServer extends GameNetwork {
     }
 
     /**
-     * Stop.
+     * Stop the game server.
      */
     @Override
     public void stop() {
@@ -134,7 +134,7 @@ public class GameServer extends GameNetwork {
         }
 
         /**
-         * Disconnected.
+         * A client disconnected from the server.
          *
          * @param connection the connection
          */
@@ -147,7 +147,7 @@ public class GameServer extends GameNetwork {
         }
 
         /**
-         * Received.
+         * Received an object from a client.
          *
          * @param connection the connection
          * @param o          the object

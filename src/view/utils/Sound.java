@@ -27,7 +27,7 @@ public class Sound implements Runnable {
     /**
      * The constant volume.
      */
-    private static SoundVolume volume = SoundVolume.LOW;
+    private static SoundVolume volume;
     /**
      * The File path.
      */

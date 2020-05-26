@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * The type Game data.
+ * The GameData class. Used to keep all the data of a game instance in a single location (making it easier to load/save and to play in multiplayer mode with network).
  */
 @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
 public class GameData {
     /**
-     * The allowed moves for the current selected pawn
+     * The allowed moves for the currently selected pawn
      */
     private final ArrayList<Position> allowedMoves = new ArrayList<>();
     /**
@@ -48,7 +48,7 @@ public class GameData {
      */
     private boolean movingPawn;
     /**
-     * The Finished.
+     * Is the game running.
      */
     private boolean running = true;
     /**
@@ -56,7 +56,7 @@ public class GameData {
      */
     private Position selectedPawn;
     /**
-     * The Winner.
+     * The winner team
      */
     private Team winner;
 
@@ -82,10 +82,10 @@ public class GameData {
     }
 
     /**
-     * Save.
+     * Save game data to a JSON file
      */
     public void save() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
 
         try (Writer writer = new FileWriter("zen_game_" + dateFormat.format(Calendar.getInstance().getTime()) + ".json")) {
             // Convert the object to json string

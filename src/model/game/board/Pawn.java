@@ -19,7 +19,7 @@ public enum Pawn {
      */
     BLUE,
     /**
-     * Zen pawn.
+     * PawnTest pawn.
      */
     ZEN;
 

@@ -1,7 +1,7 @@
 package model.game;
 
 /**
- * The type Position.
+ * The type Position (composed of a line and a column, facilitating transmission of positions)
  */
 public class Position {
     /**
@@ -90,7 +90,7 @@ public class Position {
     }
 
     /**
-     * Gets formatted column.
+     * Gets formatted column (character representation A-F)
      *
      * @return the formatted column
      */
@@ -99,7 +99,7 @@ public class Position {
     }
 
     /**
-     * Gets formatted line.
+     * Gets formatted line (reversed integer representation 11-1)
      *
      * @return the formatted line
      */

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class Board {
     /**
-     * The Board.
+     * The Board (as an array of pawns)
      */
     private final Pawn[][] board = {
             {Pawn.RED, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.EMPTY, Pawn.BLUE},
@@ -30,7 +30,7 @@ public class Board {
     };
 
     /**
-     * Gets pawn positions around.
+     * Gets pawn positions around a particular position.
      *
      * @param pawnsToGetAround the pawns to get around
      * @return the pawn positions around
@@ -72,7 +72,7 @@ public class Board {
     }
 
     /**
-     * Generate positions from position [ ].
+     * Generate positions from a particular position.
      *
      * @param position the position
      * @return the position [ ]
@@ -111,7 +111,7 @@ public class Board {
     }
 
     /**
-     * Gets pawn count.
+     * Gets pawn count of a certain type.
      *
      * @param pawnsToCount the pawns to count
      * @return the pawn count
@@ -132,7 +132,7 @@ public class Board {
     }
 
     /**
-     * Get pawn positions position [ ].
+     * Get pawn positions (filtering by pawn's colors)
      *
      * @param pawnsToGet the pawns to get
      * @return the position [ ]
@@ -248,7 +248,7 @@ public class Board {
     }
 
     /**
-     * Get array pawn [ ] [ ].
+     * Get the board array of pawns.
      *
      * @return the pawn [ ] [ ]
      */

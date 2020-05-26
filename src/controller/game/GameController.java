@@ -70,7 +70,7 @@ public class GameController {
      * Go menu.
      */
     public void goMenu() {
-        if (this.game.isRunning()) {
+        if (this.game.isRunning() && !this.game.isOnline()) {
             this.game.save();
         }
         this.goMenu.run();

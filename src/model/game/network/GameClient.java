@@ -9,7 +9,7 @@ import utils.network.Network;
 import utils.network.ZenClient;
 
 /**
- * The type Game client.
+ * The type Game client (it communicates player's moves to the server)
  */
 public class GameClient extends GameNetwork {
     /**
@@ -38,7 +38,7 @@ public class GameClient extends GameNetwork {
     }
 
     /**
-     * Stop.
+     * Stop the client.
      */
     @Override
     public void stop() {
@@ -83,7 +83,7 @@ public class GameClient extends GameNetwork {
      */
     private class ClientListener extends Listener {
         /**
-         * Disconnected.
+         * Client disconnected.
          *
          * @param connection the connection
          */
@@ -95,10 +95,10 @@ public class GameClient extends GameNetwork {
         }
 
         /**
-         * Received.
+         * Received an object from the server.
          *
          * @param connection the connection
-         * @param o          the o
+         * @param o          the object
          */
         @Override
         public void received(Connection connection, Object o) {
