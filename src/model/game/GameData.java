@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -103,7 +104,7 @@ public class GameData {
     @Override
     public String toString() {
         return "GameData{" +
-                "teams=" + this.teams +
+                "teams=" + Arrays.toString(this.teams) +
                 ", allowedMoves=" + this.allowedMoves +
                 ", board=" + this.board +
                 ", aiMode=" + this.aiMode +

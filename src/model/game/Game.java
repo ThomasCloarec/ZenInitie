@@ -37,6 +37,8 @@ public class Game extends Observable<GameView> {
         this.initializeTeams();
 
         this.gameData.setCurrentTeamIndex((int) (Math.random() * this.gameData.getTeams().length));
+
+        this.AISelectPawn();
     }
 
     /**
@@ -112,6 +114,34 @@ public class Game extends Observable<GameView> {
             this.gameData.setCurrentTeamIndex((this.gameData.getCurrentTeamIndex() + 1) % this.gameData.getTeams().length);
         }
         this.notifyPawnMoved();
+
+        this.AISelectPawn();
+    }
+
+    private void AISelectPawn() {
+        if (!this.isHumanUserTurn()) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                    this.setSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getSelectedPosition(this.gameData));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
+    private void AIMovePawn() {
+        if (!this.isHumanUserTurn()) {
+            new Thread(() -> {
+                try {
+                    Thread.sleep(3000);
+                    this.moveSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getMovePosition(this.gameData));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
     }
 
     /**
@@ -311,6 +341,8 @@ public class Game extends Observable<GameView> {
         this.gameData.setSelectedPawn(position);
         this.setAllowedMoves();
         this.notifyPawnSelected();
+
+        this.AIMovePawn();
     }
 
     /**
