@@ -106,7 +106,6 @@ public class GameTest {
         assertFalse(this.game.isPawnSelectable(new Position(0, 2)));
         assertFalse(this.game.isPawnSelectable(new Position(0, 3)));
         assertFalse(this.game.isPawnSelectable(new Position(0, 4)));
-        assertFalse(this.game.isPawnSelectable(new Position(0, 5)));
         assertFalse(this.game.isPawnSelectable(new Position(0, 6)));
         assertFalse(this.game.isPawnSelectable(new Position(0, 7)));
         assertFalse(this.game.isPawnSelectable(new Position(0, 8)));

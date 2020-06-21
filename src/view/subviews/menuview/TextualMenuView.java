@@ -208,6 +208,7 @@ public class TextualMenuView implements MenuView {
      */
     @Override
     public void goLobby() {
-
+        System.out.println("...");
+        this.goHomepage();
     }
 }

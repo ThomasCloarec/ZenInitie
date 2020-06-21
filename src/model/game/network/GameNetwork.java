@@ -56,6 +56,6 @@ public abstract class GameNetwork extends Game {
      */
     @Override
     public boolean isHumanUserTurn() {
-        return super.isHumanUserTurn() && this.playerID.equals(this.gameData.getCurrentTeamIndex(), this.getCurrentTeam().getCurrentPlayerIndex());
+        return super.isHumanUserTurn() && this.playerID != null && this.playerID.equals(this.gameData.getCurrentTeamIndex(), this.getCurrentTeam().getCurrentPlayerIndex());
     }
 }

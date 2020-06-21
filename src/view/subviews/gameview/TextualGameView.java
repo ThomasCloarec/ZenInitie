@@ -45,11 +45,11 @@ public class TextualGameView implements GameView {
             System.out.print("║\t" + (board.length - line) + "\t");
             for (int column = 0; column < board[0].length; column++) {
                 if (board[line][column] == Pawn.BLUE) {
-                    System.out.print("o");
+                    System.out.print("(BLUE)");
                 } else if (board[line][column] == Pawn.RED) {
-                    System.out.print("*");
+                    System.out.print("(RED)");
                 } else if (board[line][column] == Pawn.ZEN) {
-                    System.out.print("+");
+                    System.out.print("(ZEN)");
                 } else {
                     System.out.print("·");
                 }

@@ -1,108 +1,246 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="zeninitie" default="all">
-    <!-- The description of this file -->
-    <description>
-        This build file can be used to build the jar of the application, to run its tests or to generate its javadoc.
-    </description>
 
-    <!-- properties of the file -->
-    <property name="home" location="${ant.file}/.."/>
-    <property name="src" location="${home}/src"/>
-    <property name="out" location="${home}/out"/>
-    <property name="production" location="${out}/production/ZenInitie"/>
-    <property name="jar" location="${out}/artifacts"/>
-    <property name="libs" location="${home}/libs"/>
-    <property name="testSources" location="/test"/>
-    <property name="testResults" location="${out}/tests"/>
-    <property name="javadoc" location="${home}/ZenInitieDocs/docs"/>
 
-    <!-- librairies used in the project -->
-    <path id="librairies">
-        <path location="${libs}/darcula.jar"/>
-        <path location="${libs}/kryonet-2.21-all.jar"/>
-        <path location="${libs}/jlayer-1.0.1-2.jar"/>
-        <path location="${libs}/tritonus-share-0.3.7-3.jar"/>
-        <path location="${libs}/mp3spi-1.9.5-2.jar"/>
-        <path location="${libs}/gson-2.8.6.jar"/>
-        <path location="${libs}/hamcrest-core-1.3.jar"/>
-        <path location="${libs}/junit-4.12.jar"/>
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="700m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/*.hprof/**"/>
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/*.yarb/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.egg"/>
+        <include name="*.jar"/>
+        <include name="*.ear"/>
+        <include name="*.klib"/>
+        <include name="*.swc"/>
+        <include name="*.war"/>
+        <include name="*.ane"/>
+        <include name="*.zip"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+        <exclude name="**/?*.aj"/>
+    </patternset>
+
+
+    <!-- Project Libraries -->
+
+    <path id="library.libs.classpath">
+        <fileset dir="${basedir}/libs">
+            <patternset refid="library.patterns"/>
+        </fileset>
     </path>
 
-    <!-- clean the output directory -->
-    <target name="clean" description="delete output directory">
-        <delete dir="${out}"/>
-    </target>
+    <path id="librairies">
+        <path location="${basedir}/libs/darcula.jar"/>
+        <path location="${basedir}/libs/kryonet-2.21-all.jar"/>
+        <path location="${basedir}/libs/jlayer-1.0.1-2.jar"/>
+        <path location="${basedir}/libs/tritonus-share-0.3.7-3.jar"/>
+        <path location="${basedir}/libs/mp3spi-1.9.5-2.jar"/>
+        <path location="${basedir}/libs/gson-2.8.6.jar"/>
+        <path location="${basedir}/libs/hamcrest-core-1.3.jar"/>
+        <path location="${basedir}/libs/junit-4.12.jar"/>
+    </path>
 
-    <!-- recreate the output directory -->
-    <target name="init" depends="clean" description="recreate output directory">
-        <tstamp/>
-        <mkdir dir="${production}"/>
-    </target>
+    <!-- Modules -->
 
-    <!-- compile the sources to the output directory -->
-    <target name="compile" depends="init" description="compile files">
-        <javac srcdir="${src}" destdir="${production}" includeantruntime="false">
-            <classpath refid="librairies"/>
+
+    <!-- Module ZenInitie -->
+
+    <dirname property="module.zeninitie.basedir" file="${ant.file}"/>
+
+    <property name="compiler.args.zeninitie" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+    <property name="zeninitie.output.dir" value="${module.zeninitie.basedir}/out/production"/>
+    <property name="zeninitie.testoutput.dir" value="${module.zeninitie.basedir}/out/test"/>
+    <property name="zeninitiedocs.docs.dir" value="${module.zeninitie.basedir}/ZenInitieDocs"/>
+
+    <path id="zeninitie.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="zeninitie.module.production.classpath">
+        <path refid="library.libs.classpath"/>
+    </path>
+
+    <path id="zeninitie.runtime.production.module.classpath">
+        <pathelement location="${zeninitie.output.dir}"/>
+        <path refid="library.libs.classpath"/>
+    </path>
+
+    <path id="zeninitie.module.classpath">
+        <pathelement location="${zeninitie.output.dir}"/>
+        <path refid="library.libs.classpath"/>
+    </path>
+
+    <path id="zeninitie.runtime.module.classpath">
+        <pathelement location="${zeninitie.testoutput.dir}"/>
+        <pathelement location="${zeninitie.output.dir}"/>
+        <path refid="library.libs.classpath"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.zeninitie">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.zeninitie">
+        <patternset refid="excluded.from.module.zeninitie"/>
+    </patternset>
+
+    <path id="zeninitie.module.sourcepath">
+        <dirset dir="${module.zeninitie.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.zeninitie" depends="compile.module.zeninitie.production,compile.module.zeninitie.tests"
+            description="Compile module ZenInitie"/>
+
+    <target name="compile.module.zeninitie.production" description="Compile module ZenInitie; production classes">
+        <mkdir dir="${zeninitie.output.dir}"/>
+        <javac includeantruntime="false" destdir="${zeninitie.output.dir}" debug="${compiler.debug}"
+               nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true">
+            <compilerarg line="${compiler.args.zeninitie}"/>
+            <bootclasspath refid="zeninitie.module.bootclasspath"/>
+            <classpath refid="zeninitie.module.production.classpath"/>
+            <src refid="zeninitie.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.zeninitie"/>
         </javac>
+
+        <copy todir="${zeninitie.output.dir}">
+            <fileset dir="${module.zeninitie.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
     </target>
 
-    <!-- build the jar file -->
-    <target name="build" depends="compile" description="build the jar">
-        <mkdir dir="${jar}"/>
-        <jar destfile="${jar}/ZenInitie.jar" basedir="${production}">
+    <target name="compile.module.zeninitie.tests" depends="compile.module.zeninitie.production"
+            description="compile module ZenInitie; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.zeninitie" description="cleanup module">
+        <delete dir="${zeninitie.output.dir}"/>
+        <delete dir="${zeninitie.testoutput.dir}"/>
+    </target>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.zeninitie" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, compile.module.zeninitie" description="build all modules"/>
+
+    <target name="init.artifacts">
+        <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+        <property name="artifact.output.zeninitie:jar" value="${basedir}/releases"/>
+        <mkdir dir="${artifacts.temp.dir}"/>
+        <property name="temp.jar.path.ZenInitie.jar" value="${artifacts.temp.dir}/ZenInitie.jar"/>
+    </target>
+
+    <target name="artifact.zeninitie:jar" depends="init.artifacts, compile.module.zeninitie"
+            description="Build &#39;ZenInitie:jar&#39; artifact">
+        <property name="artifact.temp.output.zeninitie:jar" value="${artifacts.temp.dir}/ZenInitie_jar"/>
+        <mkdir dir="${artifact.temp.output.zeninitie:jar}"/>
+        <jar destfile="${temp.jar.path.ZenInitie.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-class" value="Main"/>
+                <attribute name="Main-Class" value="Main"/>
             </manifest>
-            <zipgroupfileset dir="${libs}"/>
+            <zipfileset dir="${zeninitie.output.dir}"/>
+            <zipgroupfileset dir="${basedir}/libs"/>
         </jar>
+        <copy file="${temp.jar.path.ZenInitie.jar}" tofile="${artifact.temp.output.zeninitie:jar}/ZenInitie.jar"/>
+    </target>
+
+    <target name="build.all.artifacts" depends="artifact.zeninitie:jar" description="Build all artifacts">
+        <mkdir dir="${artifact.output.zeninitie:jar}"/>
+        <copy todir="${artifact.output.zeninitie:jar}">
+            <fileset dir="${artifact.temp.output.zeninitie:jar}"/>
+        </copy>
+
+
+        <!-- Delete temporary files -->
+        <delete dir="${artifacts.temp.dir}"/>
     </target>
 
     <!-- run JUnit tests -->
     <target name="tests" description="run tests">
-        <delete dir="${testResults}"/>
-        <mkdir dir="${testResults}"/>
+        <delete dir="${module.zeninitie.basedir}/out/tests"/>
+        <mkdir dir="${module.zeninitie.basedir}/out/tests"/>
 
         <junit printsummary="true" haltonfailure="false" fork="true">
             <classpath>
                 <path refid="librairies"/>
                 <pathelement path="${java.class.path}"/>
-                <pathelement location="${production}/Tests"/>
-                <pathelement location="${production}"/>
-                <pathelement location="${testSources}"/>
-                <pathelement location="${src}"/>
+                <pathelement location="${module.zeninitie.basedir}/out/production/Tests"/>
+                <pathelement location="${module.zeninitie.basedir}/out/production"/>
+                <pathelement location="${module.zeninitie.basedir}/out/test"/>
+                <pathelement location="${module.zeninitie.basedir}/src"/>
             </classpath>
 
             <formatter type="xml"/>
 
-            <batchtest todir="${testResults}">
-                <fileset dir="${src}">
+            <batchtest todir="${module.zeninitie.basedir}/out/tests">
+                <fileset dir="${module.zeninitie.basedir}/src">
                     <include name="**/*Test*"/>
                 </fileset>
             </batchtest>
         </junit>
 
-        <junitreport todir="${testResults}">
-            <fileset dir="${testResults}">
+        <junitreport todir="${module.zeninitie.basedir}/out/tests">
+            <fileset dir="${module.zeninitie.basedir}/out/tests">
                 <include name="*.xml"/>
             </fileset>
-            <report format="frames" todir="${testResults}"/>
+            <report format="frames" todir="${module.zeninitie.basedir}/out/tests"/>
         </junitreport>
     </target>
 
-    <!-- generate the javadoc of the whole project -->
-    <target name="javadoc" description="generate javadoc">
-        <delete dir="${javadoc}"/>
-        <mkdir dir="${javadoc}"/>
-        <javadoc sourcepath="${src}" destdir="${javadoc}">
-            <classpath refid="librairies"/>
+    <!-- Generate javadoc -->
+    <target name="javadoc" depends="init" description="generate documentation">
+        <javadoc sourcepath="${module.zeninitie.basedir}/src" destdir="${zeninitiedocs.docs.dir}/docs">
+            <classpath>
+                <fileset dir="${module.zeninitie.basedir}/src/">
+                    <include name="*.java"/>
+                </fileset>
+                <fileset dir="${module.zeninitie.basedir}/libs">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
         </javadoc>
     </target>
 
-    <!-- run all ant tasks -->
-    <target name="all" depends="build, tests, javadoc" description="all ant tasks in one command (except running)"/>
-
-    <!-- build the jar and run the project -->
-    <target name="run" depends="build" description="run the program">
-        <java fork="true" jar="${jar}/ZenInitie.jar"/>
-    </target>
+    <target name="all" depends="build.modules, build.all.artifacts, tests, javadoc" description="build all"/>
 </project>
+

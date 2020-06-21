@@ -94,6 +94,17 @@ public class Menu extends Observable<MenuView> {
     }
 
     /**
+     * Add observer.
+     *
+     * @param observer the observer
+     */
+    @Override
+    public void addObserver(MenuView observer) {
+        super.addObserver(observer);
+        observer.goHomepage();
+    }
+
+    /**
      * Gets actual page.
      *
      * @return the actual page

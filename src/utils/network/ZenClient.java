@@ -10,7 +10,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Scanner;
+import java.util.List;
 
 /**
  * The type PawnTest client.
@@ -52,15 +52,15 @@ public class ZenClient extends Client {
      */
     public void launch() {
         new Thread(() -> {
-            System.out.println("Drop une adresse IP ");
+            /*System.out.println("Type an IP adress");
             try {
                 this.connect(Integer.MAX_VALUE, new Scanner(System.in).nextLine(), this.connectionTryIndex + Network.BASE_TCP_PORT, this.connectionTryIndex + Network.BASE_UDP_PORT);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-            }
+            }*/
 
             InetAddress serverIP = null;
-            /*while (serverIP == null) {
+            while (serverIP == null) {
                 if (this.connectionTryIndex + Network.BASE_UDP_PORT > Network.MAX_UDP_PORT) { // Reset search
                     this.connectionTryIndex = 0;
                 }
@@ -72,12 +72,11 @@ public class ZenClient extends Client {
                         this.connect(Integer.MAX_VALUE, serverIP, this.connectionTryIndex + Network.BASE_TCP_PORT, this.connectionTryIndex + Network.BASE_UDP_PORT);
                     } catch (IOException ioException) {
                         this.launch();
-                        System.out.println("EH");
                     }
                 } else {
                     this.connectionTryIndex++;
                 }
-            }*/
+            }
         }).start();
     }
 

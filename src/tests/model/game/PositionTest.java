@@ -59,6 +59,6 @@ public class PositionTest {
      */
     @Test
     public void testGetFormattedColumn() {
-        assertEquals(this.position.getFormattedColumn(), 'E');
+        assertEquals(this.position.getFormattedColumn(), 'F');
     }
 }

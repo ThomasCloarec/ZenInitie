@@ -39,7 +39,6 @@ public abstract class Controller {
      */
     public static Controller createInstance(ViewMode viewMode) {
         Controller controller = null;
-
         if (viewMode == ViewMode.TEXTUAL) {
             controller = TextualController.createInstance();
         } else if (viewMode == ViewMode.GRAPHICAL_2D) {

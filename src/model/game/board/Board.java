@@ -90,11 +90,11 @@ public class Board {
 
         int diagonal1PawnCount = this.getFirstDiagonalPawnCount(position);
         positions[4] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() - diagonal1PawnCount); // top left
-        positions[5] = new Position(position.getLine() - diagonal1PawnCount, position.getColumn() + diagonal1PawnCount); // top right
+        positions[5] = new Position(position.getLine() + diagonal1PawnCount, position.getColumn() + diagonal1PawnCount); // bottom right
 
         int diagonal2PawnCount = this.getSecondDiagonalPawnCount(position);
         positions[6] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() - diagonal2PawnCount); // bottom left
-        positions[7] = new Position(position.getLine() + diagonal2PawnCount, position.getColumn() + diagonal2PawnCount); // bottom right
+        positions[7] = new Position(position.getLine() - diagonal2PawnCount, position.getColumn() + diagonal2PawnCount); // top right
         return positions;
     }
 
@@ -166,6 +166,23 @@ public class Board {
     }
 
     /**
+     * Gets horizontal pawn count.
+     *
+     * @param position the position
+     * @return the horizontal pawn count
+     */
+    int getHorizontalPawnCount(Position position) {
+        int count = 0;
+        for (int column = 0; column < this.board.length; column++) {
+            if (this.board[position.getLine()][column] != Pawn.EMPTY) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    /**
      * Gets first diagonal pawn count.
      *
      * @param position the position
@@ -176,23 +193,6 @@ public class Board {
         int diagonalEdge = Math.min(position.getLine(), position.getColumn());
         for (int line = position.getLine() - diagonalEdge, column = position.getColumn() - diagonalEdge; line < this.board.length && column < this.board.length; line++, column++) {
             if (this.board[line][column] != Pawn.EMPTY) {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    /**
-     * Gets horizontal pawn count.
-     *
-     * @param position the position
-     * @return the horizontal pawn count
-     */
-    int getHorizontalPawnCount(Position position) {
-        int count = 0;
-        for (int column = 0; column < this.board.length; column++) {
-            if (this.board[position.getLine()][column] != Pawn.EMPTY) {
                 count++;
             }
         }

@@ -118,32 +118,6 @@ public class Game extends Observable<GameView> {
         this.AISelectPawn();
     }
 
-    private void AISelectPawn() {
-        if (!this.isHumanUserTurn()) {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(3000);
-                    this.setSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getSelectedPosition(this.gameData));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-    }
-
-    private void AIMovePawn() {
-        if (!this.isHumanUserTurn()) {
-            new Thread(() -> {
-                try {
-                    Thread.sleep(3000);
-                    this.moveSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getMovePosition(this.gameData));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-    }
-
     /**
      * Save the game data to a json file
      */
@@ -192,6 +166,42 @@ public class Game extends Observable<GameView> {
             } else {
                 this.gameData.getTeams()[1].addPlayer(new Player("Player 2"));
             }
+        }
+    }
+
+    /**
+     * Ai select pawn.
+     */
+    private void AISelectPawn() {
+        if (!this.isHumanUserTurn()) {
+            new Thread(() -> {
+                try {
+                    if (this.getCurrentTeam().getCurrentPlayer() instanceof ArtificialPlayer) {
+                        Thread.sleep(3000);
+                        this.setSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getSelectedPosition(this.gameData));
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * Ai move pawn.
+     */
+    private void AIMovePawn() {
+        if (!this.isHumanUserTurn()) {
+            new Thread(() -> {
+                try {
+                    if (this.getCurrentTeam().getCurrentPlayer() instanceof ArtificialPlayer) {
+                        Thread.sleep(3000);
+                        this.moveSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getMovePosition(this.gameData));
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 
