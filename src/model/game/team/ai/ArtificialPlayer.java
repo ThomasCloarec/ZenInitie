@@ -86,16 +86,6 @@ public class ArtificialPlayer extends Player {
     public Position getSelectedPosition(Game game) {
         this.lastAction = this.getBestAction(game);
         return this.lastAction.getSelectedPosition();
-
-        /*
-        function negamax(node, depth, color) is
-    if depth = 0 or node is a terminal node then
-        return color × the heuristic value of node
-    value := −∞
-    for each child of node do
-        value := max(value, −negamax(child, depth − 1, −color))
-    return value
-         */
     }
 
     /**
@@ -109,13 +99,11 @@ public class ArtificialPlayer extends Player {
         Action bestAction = null;
 
         for (Action action : this.getPossibleActions(game)) {
-            System.out.println(action);
             Game gameCopy = ArtificialPlayer.getGameCopy(game);
             gameCopy.setSelectedPawn(action.getSelectedPosition());
             gameCopy.moveSelectedPawn(action.getMovePosition());
 
             double value = game.getGameData().getBoard().getPawnPositionsAround(Pawn.ZEN, Pawn.getPawnFromTeamColor(this.team.getTeamColor())).size() - this.getStateValue(gameCopy) - 1;
-            System.out.println(value);
             if (value > maxvalue) {
                 maxvalue = value;
                 bestAction = action;
