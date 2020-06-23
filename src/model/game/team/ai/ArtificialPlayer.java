@@ -94,19 +94,27 @@ public class ArtificialPlayer extends Player {
      * @param game the game
      * @return the best action
      */
-    private Action getBestAction(Game game/*, Pawn[][] node, double depth, boolean myTurn*/) {
+    private Action getBestAction(Game game) {
         double maxvalue = -Double.MAX_VALUE;
         Action bestAction = null;
 
+        // Check one move after
         for (Action action : this.getPossibleActions(game)) {
             Game gameCopy = ArtificialPlayer.getGameCopy(game);
             gameCopy.setSelectedPawn(action.getSelectedPosition());
             gameCopy.moveSelectedPawn(action.getMovePosition());
 
-            double value = game.getGameData().getBoard().getPawnPositionsAround(Pawn.ZEN, Pawn.getPawnFromTeamColor(this.team.getTeamColor())).size() - this.getStateValue(gameCopy) - 1;
-            if (value > maxvalue) {
-                maxvalue = value;
-                bestAction = action;
+            // Check two moves after
+            for (Action innerAction : this.getPossibleActions(game)) {
+                Game innerGameCopy = ArtificialPlayer.getGameCopy(game);
+                innerGameCopy.setSelectedPawn(innerAction.getSelectedPosition());
+                innerGameCopy.moveSelectedPawn(innerAction.getMovePosition());
+
+                double value = game.getGameData().getBoard().getPawnPositionsAround(Pawn.ZEN, Pawn.getPawnFromTeamColor(this.team.getTeamColor())).size() - this.getStateValue(innerGameCopy) - 1;
+                if (value > maxvalue) {
+                    maxvalue = value;
+                    bestAction = innerAction;
+                }
             }
         }
 
