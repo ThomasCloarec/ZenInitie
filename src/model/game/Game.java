@@ -1,10 +1,10 @@
 package model.game;
 
 import model.game.board.Pawn;
-import model.game.team.ArtificialPlayer;
 import model.game.team.Player;
 import model.game.team.Team;
 import model.game.team.TeamColor;
+import model.game.team.ai.ArtificialPlayer;
 import utils.observer.Observable;
 import view.subviews.gameview.GameView;
 
@@ -146,6 +146,69 @@ public class Game extends Observable<GameView> {
     }
 
     /**
+     * Sets allowed moves (calculate all possible positions where the currently selected pawn can move)
+     */
+    public void setAllowedMoves() {
+        this.gameData.getAllowedMoves().clear();
+
+        for (Position position : this.gameData.getBoard().generatePositionsFrom(this.gameData.getSelectedPawn())) {
+            if (this.isMoveValid(position)) {
+                this.gameData.getAllowedMoves().add(position);
+            }
+        }
+    }
+
+    /**
+     * Gets largest chain.
+     *
+     * @param teamColor the team color
+     * @return the largest chain
+     */
+    public double getLargestChain(TeamColor teamColor) {
+        // Convert TeamColor to Pawn
+        Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
+
+        // find all positions around each pawn of a color
+        Map<Position, Position[]> toMarkMap = this.gameData.getBoard().getPawnPositionsAround(Pawn.ZEN, pawn);
+        Collection<Position> markedList = new ArrayList<>();
+
+        double maxLength = 0;
+        for (int i = 0; i < toMarkMap.keySet().toArray().length; i++) {
+            Position randomPosition = (Position) toMarkMap.keySet().toArray()[i]; // random position because order is not always kept in an hashmap
+            markedList.add(randomPosition); // Set a random one as marked
+            toMarkMap.remove(randomPosition); // Remove from the map of "to mark" positions
+            boolean changeMarkedPosition = true;
+            while (!toMarkMap.isEmpty() && changeMarkedPosition) { // iterate while there is change or until mark map is empty (so there is a winner)
+                changeMarkedPosition = false;
+
+                Iterator<Map.Entry<Position, Position[]>> iterator = toMarkMap.entrySet().iterator();
+                while (iterator.hasNext()) { // iterate over all the positions of pawns
+                    Map.Entry<Position, Position[]> entryToMark = iterator.next();
+                    boolean noPawnAround = true;
+                    int positionAroundIndex = 0;
+                    while (noPawnAround && positionAroundIndex < entryToMark.getValue().length) { // iterate over all the positions around pawns until end or pawn around marked
+                        Position position = entryToMark.getValue()[positionAroundIndex];
+                        if (markedList.contains(position)) { // If position around a marked position, then mark it too
+                            noPawnAround = false;
+                            changeMarkedPosition = true;
+
+                            Position newMarkedPosition = entryToMark.getKey();
+                            iterator.remove(); // remove from "to mark" list
+                            markedList.add(newMarkedPosition); // add to marked list
+                        }
+
+                        positionAroundIndex++;
+                    }
+                }
+            }
+
+            maxLength = toMarkMap.size() > maxLength ? toMarkMap.size() : maxLength;
+        }
+
+        return maxLength;
+    }
+
+    /**
      * Initialize teams and add players into them
      */
     protected void initializeTeams() {
@@ -154,7 +217,7 @@ public class Game extends Observable<GameView> {
 
         this.gameData.getTeams()[0].addPlayer(new Player("Player 1"));
         if (this.gameData.isAiMode()) {
-            this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 1"));
+            this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 1", this.gameData.getTeams()[1]));
         } else {
             this.gameData.getTeams()[1].addPlayer(new Player("Player 1"));
         }
@@ -162,7 +225,7 @@ public class Game extends Observable<GameView> {
         if (this.gameData.isDuoMode()) {
             this.gameData.getTeams()[0].addPlayer(new Player("Player 2"));
             if (this.gameData.isAiMode()) {
-                this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 2"));
+                this.gameData.getTeams()[1].addPlayer(new ArtificialPlayer("Player 2", this.gameData.getTeams()[1]));
             } else {
                 this.gameData.getTeams()[1].addPlayer(new Player("Player 2"));
             }
@@ -177,26 +240,8 @@ public class Game extends Observable<GameView> {
             new Thread(() -> {
                 try {
                     if (this.getCurrentTeam().getCurrentPlayer() instanceof ArtificialPlayer) {
-                        Thread.sleep(3000);
-                        this.setSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getSelectedPosition(this.gameData));
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-    }
-
-    /**
-     * Ai move pawn.
-     */
-    private void AIMovePawn() {
-        if (!this.isHumanUserTurn()) {
-            new Thread(() -> {
-                try {
-                    if (this.getCurrentTeam().getCurrentPlayer() instanceof ArtificialPlayer) {
-                        Thread.sleep(3000);
-                        this.moveSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getMovePosition(this.gameData));
+                        Thread.sleep(1000);
+                        this.setSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getSelectedPosition(this));
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -220,15 +265,20 @@ public class Game extends Observable<GameView> {
     }
 
     /**
-     * Sets allowed moves (calculate all possible positions where the currently selected pawn can move)
+     * Ai move pawn.
      */
-    private void setAllowedMoves() {
-        this.gameData.getAllowedMoves().clear();
-
-        for (Position position : this.gameData.getBoard().generatePositionsFrom(this.gameData.getSelectedPawn())) {
-            if (this.isMoveValid(position)) {
-                this.gameData.getAllowedMoves().add(position);
-            }
+    private void AIMovePawn() {
+        if (!this.isHumanUserTurn()) {
+            new Thread(() -> {
+                try {
+                    if (this.getCurrentTeam().getCurrentPlayer() instanceof ArtificialPlayer) {
+                        Thread.sleep(1000);
+                        this.moveSelectedPawn(((ArtificialPlayer) this.getCurrentTeam().getCurrentPlayer()).getMovePosition(this));
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 
@@ -242,6 +292,7 @@ public class Game extends Observable<GameView> {
         boolean validMove = true;
 
         Team currentTeam = this.getCurrentTeam();
+
         if (this.gameData.getBoard().isPositionValid(position) && !currentTeam.controlPawn(this.gameData.getBoard().getArray()[position.getLine()][position.getColumn()])) { // destination must be on the board and can't be my pawn
             int deltaLine = position.getLine() - this.gameData.getSelectedPawn().getLine();
             int lineGradient = deltaLine == 0 ? 0 : Math.abs(deltaLine) / deltaLine; // line direction
@@ -272,42 +323,16 @@ public class Game extends Observable<GameView> {
      * @return the boolean
      */
     private boolean isTeamWin(TeamColor teamColor) {
-        // Convert TeamColor to Pawn
-        Pawn pawn = Pawn.getPawnFromTeamColor(teamColor);
+        return this.getLargestChain(teamColor) == 0;
+    }
 
-        // find all positions around each pawn of a color
-        Map<Position, Position[]> toMarkMap = this.gameData.getBoard().getPawnPositionsAround(Pawn.ZEN, pawn);
-        Collection<Position> markedList = new ArrayList<>();
-
-        Position randomPosition = (Position) toMarkMap.keySet().toArray()[0]; // random position because order is not always kept in an hashmap
-        markedList.add(randomPosition); // Set a random one as marked
-        toMarkMap.remove(randomPosition); // Remove from the map of "to mark" positions
-        boolean changeMarkedPosition = true;
-        while (!toMarkMap.isEmpty() && changeMarkedPosition) { // iterate while there is change or until mark map is empty (so there is a winner)
-            changeMarkedPosition = false;
-
-            Iterator<Map.Entry<Position, Position[]>> iterator = toMarkMap.entrySet().iterator();
-            while (iterator.hasNext()) { // iterate over all the positions of pawns
-                Map.Entry<Position, Position[]> entryToMark = iterator.next();
-                boolean noPawnAround = true;
-                int positionAroundIndex = 0;
-                while (noPawnAround && positionAroundIndex < entryToMark.getValue().length) { // iterate over all the positions around pawns until end or pawn around marked
-                    Position position = entryToMark.getValue()[positionAroundIndex];
-                    if (markedList.contains(position)) { // If position around a marked position, then mark it too
-                        noPawnAround = false;
-                        changeMarkedPosition = true;
-
-                        Position newMarkedPosition = entryToMark.getKey();
-                        iterator.remove(); // remove from "to mark" list
-                        markedList.add(newMarkedPosition); // add to marked list
-                    }
-
-                    positionAroundIndex++;
-                }
-            }
-        }
-
-        return toMarkMap.isEmpty();
+    /**
+     * Gets game data.
+     *
+     * @return the game data
+     */
+    public GameData getGameData() {
+        return this.gameData;
     }
 
     /**

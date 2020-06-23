@@ -6,10 +6,10 @@ import model.game.GameData;
 import model.game.Position;
 import model.game.board.Board;
 import model.game.board.Pawn;
-import model.game.team.ArtificialPlayer;
 import model.game.team.Player;
 import model.game.team.Team;
 import model.game.team.TeamColor;
+import model.game.team.ai.ArtificialPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
