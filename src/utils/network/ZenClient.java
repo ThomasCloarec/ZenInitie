@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
 
+import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -52,17 +53,17 @@ public class ZenClient extends Client {
      */
     public void launch() {
         new Thread(() -> {
-            /*System.out.println("Type an IP adress");
-            try {
-                this.connect(Integer.MAX_VALUE, new Scanner(System.in).nextLine(), this.connectionTryIndex + Network.BASE_TCP_PORT, this.connectionTryIndex + Network.BASE_UDP_PORT);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }*/
-
             InetAddress serverIP = null;
             while (serverIP == null) {
                 if (this.connectionTryIndex + Network.BASE_UDP_PORT > Network.MAX_UDP_PORT) { // Reset search
                     this.connectionTryIndex = 0;
+                    String ip = "null";
+                    try {
+                        ip = JOptionPane.showInputDialog(null, "No server found on local network. What's the IP address of the server ?", "");
+                        this.connect(Integer.MAX_VALUE, ip, this.connectionTryIndex + Network.BASE_TCP_PORT, this.connectionTryIndex + Network.BASE_UDP_PORT);
+                    } catch (IOException ignored) {
+                        JOptionPane.showMessageDialog(null, "No valid server on IP : \"" + ip + "\"");
+                    }
                 }
 
                 List<InetAddress> serversIP = this.discoverHosts(this.connectionTryIndex + Network.BASE_UDP_PORT, 1000);
