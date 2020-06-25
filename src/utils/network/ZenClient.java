@@ -8,6 +8,7 @@ import com.esotericsoftware.minlog.Log;
 import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,8 +60,9 @@ public class ZenClient extends Client {
                     this.connectionTryIndex = 0;
                     String ip = "null";
                     try {
-                        ip = JOptionPane.showInputDialog(null, "No server found on local network. What's the IP address of the server ?", "");
+                        ip = JOptionPane.showInputDialog(null, "What's the IP address of the server ? (No server found on local network)", "");
                         this.connect(Integer.MAX_VALUE, ip, this.connectionTryIndex + Network.BASE_TCP_PORT, this.connectionTryIndex + Network.BASE_UDP_PORT);
+                        serverIP = InetAddress.getByName(ip);
                     } catch (IOException ignored) {
                         JOptionPane.showMessageDialog(null, "No valid server on IP : \"" + ip + "\"");
                     }
